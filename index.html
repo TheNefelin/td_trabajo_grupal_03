@@ -6,87 +6,77 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="./img/logo.png">
 
-        <link rel="stylesheet" href="./lib/bootstrap-5.3.0/css/bootstrap.min.css" />
         <link rel="stylesheet" href="./lib/normalize.css">
         <link rel="stylesheet" href="./css/index.css"/>
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
 
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
-        <title>Cachureando</title>
+        <title>Tecno Chile</title>
     </head>
     <body>
 
-        <!-- Menu ---------------------------------------------------------------------- -->
-        <header>
-            <nav class="navBar">
-                <div class="navBar-item" onclick="cargarComponente(1)">
-                    <img src="./img/logo.svg">
-                    <h2>CACHUREANDO</h2>
+        <header id="header">
+            <nav id="navBar01" class="navBar01-contenedor">
+                <a class="navBar01-logo" href="#">
+                    <img src="./img/logo.svg" alt="">
+                    <h1>Tecno Chile</h1>
+                </a>
+                <div class="carrito-contenedor">
+                    <img id="imgCarrito" src="./img/cart4.svg">
+                    <span>0</span>
                 </div>
-                <div class="navBar-btn" onclick="btnMenu()">
-                    <div class="navBar-btn-div"></div>
-                    <div class="navBar-btn-div"></div>
-                    <div class="navBar-btn-div"></div>
+                <div class="navBar01-btn">
+                    <div class="navBar01-A"></div>
+                    <div class="navBar01-B"></div>
+                    <div class="navBar01-C"></div>
                 </div>
-                <div class="navBar-menu navBar-item">
-                    <div onclick="cargarComponente(1)">Principal</div>
-                    <div onclick="cargarComponente(2)">Encuesta</div>
-                    <div onclick="cargarComponente(3)">Links</div>
-                    <div onclick="cargarComponente(4)">Contacto</div>
+                <div class="navBar01-links">
+                    <a id=1 href="https://www.w3schools.com/" target="_blank">w3schools</a>
+                    <a id=1 href="#" target="_blank">link 2</a>
+                    <a id=1 href="#" target="_blank">link 3</a>
+                    <a id=1 href="#" target="_blank">link 4</a>
                 </div>
             </nav>
         </header>
 
-        <!-- Carrito ------------------------------------------------------------------- -->
-        <div class="carrito" onclick="canasta_click()">
-            <img src="./img/carrito.svg"/>
-            <div class="carrito-cont">0</div>
-        </div>
-        
-        <!-- Contenido Carrito --------------------------------------------------------- -->
-        <div class="carrito-lista">
-            <!-- aqui se cargan todos los elementos desde la funcion addProducto_click() -->
-        </div>
-        
-        <main class="contenedor">
-        <!-- --------------------------------------------------------------------------- -->
-        <!-- Aqui se Cargan todos los componentes de las Paginas -->
-        <!-- --------------------------------------------------------------------------- -->          
-        </main>
+        <section>
+            <div class="mySlides fade">
+                <div class="numbertext">1 / 3</div>
+                <img src="./img/fondo01.jpg" style="width:100%">
+                <div class="text">Caption Text</div>
+              </div>
+              
+              <div class="mySlides fade">
+                <div class="numbertext">2 / 3</div>
+                <img src="./img/fondo02.jpg" style="width:100%">
+                <div class="text">Caption Two</div>
+              </div>
+              
+              <div class="mySlides fade">
+                <div class="numbertext">3 / 3</div>
+                <img src="./img/fondo03.jpg" style="width:100%">
+                <div class="text">Caption Three</div>
+              </div>
+              
+              </div>
+              <br>
+              
+              <div style="text-align:center">
+                <span class="dot"></span> 
+                <span class="dot"></span> 
+                <span class="dot"></span> 
+              </div>
+        </section>
 
-        <!-- Modal --------------------------------------------------------------------- -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Mensaje</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- --------------------------------------------------------------------------- -->
+        <section>
+            <div class="card">
+                <img src="/w3images/jeans3.jpg" alt="Denim Jeans" style="width:100%">
+                <h1>Tailored Jeans</h1>
+                <p class="price">$19.99</p>
+                <p>Some text about the jeans. Super slim and comfy lorem ipsum lorem jeansum. Lorem jeamsun denim lorem jeansum.</p>
+                <p><button>Add to Cart</button></p>
+              </div>
+        </section>
 
-        <footer class="pie">
-            <div class="reloj"></div>
-        </footer>
 
-        <!-- <iframe  allow="autoplay" id="iframe" style="padding: 0px;"
-            frameborder="0"
-            src="https://www.raddios.com/player/1/?r=11312&autoplay=1&rand=1785425342" width="240"
-            height="52" allowtransparency="true" scrolling="no">
-        </iframe> -->
-
-        <script src="https://npmcdn.com/flickity@1.1.2/dist/flickity.pkgd.min.js"></script>
-        <script src="./lib/bootstrap-5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="./lib/html2pdf.bundle.min.js"></script>
         <script src="./lib/jquery-3.6.3.min.js"></script>
         <script src="./js/data.js"></script>
         <script src="./js/index.js"></script>       

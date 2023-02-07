@@ -1,379 +1,131 @@
-/* Fuentes ------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------------- */
 
-@font-face {
-    font-family: fuente-titulot;
-    src: url("../fuente/Caveat-VariableFont_wght.ttf");
-}
-
-@font-face {
-    font-family: fuente-sitio;
-    src: url("../fuente/Merriweather-Regular.ttf");
-}
-
+/* --- Paleta de Colores --------------------------------------- */
+/* ------------------------------------------------------------- */
 :root {
-    --colorContenedor: rgb(242, 242, 242);
-    --colorFooter: rgb(143, 0, 0);
-    --colorLink: rgb(255, 140, 140);
-    --colorMenu: rgb(34, 72, 129);
+    --colorPrimario: rgb(242, 242, 242);
+    --colorSecundario: rgb(34, 72, 129);
+
+    --colorText1: rgb(34, 72, 129);
+    --colorText2: rgb(255, 140, 140);
 
     --colorCajaFondo: rgba(99, 99, 99, 0.368);
     --colorCajaBorde: black;
-    --colorCajaTexto: white;
-
-    --colorNegro: black;
 }
 
-* {
-    font-family: fuente-sitio;
+a {
+    color: var(--colorText1);
+    text-decoration: none;
 }
 
-body {
-    background-color:  var(--colorContenedor)
-}
-
-.contenedorComponente {
-    background-color: var(--colorCajaFondo);
-    border: solid 1px var(--colorCajaBorde);
-    color: var(--colorCajaTexto);
-    max-width: 400px;
-    margin: 100px auto 0 auto;
-    padding: 20px;
-}
-
-/* NavBar -------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------------- */
-header {
-    position: fixed;
-    width: 100%;
-    z-index: 10;
-}
-
-.navBar {
+/* --- NavBar -------------------------------------------------- */
+/* ------------------------------------------------------------- */
+.navBar01-contenedor {
+    background-color: var(--colorPrimario);
     display: flex;
     justify-content: space-between;
-    height: 60px;
-    min-width: 310px;
-    background: #000000;
-    color: var(--colorContenedor);
-    text-shadow: 2px 2px 4px #000000;
-    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.152);
-    transition: 0.5s ease-out;
+    align-items: center;
 }
 
-.navBar_ocultar {
-    margin-top: -70px;
-}
-
-.navBar img {
-    height: 40px;
-}
-
-.navBar h2 {
-    font-family: fuente-titulot;
-}
-
-.navBar-item {
+/* navBar01-logo --------------------- */
+.navBar01-logo {
     display: flex;
     align-items: center;
+    margin-left: 2rem;
+}
+
+.navBar01-logo img {
+    height: 3rem;
+    margin-right: 1rem;
+}
+
+/* navBar01-btn ---------------------- */
+.navBar01-btn {
     cursor: pointer;
-}
-
-.navBar-item > * {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.navBar-btn {
     display: none;
-    min-width: 45px;
-    margin: 10px;
-    border-radius: 25%;
-    cursor: pointer;
+    padding-right: 2rem;
 }
 
-.navBar-btn:hover {
-    border: 2px solid var(--colorCajaFondo);
-}
-
-.navBar-btn-div {
-    background-color: var(--colorContenedor);
+.navBar01-A, .navBar01-B, .navBar01-C {
+    width: 2rem;
     height: 5px;
-    width: 30px;
-    margin: auto;
-    margin-top: 6px;
+    background-color: var(--colorText1);
+    border-radius: 4px;
+    margin: 6px 0;
+    transition: 0.4s;
 }
 
-.navBar-menu > *:hover {
-    color: var(--colorLink);
-    font-size: 120%;
-    transition: border-color 0.66s ease-out, font-size 0.3s ease-out;
+.navBar01-btn_click .navBar01-A {
+    transform: translateY(11px) rotate(45deg);
+    background-color: var(--colorSecundario);
 }
 
-@media (max-width: 800px) {
-    .navBar-btn {
+.navBar01-btn_click .navBar01-B {
+    opacity: 0;
+}
+
+.navBar01-btn_click .navBar01-C {
+    transform: translateY(-11px) rotate(-45deg);
+    background-color: var(--colorSecundario);
+}
+
+/* navBar01-links -------------------- */
+.navBar01-links {
+    margin-right: 2rem;
+}
+
+.navBar01-links a {
+    margin-left: 1rem;
+}
+
+.navBar01-links a:hover {
+    color: var(--colorSecundario);
+}
+
+/* navBar01 comportamineto ----------- */
+@media (max-width: 767.98px) {
+    .navBar01-btn {
         display: block;
     }
-    .navBar-btn_div_accion {
-        background-color: red;
-    }
 
-    .navBar-menu {
+    .navBar01-links {
         position: fixed;
         display: grid;
-        justify-content: center;
-        padding: 15px;
-        background-color: var(--colorMenu);
-        top: 60px;
+        top: 4rem;
+        background-color: var(--colorPrimario);
+        text-align: center;
         width: 100%;
         left: 100%;
-        transition: 0.5s;
+        transition: 0.4s;
+        border-radius: 0 0 100px 100px;
     }
 
-    .navBar-menu_accion {
+    .navBar01-links_noOcultar {
         left: 0;
     }
 
-    .navBar-menu > * {
-        margin: 5px;
+    .navBar01-links a {
+        padding: 1rem;
     }
 }
 
-.dropdown-item_desactivarBS {
-    text-shadow: none;
-}
-
-.carrito {
-    position: fixed;
-    top: 70%;
-    right: 0;
-    z-index: 20;
-    background-color: var(--colorCajaFondo);
-    color: var(--colorCajaTexto);
-    display: flex;
-    justify-content: center;
-    width: 100px;
-    border-radius: 10px 0 0 10px;
-    transition: 0.5s ease-out;
+.carrito-contenedor {
+    background-color: var(--colorText2);
+    padding: 0.5rem;
+    border-radius: 25%;
     cursor: pointer;
+    color: var(--colorPrimario);
 }
 
-.carrito > * {
-    fill: white;
-    padding: 7px;
-    width: 80px;
-    font-size: 30px;
+.carrito-contenedor > img {
+    height: 2rem;
 }
 
-.carrito_ocultar {
-    right: -100px;
-}
-
-.carrito-lista {
-    background-color: rgba(99, 99, 99, 0.7);
-    backdrop-filter: blur(20px);
-    color: var(--colorCajaTexto);
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    right: -100%;
-    z-index: 20;
-    padding: 10px 10px 10px 20px;
-    transition: 0.5s ease-out;
-    overflow: scroll;
-}
-
-.carrito-lista_noOcultar{
-    right: 0;
-}
-
-/* MainContenedor ------------------------------------------------------------------ */
-/* --------------------------------------------------------------------------------- */
-.contenedor  {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-/* Contacto ------------------------------------------------------------------------ */
-/* --------------------------------------------------------------------------------- */
-.contacto {
-   display: block;
-}
-
-.contacto div {
-    display: grid;
-}
-
-/* Encuesta ------------------------------------------------------------------------ */
-/* --------------------------------------------------------------------------------- */
-.encuesta {
+/* --- Tarjeta ------------------------------------------------- */
+/* ------------------------------------------------------------- */
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
     margin: auto;
-}
-
-.encuesta >  * {
-    display: grid;
-}
-
-.encuesta-lista {
-    background-color: var(--colorCajaFondo);
-}
-
-/* Links --------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------------- */
-.links {
-    margin: 80px auto 0 auto;
-    padding: 20px;
-}
-
-.links > * {
-    background-color: var(--colorCajaFondo);
-    border: solid 1px var(--colorCajaBorde);
-    color: var(--colorCajaTexto);
-    padding: 10px;
-}
-
-/* Tienda -------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------------- */
-.tienda {
-    background-image: url("../img/Paralax_03.jpg");
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding-top: 120px;
-}
-
-.banner {
-    background-color: var(--colorCajaFondo);
-    border: solid 1px var(--colorCajaBorde);
-    color: var(--colorCajaTexto);
-    margin: 10px auto 10px auto;
-    max-width: 500px;
     text-align: center;
-}
-
-.about {
-    margin-top: 150px;
-    padding: 30px;
-    background-color: var(--colorContenedor);
-    width: 100%;
-}
-
-.about h2 {
-    text-align: center;
-    padding: 30px;
-}
-
-.about p {
-    text-align: justify;
-}
-
-.tarjetaContenedor {
-
-    background-color: var(--colorContenedor);
-    padding: 50px 0 50px 0;
-    display: grid;
-    margin-top: 100px;
-}
-
-.tarjeta {
-    background-color: var(--colorCajaFondo);
-    border: solid 1px var(--colorCajaBorde);
-    min-height: 200px;
-    display: flex;
-    margin: 20px 10px 20px 30px;
-    box-shadow: 4px 4px 4px 1px rgba(0, 0, 0, 0.304);
-}
-
-.tarjeta img {
-    height: 150px;
-    width: 150px;
-    min-width: 150px;
-    object-fit: cover;
-    border: solid 1px white;
-    position: relative;
-    bottom: 20px;
-    right: 20px;
-}
-
-.tarjetaTextos {
-    color: var(--colorCajaTexto);
-}
-
-.tarjeta-modificar {
-    display: flex;
-}
-
-.tarjeta-modificar p {
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.tarjeta-modificar button {
-    height: 35px;
-    width: 35px;
-}
-
-.btnX {
-    background: #141414;
-    color: var(--colorCajaTexto);
-    padding: 10px;
-    margin: 10px;
-    transition: .2s ease-in-out;
-}
-
-.btnX:hover {
-    transform: scale(1.1);
-}
-
-.btnX:active {
-    transform: scale(0.9);
-}
-
-@media (min-width: 750px) {
-    .tarjetaContenedor { grid-template-columns: repeat(2, 1fr); }
-}
-
-/* Footer -------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------------- */
-.pie {
-    position: fixed;
-    bottom: 0;
-    z-index: 10;
-    width: 100%;
-    background-color: var(--colorFooter);
-    color: var(--colorCajaTexto);
-    padding: 5px;
-    text-align: center;
-    transition: 0.5s ease-out;
-}
-
-.pie_ocultar {
-    margin-bottom: -60px;
-}
-
-/* Checkout ------------------------------------------------------------------------ */
-/* --------------------------------------------------------------------------------- */
-.list-group-item img {
-    height: 20px;
-    cursor: pointer;
-    padding: 0 5px;
-}
-
-.container {
-    max-width: 960px;
-}
-
-/* comprobante --------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------------- */
-.comprobante {
-    margin-top: -30px;
-    margin-bottom: 50px;
-}
-
-.comprobante div {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    padding: 5px;
-}
-
-/* ------------------- */
+    font-family: arial;
+  }
