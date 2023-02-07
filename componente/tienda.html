@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tienda</title>
+    </head>
+    <body>
+
+        <div class="tienda">
+            <div></div>
+            <div class="banner">
+                <h1>Cachureando</h1>
+                <p>Ropa Terrible de Cuica Zi</p>
+            </div>
+
+            <div class="about">
+                <h2>Quiénes Somos?</h2>
+                <p>Aloy es un personaje ficticio y protagonista de Horizon Zero
+                    Dawn, un videojuego de acción y aventura desarrollado por
+                    Guerrilla Games y publicado por Sony Interactive
+                    Entertainment. Criada por un exiliado llamado Rost, se
+                    entrena como una guerrera habilidosa para competir en la
+                    Prueba, un ritual celebrado por la tribu Nora, y descubrir
+                    la identidad de su madre. Los sucesos posteriores la obligan
+                    a embarcarse en un viaje para detener un culto que adora a
+                    una inteligencia artificial empeñada en la destrucción del
+                    mundo, mientras que también cazan máquinas que se han vuelto
+                    hostiles a los humanos. Su actriz de voz, Ashly Burch, la
+                    elogió críticamente por su diseño, caracterización y
+                    rendimiento</p>
+            </div>
+
+            <div class="tarjetaContenedor">
+                <!-- Aqui se Cargan los Productos desde la funcion getProductos() -->
+
+                <!-- Este es un Ejemplo --------------------------------------------------- -->
+                <div key=1 class="tarjeta">
+                    <img src="" alt="">
+                    <div class="tarjetaTextos">
+                        <h3><strong>Nombre</strong></h3>
+                        <p>Descripcion</p>
+                        <p><strong>$ 1000</strong></p>
+                        <div class="tarjeta-modificar">
+                            <button onclick="setProductoCant(1)">+</button>
+                            <p id="cantProducto">1</p>
+                            <button onclick="setProductoCant(-1)">-</button>
+                        </div>
+                        <button value=1 class="btnX" onclick="addProducto_click(this)">Agregar</button></div></div>
+                    </div>
+                </div>
+                <!-- ---------------------------------------------------------------------- -->
+            </div>
+
+        </div>
+
+    </body>
+</html>

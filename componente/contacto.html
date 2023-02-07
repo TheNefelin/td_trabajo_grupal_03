@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="contacto">
+        <form class="contenedorComponente">
+            <div>
+                <label>Email</label>
+                <input id="txtContactoEmail" type="email" aria-describedby="emailHelp" required>
+            </div>
+            <div>
+                <label>Nombre</label>
+                <input id="txtContactoNombre" type="text" required>
+            </div>
+            <div>
+                <label>Comentarios</label>
+                <textarea rows="3"></textarea>
+            </div>
+            <input
+                id="btnContacto" 
+                type="button" 
+                class="btnX" 
+                value="Enviar" 
+                data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop"
+                onclick="msge(this)">
+            </input>
+        </form>   
+    </div>
+ 
+
+</body>
+</html>

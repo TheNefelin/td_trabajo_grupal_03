@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta</title>
+</head>
+
+<body>
+
+    <div class="encuesta">
+        <form class="contenedorComponente">
+            <h1>Evalúanos!!!</h1>
+            <div>
+                <ul class="encuesta-lista">
+                    <li>0 a 1 = Muy Deficiente</li>
+                    <li>2 a 3 = Insucifiente</li>
+                    <li>4 a 5 = Suficiente</li>
+                    <li>6 a 7 = Bien</li>
+                    <li>8 a 9 = Notable</li>
+                    <li>10 = Sobresaliente</li>
+                </ul>
+            </div>
+            <div>
+                <label>Nombre</label>
+                <input id="txtEncuesta" type="text" required>
+            </div>
+            <input id="btnEncuesta" type="button" class="btnX" value="Enviar" data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop" onclick="msge(this)">
+            </input>
+        </form>
+    </div>
+
+</body>
+
+</html>
