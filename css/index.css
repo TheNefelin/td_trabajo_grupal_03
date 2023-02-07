@@ -19,6 +19,8 @@ a {
     text-decoration: none;
 }
 
+
+
 /* --- NavBar -------------------------------------------------- */
 /* ------------------------------------------------------------- */
 .navBar01-contenedor {
@@ -92,6 +94,16 @@ a {
 
 /* navBar01 comportamineto ----------- */
 @media (max-width: 767.98px) {
+    body {
+        font-size: 14px; 
+    }
+
+    .carrito-contenedor {
+        position: fixed;
+        right: 1rem;
+        top: 30vh;
+    }
+
     .navBar01-btn {
         display: block;
     }
@@ -177,6 +189,10 @@ a {
 
 /* --- Buscar Juego -------------------------------------------- */
 /* ------------------------------------------------------------- */
+.buscarJuego {
+    text-align: center;
+}
+
 .buscarJuego > input[type=text] {
     padding: 10px;
     font-size: 1rem;
