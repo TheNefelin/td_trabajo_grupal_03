@@ -3,4 +3,4 @@ Pamela Alvarez
 Francisco Carmona
 
 https://github.com/TheNefelin/trabajo_grupal_03.git
-https://tdcachureando.netlify.app/
+https://tecnochile.netlify.app/

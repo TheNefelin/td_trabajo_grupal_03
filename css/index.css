@@ -3,7 +3,9 @@
 /* ------------------------------------------------------------- */
 :root {
     --colorPrimario: rgb(242, 242, 242);
-    --colorSecundario: rgb(34, 72, 129);
+    --colorSecundario: rgb(163, 163, 163);
+
+    --colorTransparencia1: rgba(242, 242, 242, 0.5);
 
     --colorText1: rgb(34, 72, 129);
     --colorText2: rgb(255, 140, 140);
@@ -24,6 +26,10 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    width: 100%;
 }
 
 /* navBar01-logo --------------------- */
@@ -74,11 +80,14 @@ a {
 }
 
 .navBar01-links a {
-    margin-left: 1rem;
+    /* margin-left: 1rem; */
+    padding: 0.5rem;
+    font-size: 1.5rem;
 }
 
 .navBar01-links a:hover {
-    color: var(--colorSecundario);
+    color: var(--colorPrimario);
+    background-color: var(--colorCajaFondo);
 }
 
 /* navBar01 comportamineto ----------- */
@@ -91,12 +100,13 @@ a {
         position: fixed;
         display: grid;
         top: 4rem;
-        background-color: var(--colorPrimario);
+        background-color: var(--colorTransparencia1);
         text-align: center;
         width: 100%;
         left: 100%;
         transition: 0.4s;
         border-radius: 0 0 100px 100px;
+        backdrop-filter: blur(8px);;
     }
 
     .navBar01-links_noOcultar {
@@ -120,12 +130,114 @@ a {
     height: 2rem;
 }
 
+/* --- Carrusel ------------------------------------------------ */
+/* ------------------------------------------------------------- */
+#carrusel-contenedor {
+    margin-top: 5rem;
+}
+.slideshow-container {
+    max-width: 1000px;
+    position: relative;
+    margin: auto;
+}
+
+.mySlides {
+    display: none;
+}
+
+.mySlides > img {
+    vertical-align: middle;
+    height: 50vh;
+    object-fit: cover;
+    top: 0;
+}
+
+.slideshow-container {
+    max-width: 1000px;
+    position: relative;
+    margin: auto;
+}
+
+/* Fading animation */
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+  
+@keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+}
+  
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+    .text {font-size: 11px}
+}
+
+
+/* --- Buscar Juego -------------------------------------------- */
+/* ------------------------------------------------------------- */
+.buscarJuego > input[type=text] {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid grey;
+    max-width: 70vw;
+    background: #f1f1f1;
+}
+
+.buscarJuego > button {
+    max-width: 20vw;
+    padding: 10px;
+    background: var(--colorText1);
+    color: var(--colorPrimario);
+    font-size: 17px;
+    border: none;
+    border-left: none;
+    cursor: pointer;
+}
+  
+.buscarJuego button:hover {
+    background: var(--colorCajaFondo);
+}
+  
+.buscarJuego::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
 /* --- Tarjeta ------------------------------------------------- */
 /* ------------------------------------------------------------- */
+#tienda {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+}
+
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 300px;
     margin: auto;
     text-align: center;
-    font-family: arial;
-  }
+}
+
+.price {
+    color: var(--colorText1);
+    font-size: 1.5rem;
+}
+
+.card button {
+    border: none;
+    outline: 0;
+    padding: 1rem;
+    color: var(--colorPrimario);
+    background-color: var(--colorText1);
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+.card button:hover {
+    opacity: 0.7;
+}
