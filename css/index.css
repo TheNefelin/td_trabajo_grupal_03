@@ -19,7 +19,9 @@ a {
     text-decoration: none;
 }
 
-
+h1, h4, p {
+    margin: 1rem;
+}
 
 /* --- NavBar -------------------------------------------------- */
 /* ------------------------------------------------------------- */
@@ -186,7 +188,6 @@ a {
     .text {font-size: 11px}
 }
 
-
 /* --- Buscar Juego -------------------------------------------- */
 /* ------------------------------------------------------------- */
 .buscarJuego {
@@ -256,4 +257,14 @@ a {
 
 .card button:hover {
     opacity: 0.7;
+}
+
+.btnMasMenos {
+    display: flex;
+    justify-content: center;
+}
+
+.btnMasMenos > img {
+    height: 4rem;
+    cursor: pointer;
 }

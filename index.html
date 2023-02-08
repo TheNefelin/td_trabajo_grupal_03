@@ -23,7 +23,7 @@
             </a>
             <div class="carrito-contenedor">
                 <img id="imgCarrito" src="./img/carrito.svg">
-                <span>0</span>
+                <span id="cantCarrito">0</span>
             </div>
             <div class="navBar01-btn">
                 <div class="navBar01-A"></div>
@@ -67,34 +67,18 @@
         <div class="card">
             <img src="./img/juego01.jpg" alt="Denim Jeans" style="width:100%">
             <h1>Tailored Jeans</h1>
+            <h4>Categ: PlayStation</h4>
             <p class="price">$19.99</p>
-            <p>Some text about the jeans. Super slim and comfy lorem ipsum lorem jeansum. Lorem jeamsun denim lorem
-                jeansum.</p>
-            <p><button>Agregar</button></p>
-        </div>
-        <div class="card">
-            <img src="./img/juego01.jpg" alt="Denim Jeans" style="width:100%">
-            <h1>Tailored Jeans</h1>
-            <p class="price">$19.99</p>
-            <p>Some text about the jeans. Super slim and comfy lorem ipsum lorem jeansum. Lorem jeamsun denim lorem
-                jeansum.</p>
-            <p><button>Agregar</button></p>
-        </div>
-        <div class="card">
-            <img src="./img/juego01.jpg" alt="Denim Jeans" style="width:100%">
-            <h1>Tailored Jeans</h1>
-            <p class="price">$19.99</p>
-            <p>Some text about the jeans. Super slim and comfy lorem ipsum lorem jeansum. Lorem jeamsun denim lorem
-                jeansum.</p>
-            <p><button>Agregar</button></p>
+            <div class="btnMasMenos">
+                <img id="btnMenos" src="./img/menos.svg">
+                <h3>(25)</h3>
+                <img id="btnMas" src="./img/mas.svg">
+            </div>
+            <div><button>Agregar</button></div>
         </div>
     </section>
 
-
-    <script src="./lib/jquery-3.6.3.min.js"></script>
-    <script src="./js/data.js"></script>
-    <script src="./js/index.js"></script>
-
+    <script type="module" src="./js/index.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,64 @@
+{
+    "negocio": {
+        "nombre": "Tecno Chile",
+        "categorias": [
+            {
+                "nombre": "PlayStation",
+                "juegos": [
+                    {
+                        "nombre": "Valhalla",
+                        "precio": 4900,
+                        "dercripcion": "bla bla bla",
+                        "stock": 10,
+                        "link": "../img/juego01.jpg"
+                    },
+                    {
+                        "nombre": "Valhalla",
+                        "precio": 14900,
+                        "dercripcion": "bla bla bla",
+                        "stock": 25,
+                        "link": "../img/juego01.jpg"
+                    }
+                ]
+            },
+            {
+                "nombre": "X Box",
+                "juegos": [
+                    {
+                        "nombre": "Valhalla",
+                        "precio": 5000,
+                        "dercripcion": "bla bla bla",
+                        "stock": 8,
+                        "link": "../img/juego01.jpg"
+                    },
+                    {
+                        "nombre": "Valhalla",
+                        "precio": 6900,
+                        "dercripcion": "bla bla bla",
+                        "stock": 5,
+                        "link": "../img/juego01.jpg"
+                    }
+                ]
+            },
+            {
+                "nombre": "PC",
+                "juegos": [
+                    {
+                        "nombre": "Valhalla",
+                        "precio": 9900,
+                        "dercripcion": "bla bla bla",
+                        "stock": 39,
+                        "link": "../img/juego01.jpg"
+                    },
+                    {
+                        "nombre": "Valhalla",
+                        "precio": 5900,
+                        "dercripcion": "bla bla bla",
+                        "stock": 30,
+                        "link": "../img/juego01.jpg"
+                    }
+                ]
+            }
+        ]
+    }
+}
