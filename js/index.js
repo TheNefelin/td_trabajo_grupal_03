@@ -22,7 +22,7 @@ function inicializarObjetos() {
             newCategoria = new Categoria(categ.nombre);
             
             categ.juegos.map(juego => {
-                newCategoria.setJuego( new Juego(juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link));
+                newCategoria.setJuego( new Juego(juego.id, juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link));
             });
 
             objTienda.setCategria(newCategoria);
@@ -75,15 +75,7 @@ function showSlides() {
 
 /* --- Agregar a Carrito --------------------------------------- */
 /* ------------------------------------------------------------- */
-const btnMenos = document.querySelector("#btnMenos")
-btnMenos.addEventListener("click", () => {
-    console.log("Menos")
-});
 
-const btnMas = document.querySelector("#btnMas")
-btnMas.addEventListener("click", () => {
-    console.log("Mas")
-});
 
 /* --- Render Sitio -------------------------------------------- */
 /* ------------------------------------------------------------- */
@@ -91,8 +83,8 @@ function renderProductos() {
     let html = "";
     const tienda = document.querySelector("#tienda");
 
-    objTienda.getCategorias().map(categ => {
-        categ.getJuegos().map(juego => {
+    objTienda.getCategorias().map((categ) => {
+        categ.getJuegos().map((juego) => {
             html += `
             <div class="card">
                 <img src="${juego.getLink()}" style="width:100%">
@@ -100,9 +92,9 @@ function renderProductos() {
                 <h4>Categ: ${categ.getNombre()} - Stock: (${juego.getStock()})</h4>
                 <p class="price">${formatoCL.format(juego.getPrecio())}</p>
                 <div class="btnMasMenos">
-                    <img id="btnMenos" src="./img/menos.svg">
-                    <h3>(0)</h3>
-                    <img id="btnMas" src="./img/mas.svg">
+                    <img id=${juego.getId()} class="btnMenos" src="./img/menos.svg"></class=>
+                    <h3 id="cant_${juego.getId()}">0</h3>
+                    <img id=${juego.getId()} class="btnMas" src="./img/mas.svg">
                 </div>
                 <div><button>Agregar</button></div>
             </div>`
@@ -110,4 +102,34 @@ function renderProductos() {
     })
  
     tienda.innerHTML = html;
+
+    const btnMenos = document.querySelectorAll(".btnMenos");
+    btnMenos.forEach(obj => {
+        obj.addEventListener("click", () => {
+            sumarEnTarjeta(obj.id, -1)
+        });
+    });
+
+    const btnMas = document.querySelectorAll(".btnMas");
+    btnMas.forEach(obj => {
+        obj.addEventListener("click", () => {
+            sumarEnTarjeta(obj.id, 1)
+        });
+    });
+}
+
+function sumarEnTarjeta(id, n) {
+    let cantTarjeta = document.querySelector(`#cant_${id}`);
+    let cant = parseInt(cantTarjeta.textContent);
+
+    cant += n;
+
+    console.log(cant)
+    if (cant < 0) {
+        cantTarjeta.textContent = 0;
+    } else {
+        cantTarjeta.textContent = cant;
+    }
+
+
 }

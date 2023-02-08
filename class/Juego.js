@@ -1,11 +1,16 @@
 
-export function Juego(nombre, precio, dercripcion, stock, link) {
+export function Juego(id, nombre, precio, dercripcion, stock, link) {
+    this._id = id;
     this._nombre = nombre;
     this._precio = precio;
     this._dercripcion = dercripcion;
     this._stock = stock;
     this._link = link;
 }
+
+Juego.prototype.getId = function() {
+    return this._id;
+};
 
 Juego.prototype.getNombre = function() {
     return this._nombre;

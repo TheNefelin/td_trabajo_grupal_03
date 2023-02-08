@@ -6,6 +6,7 @@
                 "nombre": "PlayStation",
                 "juegos": [
                     {
+                        "id": 1,
                         "nombre": "Valhalla",
                         "precio": 4900,
                         "dercripcion": "bla bla bla",
@@ -13,6 +14,7 @@
                         "link": "../img/juego01.jpg"
                     },
                     {
+                        "id": 2,
                         "nombre": "Valhalla",
                         "precio": 14900,
                         "dercripcion": "bla bla bla",
@@ -25,6 +27,7 @@
                 "nombre": "X Box",
                 "juegos": [
                     {
+                        "id": 3,
                         "nombre": "Valhalla",
                         "precio": 5000,
                         "dercripcion": "bla bla bla",
@@ -32,6 +35,7 @@
                         "link": "../img/juego01.jpg"
                     },
                     {
+                        "id": 4,
                         "nombre": "Valhalla",
                         "precio": 6900,
                         "dercripcion": "bla bla bla",
@@ -44,6 +48,7 @@
                 "nombre": "PC",
                 "juegos": [
                     {
+                        "id": 5,
                         "nombre": "Valhalla",
                         "precio": 9900,
                         "dercripcion": "bla bla bla",
@@ -51,6 +56,7 @@
                         "link": "../img/juego01.jpg"
                     },
                     {
+                        "id": 6,
                         "nombre": "Valhalla",
                         "precio": 5900,
                         "dercripcion": "bla bla bla",
