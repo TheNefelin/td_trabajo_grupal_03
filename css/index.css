@@ -247,7 +247,7 @@ h1, h4, p {
     font-size: 1.5rem;
 }
 
-.card button {
+.cardBtn {
     border: none;
     outline: 0;
     padding: 1rem;
@@ -257,6 +257,10 @@ h1, h4, p {
     cursor: pointer;
     width: 100%;
     font-size: 1.2rem;
+}
+
+.cardBtn_noDisplay {
+    opacity: 0.7;
 }
 
 .card button:hover {

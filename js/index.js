@@ -80,8 +80,8 @@ function showSlides() {
 /* --- Render Sitio -------------------------------------------- */
 /* ------------------------------------------------------------- */
 function renderProductos() {
-    let html = "";
     const tienda = document.querySelector("#tienda");
+    tienda.innerHTML = "";
 
     objTienda.getCategorias().map((categ) => {
         categ.getJuegos().map((juego) => {
@@ -100,17 +100,28 @@ function renderProductos() {
             obj.appendChild(texto);
             divCart.appendChild(obj);
 
-            texto = document.createTextNode(`Categ: ${categ.getNombre()} - Stock: (${juego.getStock()}`);
-            obj = document.createElement("h4");
-            obj.appendChild(texto);
-            divCart.appendChild(obj);
+            // ------------------------------------------
+            texto = document.createTextNode(`Categ: ${categ.getNombre()} - Stock: `);
+            const divContenedorStock = document.createElement("h4");
+            divContenedorStock.appendChild(texto);
 
+            // -- Nieto --
+            texto = document.createTextNode(juego.getStock());
+            obj = document.createElement("span");
+            obj.id = `stock_${juego.getId()}`;
+            obj.appendChild(texto);
+            divContenedorStock.appendChild(obj);
+
+            divCart.appendChild(divContenedorStock);
+
+            // ------------------------------------------
             texto = document.createTextNode(formatoCL.format(juego.getPrecio()));
             obj = document.createElement("p");
             obj.classList.add("price");
             obj.appendChild(texto);
             divCart.appendChild(obj);
 
+            // -------------------------------------------
             const divContenedorBtn = document.createElement("div");
             divContenedorBtn.classList.add("btnMasMenos");
             
@@ -118,19 +129,38 @@ function renderProductos() {
             obj = document.createElement("img");
             obj.classList.add("btnMenos");
             obj.src = "./img/menos.svg";
+            obj.id = juego.getId();
             divContenedorBtn.appendChild(obj);
 
             texto = document.createTextNode("0");
             obj = document.createElement("h3");
             obj.appendChild(texto);
+            obj.id = `cant_${juego.getId()}`;
             divContenedorBtn.appendChild(obj);
 
             obj = document.createElement("img");
             obj.classList.add("btnMas");
             obj.src = "./img/mas.svg";
+            obj.id = juego.getId();
             divContenedorBtn.appendChild(obj);
 
             divCart.appendChild(divContenedorBtn)
+
+            // -------------------------------------------
+            const divContenedorAgregar = document.createElement("div");
+            
+            // -- Nieto --
+            texto = document.createTextNode("Agregar");
+            obj = document.createElement("button");
+            obj.id = `btnAgregar_${juego.getId()}`
+            obj.value = juego.getId();
+            obj.classList.add("cardBtn");
+            obj.appendChild(texto);
+            divContenedorAgregar.appendChild(obj);
+
+            divCart.appendChild(divContenedorAgregar);
+            // -------------------------------------------
+
             tienda.appendChild(divCart);
 
             // html += `
@@ -148,8 +178,6 @@ function renderProductos() {
             // </div>`
         })
     })
- 
-    // tienda.innerHTML = html;
 
     const btnMenos = document.querySelectorAll(".btnMenos");
     btnMenos.forEach(obj => {
@@ -164,20 +192,35 @@ function renderProductos() {
             sumarEnTarjeta(obj.id, 1)
         });
     });
+
+    const btnAgregar = document.querySelectorAll(".cardBtn");
+    btnAgregar.forEach(obj => {
+        obj.addEventListener("click", () => {
+            AgregarACarrito(obj.value);
+        });
+    });
 }
 
 function sumarEnTarjeta(id, n) {
+    let btnAgregar = document.querySelector(`#btnAgregar_${id}`);
+    btnAgregar.classList.remove("cardBtn_noDisplay");
     let cantTarjeta = document.querySelector(`#cant_${id}`);
+    let stockTarjeta = document.querySelector(`#stock_${id}`);
     let cant = parseInt(cantTarjeta.textContent);
+    const stock = parseInt(stockTarjeta.textContent);
 
-    cant += n;
+    cant += n
 
-    console.log(cant)
-    if (cant < 0) {
+    if (cant <= 0) {
         cantTarjeta.textContent = 0;
+        btnAgregar.classList.add("cardBtn_noDisplay");
+    } else if (cant > stock) {
+        cantTarjeta.textContent = stock;
     } else {
         cantTarjeta.textContent = cant;
     }
+}
 
-
+function AgregarACarrito(id) {
+    console.log("Agregar")
 }
