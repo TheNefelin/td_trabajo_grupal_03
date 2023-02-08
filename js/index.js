@@ -3,6 +3,7 @@
 import { Categoria } from "../class/Categoria.js";
 import { Tienda } from "../class/Tienda.js"
 import { Juego } from "../class/Juego.js"
+import { Carrito } from "../class/Carrito.js";
 
 let objTienda;
 
@@ -73,10 +74,6 @@ function showSlides() {
     setTimeout(showSlides, 4000); 
 }
 
-/* --- Agregar a Carrito --------------------------------------- */
-/* ------------------------------------------------------------- */
-
-
 /* --- Render Sitio -------------------------------------------- */
 /* ------------------------------------------------------------- */
 function renderProductos() {
@@ -132,7 +129,7 @@ function renderProductos() {
             obj.id = juego.getId();
             divContenedorBtn.appendChild(obj);
 
-            texto = document.createTextNode("0");
+            texto = document.createTextNode("1");
             obj = document.createElement("h3");
             obj.appendChild(texto);
             obj.id = `cant_${juego.getId()}`;
@@ -163,9 +160,11 @@ function renderProductos() {
 
             tienda.appendChild(divCart);
 
+            // Era lo anterior o Esto --------------------------------------------------
+            //--------------------------------------------------------------------------
             // html += `
             // <div class="card">
-            //     <img src="${juego.getLink()}" style="width:100%">
+            //     <img src="${juego.getLink()}">
             //     <h1>${juego.getNombre()}</h1>
             //     <h4>Categ: ${categ.getNombre()} - Stock: (${juego.getStock()})</h4>
             //     <p class="price">${formatoCL.format(juego.getPrecio())}</p>
@@ -196,31 +195,98 @@ function renderProductos() {
     const btnAgregar = document.querySelectorAll(".cardBtn");
     btnAgregar.forEach(obj => {
         obj.addEventListener("click", () => {
-            AgregarACarrito(obj.value);
+            agregarACarrito(obj.value);
         });
+
+        validarStock(obj.value);
     });
 }
 
 function sumarEnTarjeta(id, n) {
-    let btnAgregar = document.querySelector(`#btnAgregar_${id}`);
-    btnAgregar.classList.remove("cardBtn_noDisplay");
     let cantTarjeta = document.querySelector(`#cant_${id}`);
-    let stockTarjeta = document.querySelector(`#stock_${id}`);
     let cant = parseInt(cantTarjeta.textContent);
+    let stockTarjeta = document.querySelector(`#stock_${id}`);
     const stock = parseInt(stockTarjeta.textContent);
 
-    cant += n
+    if (validarStock(id)) {
+        cant += n
 
-    if (cant <= 0) {
-        cantTarjeta.textContent = 0;
+        if (cant <= 1) {
+            cant = 1;
+        } else if (cant > stock) {
+            cant = stock;
+        }
+    }
+
+    cantTarjeta.textContent = cant;
+}
+
+function validarStock(id) {
+    let btnAgregar = document.querySelector(`#btnAgregar_${id}`);
+    let stockTarjeta = document.querySelector(`#stock_${id}`);
+
+    if (parseInt(stockTarjeta.textContent) == 0) {
+        btnAgregar.disabled = true
         btnAgregar.classList.add("cardBtn_noDisplay");
-    } else if (cant > stock) {
-        cantTarjeta.textContent = stock;
+        btnAgregar.textContent = "Sin Stock"
+        return false;
     } else {
-        cantTarjeta.textContent = cant;
+        btnAgregar.disabled = false
+        btnAgregar.classList.remove("cardBtn_noDisplay");
+        btnAgregar.textContent = "Agregar"
+        return true
     }
 }
 
-function AgregarACarrito(id) {
-    console.log("Agregar")
+function renderCarrito() {
+    const cantCarrito = document.querySelector("#cantCarrito");
+    
+    let canasta = getCarritoLocalStorage()
+    cantCarrito.textContent = canasta.getCantProductos();
+    // deleteCarritoLocalStorage()
+}
+
+/* --- Agregar a Carrito --------------------------------------- */
+/* ------------------------------------------------------------- */
+function agregarACarrito(id) {
+    const cantTarjeta = document.querySelector(`#cant_${id}`);
+    
+    let carrito = getCarritoLocalStorage();
+    const index = carrito.getProductos().findIndex(d => d.id == id)
+
+    if (index >= 0) {
+        carrito.getProductos().forEach(e => {
+            if (e.id == id) {
+                e.cant = parseInt(e.cant) + parseInt(cantTarjeta.textContent);
+            }
+        })
+    } else {
+        carrito.setProducto(id, cantTarjeta.textContent)
+    }
+
+    setCarritoLocalStorage(carrito);
+    renderCarrito();
+}
+
+/* --- Local Storage ------------------------------------------- */
+/* ------------------------------------------------------------- */
+function setCarritoLocalStorage(carrito) {
+    window.localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+function getCarritoLocalStorage() {
+    let localS = JSON.parse(window.localStorage.getItem("carrito"));
+    let carrito = new Carrito;
+
+    if (localS) {
+        localS._productos.forEach(e => {
+            carrito.setProducto(e.id, e.cant);
+        });
+    };
+
+    return carrito;
+}
+
+function deleteCarritoLocalStorage() {
+    window.localStorage.removeItem("carrito"); 
 }

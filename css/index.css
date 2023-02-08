@@ -261,6 +261,7 @@ h1, h4, p {
 
 .cardBtn_noDisplay {
     opacity: 0.7;
+    background-color: var(--colorText2);
 }
 
 .card button:hover {

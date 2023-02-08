@@ -1,17 +1,19 @@
 
-export function Categoria(nombre) {
-    this._nombre = nombre;
-    this._juegos = [];
+export class Categoria {
+    constructor(nombre) {
+        this._nombre = nombre;
+        this._juegos = [];
+    }
+    getNombre() {
+        return this._nombre;
+    }
+    getJuegos() {
+        return this._juegos;
+    }
+    setJuego(juego) {
+        this._juegos.push(juego);
+    }
 }
 
-Categoria.prototype.getNombre = function() {
-    return this._nombre;
-};
 
-Categoria.prototype.getJuegos = function() {
-    return this._juegos;
-};
 
-Categoria.prototype.setJuego = function(juego) {
-    this._juegos.push(juego);
-};

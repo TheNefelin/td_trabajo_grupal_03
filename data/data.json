@@ -19,7 +19,7 @@
                         "nombre": "Fallout 4",
                         "precio": 19990,
                         "dercripcion": "Explora. Lucha. Crea. Construye. En el mundo post-apocalíptico de Fallout 4, todas y cada una de tus acciones cambiará el mundo que te rodea, en la experiencia de rol definitiva en un mundo abierto.",
-                        "stock": 10,
+                        "stock": 0,
                         "link": "../img/PS_02.jpg",
                         "desarrollador": "Bethesda"
                     },
