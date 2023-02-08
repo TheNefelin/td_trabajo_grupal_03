@@ -6,6 +6,7 @@
     --colorSecundario: rgb(163, 163, 163);
 
     --colorTransparencia1: rgba(242, 242, 242, 0.5);
+    --colorTransparencia2: rgba(99, 99, 99, 0.7);
 
     --colorText1: rgb(34, 72, 129);
     --colorText2: rgb(255, 140, 140);
@@ -305,32 +306,23 @@ h1, h4, p {
     background-color: var(--colorText2);
 }
 
-.detaCarrito {
+.itemCarrito {
     margin: 1vw;
-    background-color: white;
+    padding: 0 1vw 0 1vw;
+    background-color: var(--colorTransparencia2);
+    color: var(--colorPrimario);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 1vw 0 1vw;
     border-radius: 8px;
 }
 
-.detaCarrito img {
+.itemCarrito img {
+    display: grid;
     height: 3rem;
     cursor: pointer;
 }
 
-.detaCarrito span {
-    margin: 0.3vh 0 0.3vh 1vw;
-}
-
-.itemCarrito {
-    display: flex;
-    flex-direction: column;
-    
-}
-
-.contentCarrito {
+.detaCarrito {
     width: 100%;
-    display: grid;
+    margin: 0 1vw 0 1vw;
 }
