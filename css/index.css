@@ -238,6 +238,10 @@ h1, h4, p {
     text-align: center;
 }
 
+.card > img {
+    width:100%
+}
+
 .price {
     color: var(--colorText1);
     font-size: 1.5rem;

@@ -85,23 +85,71 @@ function renderProductos() {
 
     objTienda.getCategorias().map((categ) => {
         categ.getJuegos().map((juego) => {
-            html += `
-            <div class="card">
-                <img src="${juego.getLink()}" style="width:100%">
-                <h1>${juego.getNombre()}</h1>
-                <h4>Categ: ${categ.getNombre()} - Stock: (${juego.getStock()})</h4>
-                <p class="price">${formatoCL.format(juego.getPrecio())}</p>
-                <div class="btnMasMenos">
-                    <img id=${juego.getId()} class="btnMenos" src="./img/menos.svg"></class=>
-                    <h3 id="cant_${juego.getId()}">0</h3>
-                    <img id=${juego.getId()} class="btnMas" src="./img/mas.svg">
-                </div>
-                <div><button>Agregar</button></div>
-            </div>`
+            let texto;
+            let obj;
+            const divCart = document.createElement("div");
+            divCart.classList.add("card");
+
+            // -- Hijos --
+            obj = document.createElement("img");
+            obj.src = juego.getLink();
+            divCart.appendChild(obj);
+
+            texto = document.createTextNode(juego.getNombre());
+            obj = document.createElement("h1");
+            obj.appendChild(texto);
+            divCart.appendChild(obj);
+
+            texto = document.createTextNode(`Categ: ${categ.getNombre()} - Stock: (${juego.getStock()}`);
+            obj = document.createElement("h4");
+            obj.appendChild(texto);
+            divCart.appendChild(obj);
+
+            texto = document.createTextNode(formatoCL.format(juego.getPrecio()));
+            obj = document.createElement("p");
+            obj.classList.add("price");
+            obj.appendChild(texto);
+            divCart.appendChild(obj);
+
+            const divContenedorBtn = document.createElement("div");
+            divContenedorBtn.classList.add("btnMasMenos");
+            
+            // -- Nietos --
+            obj = document.createElement("img");
+            obj.classList.add("btnMenos");
+            obj.src = "./img/menos.svg";
+            divContenedorBtn.appendChild(obj);
+
+            texto = document.createTextNode("0");
+            obj = document.createElement("h3");
+            obj.appendChild(texto);
+            divContenedorBtn.appendChild(obj);
+
+            obj = document.createElement("img");
+            obj.classList.add("btnMas");
+            obj.src = "./img/mas.svg";
+            divContenedorBtn.appendChild(obj);
+
+            divCart.appendChild(divContenedorBtn)
+            tienda.appendChild(divCart);
+
+            // html += `
+            // <div class="card">
+            //     <img src="${juego.getLink()}" style="width:100%">
+            //     <h1>${juego.getNombre()}</h1>
+            //     <h4>Categ: ${categ.getNombre()} - Stock: (${juego.getStock()})</h4>
+            //     <p class="price">${formatoCL.format(juego.getPrecio())}</p>
+            //     <div class="btnMasMenos">
+            //         <img id=${juego.getId()} class="btnMenos" src="./img/menos.svg"></class=>
+            //         <h3 id="cant_${juego.getId()}">0</h3>
+            //         <img id=${juego.getId()} class="btnMas" src="./img/mas.svg">
+            //     </div>
+            //     <div><button>Agregar</button></div>
+            // </div>`
         })
     })
  
-    tienda.innerHTML = html;
+    // tienda.innerHTML = html;
 
     const btnMenos = document.querySelectorAll(".btnMenos");
     btnMenos.forEach(obj => {
