@@ -9,6 +9,7 @@ let objTienda;
 
 window.onload = () => {
     inicializarObjetos();
+    inisializarTemps()
     console.log("Sitio Iniciado")
 }
 
@@ -35,6 +36,61 @@ function inicializarObjetos() {
     })
     .catch((err) => console.log(err))
 };
+
+function inisializarTemps() {
+    const iniCarrito = getCarritoLocalStorage();
+
+    if (iniCarrito) {
+        renderCarrito()
+    }    
+}
+
+/* --- Local Storage ------------------------------------------- */
+/* ------------------------------------------------------------- */
+function setCarritoLocalStorage(carrito) {
+    window.localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+function getCarritoLocalStorage() {
+    let localS = JSON.parse(window.localStorage.getItem("carrito"));
+    let carrito = new Carrito;
+
+    if (localS) {
+        localS._productos.forEach(e => {
+            carrito.setProducto(e.id, e.cant);
+        });
+    };
+
+    return carrito;
+}
+
+function deleteCarritoLocalStorage() {
+    window.localStorage.removeItem("carrito"); 
+}
+
+function iniBodegaLocalStorage(data) {
+
+}
+
+function setBodegaLocalStorage(bodega) {
+    window.localStorage.setItem("bodega", JSON.stringify(bodega));
+}
+
+function getBodegaLocalStorage() {
+    let localS = JSON.parse(window.localStorage.getItem("bodega"));
+
+    if (localS) {
+
+    } else {
+
+    }
+    
+    return
+}
+
+function deleteBodegaLocalStorage() {
+    window.localStorage.removeItem("bodega"); 
+}
 
 /* --- Paltas -------------------------------------------------- */
 /* ------------------------------------------------------------- */
@@ -268,25 +324,4 @@ function agregarACarrito(id) {
     renderCarrito();
 }
 
-/* --- Local Storage ------------------------------------------- */
-/* ------------------------------------------------------------- */
-function setCarritoLocalStorage(carrito) {
-    window.localStorage.setItem("carrito", JSON.stringify(carrito));
-}
 
-function getCarritoLocalStorage() {
-    let localS = JSON.parse(window.localStorage.getItem("carrito"));
-    let carrito = new Carrito;
-
-    if (localS) {
-        localS._productos.forEach(e => {
-            carrito.setProducto(e.id, e.cant);
-        });
-    };
-
-    return carrito;
-}
-
-function deleteCarritoLocalStorage() {
-    window.localStorage.removeItem("carrito"); 
-}
