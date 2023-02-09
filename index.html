@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./img/logo.png">
+    <link rel="icon" href="./img/logo.svg">
 
     <link rel="stylesheet" href="./lib/normalize.css">
     <link rel="stylesheet" href="./css/index.css" />
@@ -23,7 +23,7 @@
             </a>
             <div class="carrito-contenedor">
                 <img id="imgCarrito" src="./img/carrito.svg">
-                <span>0</span>
+                <span id="cantCarrito">0</span>
             </div>
             <div class="navBar01-btn">
                 <div class="navBar01-A"></div>
@@ -31,10 +31,9 @@
                 <div class="navBar01-C"></div>
             </div>
             <div class="navBar01-links">
-                <a id=1 href="https://www.w3schools.com/" target="_blank">w3schools</a>
-                <a id=1 href="#" target="_blank">link 2</a>
-                <a id=1 href="#" target="_blank">link 3</a>
-                <a id=1 href="#" target="_blank">link 4</a>
+                <a href="https://www.w3schools.com/" target="_blank">w3schools</a>
+                <a href="#" target="_blank">Inventario</a>
+                <a id="resetSitio" href="#" target="_blank">reset</a>
             </div>
         </nav>
     </header>
@@ -64,37 +63,72 @@
     </section>
 
     <section id="tienda">
-        <div class="card">
-            <img src="./img/juego01.jpg" alt="Denim Jeans" style="width:100%">
+        <!-- <div class="card">
+            <img src="./img/PS_01.jpg">
             <h1>Tailored Jeans</h1>
+            <h4>Categ: PlayStation - Stock: <span>30</span></h4>
             <p class="price">$19.99</p>
-            <p>Some text about the jeans. Super slim and comfy lorem ipsum lorem jeansum. Lorem jeamsun denim lorem
-                jeansum.</p>
-            <p><button>Agregar</button></p>
-        </div>
-        <div class="card">
-            <img src="./img/juego01.jpg" alt="Denim Jeans" style="width:100%">
-            <h1>Tailored Jeans</h1>
-            <p class="price">$19.99</p>
-            <p>Some text about the jeans. Super slim and comfy lorem ipsum lorem jeansum. Lorem jeamsun denim lorem
-                jeansum.</p>
-            <p><button>Agregar</button></p>
-        </div>
-        <div class="card">
-            <img src="./img/juego01.jpg" alt="Denim Jeans" style="width:100%">
-            <h1>Tailored Jeans</h1>
-            <p class="price">$19.99</p>
-            <p>Some text about the jeans. Super slim and comfy lorem ipsum lorem jeansum. Lorem jeamsun denim lorem
-                jeansum.</p>
-            <p><button>Agregar</button></p>
+            <div class="btnMasMenos">
+                <img class="btnMenos" src="./img/menos.svg">
+                <h3>(25)</h3>
+                <img class="btnMas" src="./img/mas.svg">
+            </div>
+            <div><button>Agregar</button></div>
+        </div> -->
+    </section>
+
+    <section class="verCarrito">
+        <img class="salirDetaCarrito" src="./img/exit.svg">
+        <div id="detaCarritoContenedor">
+            <div class="itemCarrito">
+                <div>
+                    <img src="./img/mas.svg">
+                    <img src="./img/menos.svg">
+                </div>
+                <div class="detaCarrito">
+                    <div>
+                        Item: asdasdasdasdasdsasdas
+                    </div>
+                    <div>
+                        Desc: asdasdasdasdasdsasdas
+                    </div>
+                    <hr>
+                    <div>
+                        <span>Stock: 0000</span> - 
+                        <span> Cant: 0000</span> - 
+                        <span>Precio: 0000</span> - 
+                        <span>Total: 0000</span>
+                    </div>
+                </div>
+                <img src="./img/basura.svg">
+            </div>
+
+            <div class="itemCarrito">
+                <div>
+                    <img src="./img/mas.svg">
+                    <img src="./img/menos.svg">
+                </div>
+                <div class="detaCarrito">
+                    <div>
+                        Item: asdasdasdasdasdsasdas
+                    </div>
+                    <div>
+                        Desc: asdasdasdasdasdsasdas
+                    </div>
+                    <hr>
+                    <div>
+                        <span>Stock: 0000</span> - 
+                        <span> Cant: 0000</span> - 
+                        <span>Precio: 0000</span> - 
+                        <span>Total: 0000</span>
+                    </div>
+                </div>
+                <img src="./img/basura.svg">
+            </div>
         </div>
     </section>
 
-
-    <script src="./lib/jquery-3.6.3.min.js"></script>
-    <script src="./js/data.js"></script>
-    <script src="./js/index.js"></script>
-
+    <script type="module" src="./js/index.js"></script>
 </body>
 
 </html>

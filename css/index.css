@@ -6,6 +6,7 @@
     --colorSecundario: rgb(163, 163, 163);
 
     --colorTransparencia1: rgba(242, 242, 242, 0.5);
+    --colorTransparencia2: rgba(99, 99, 99, 0.7);
 
     --colorText1: rgb(34, 72, 129);
     --colorText2: rgb(255, 140, 140);
@@ -19,7 +20,9 @@ a {
     text-decoration: none;
 }
 
-
+h1, h4, p {
+    margin: 1rem;
+}
 
 /* --- NavBar -------------------------------------------------- */
 /* ------------------------------------------------------------- */
@@ -102,6 +105,7 @@ a {
         position: fixed;
         right: 1rem;
         top: 30vh;
+        z-index: 1;
     }
 
     .navBar01-btn {
@@ -113,12 +117,12 @@ a {
         display: grid;
         top: 4rem;
         background-color: var(--colorTransparencia1);
+        backdrop-filter: blur(8px);;
         text-align: center;
         width: 100%;
         left: 100%;
         transition: 0.4s;
         border-radius: 0 0 100px 100px;
-        backdrop-filter: blur(8px);;
     }
 
     .navBar01-links_noOcultar {
@@ -186,7 +190,6 @@ a {
     .text {font-size: 11px}
 }
 
-
 /* --- Buscar Juego -------------------------------------------- */
 /* ------------------------------------------------------------- */
 .buscarJuego {
@@ -237,12 +240,16 @@ a {
     text-align: center;
 }
 
+.card > img {
+    width:100%
+}
+
 .price {
     color: var(--colorText1);
     font-size: 1.5rem;
 }
 
-.card button {
+.cardBtn {
     border: none;
     outline: 0;
     padding: 1rem;
@@ -254,6 +261,76 @@ a {
     font-size: 1.2rem;
 }
 
+.cardBtn_noDisplay {
+    opacity: 0.7;
+    background-color: var(--colorText2);
+}
+
 .card button:hover {
     opacity: 0.7;
 }
+
+.btnMasMenos {
+    display: flex;
+    justify-content: center;
+}
+
+.btnMas, .btnMenos {
+    height: 4rem;
+    cursor: pointer;
+}
+
+/* --- Ver Carrito --------------------------------------------- */
+/* ------------------------------------------------------------- */
+.verCarrito {
+    background-color: var(--colorTransparencia1);
+    backdrop-filter: blur(8px);
+    position: fixed;
+    top: 0;
+    left: 100%;  
+    width: 100%;
+    height: 100vh;
+    z-index: 2;
+    transition: 0.3s;
+}
+
+.verCarrito_si {
+    left: 0
+}
+
+.verCarrito img {
+    display: grid;
+    height: 3rem;
+    cursor: pointer;
+}
+
+.salirDetaCarrito {
+    background-color: var(--colorText1);
+    color: var(--colorPrimario);
+    padding: 0.5rem;
+    margin: 1rem;
+    text-align: center;
+    font-size: 2rem;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.salirDetaCarrito:hover {
+    background-color: var(--colorText2);
+}
+
+.itemCarrito {
+    margin: 1vw;
+    padding: 0 1vw 0 1vw;
+    background-color: var(--colorTransparencia2);
+    color: var(--colorPrimario);
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.detaCarrito {
+    width: 100%;
+    margin: 0 1vw 0 1vw;
+}
+
