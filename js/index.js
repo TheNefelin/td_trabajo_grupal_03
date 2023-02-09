@@ -66,7 +66,7 @@ function getCarritoLocalStorage() {
 
     if (localS) {
         localS._productos.forEach(e => {
-            carrito.setProducto(e.id, e.cant, e.idCateg);
+            carrito.setProducto(e.idCateg, e.idJuego, e.cant);
         });
     };
 
@@ -307,7 +307,7 @@ function renerDetaCarrito() {
     console.log(detaCarritoContenedor.innerHTML)
 
     carrito.getProductos().forEach(e => {
-        const juego = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getJuegos().find(juego => juego.getId() == e.id);
+        const juego = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getJuegos().find(juego => juego.getId() == e.idJuego);
 
         let objContenedor = document.createElement("div");
         objContenedor.classList.add("itemCarrito");
@@ -317,14 +317,14 @@ function renerDetaCarrito() {
         hijo = document.createElement("img");
         hijo.classList.add("btnMasCarrito");
         hijo.id = e.idCateg;
-        hijo.value = e.id;
+        hijo.value = e.idJuego;
         hijo.src="./img/mas.svg";
         padre.appendChild(hijo);
 
         hijo = document.createElement("img");
         hijo.classList.add("btnMenosCarrito");
         hijo.id = e.idCateg;
-        hijo.value = e.id;
+        hijo.value = e.idJuego;
         hijo.src="./img/menos.svg";
         padre.appendChild(hijo);
         objContenedor.appendChild(padre);
@@ -374,7 +374,7 @@ function renerDetaCarrito() {
         padre = document.createElement("img");
         padre.classList.add("btnDeleteCarrito");
         padre.id = e.idCateg;
-        padre.value = e.id;
+        padre.value = e.idJuego;
         padre.src="./img/basura.svg";
 
         objContenedor.appendChild(padre);
@@ -458,29 +458,32 @@ function getStockBodega(idCateg, idJuego) {
 }
 
 function deleteElementoCarrito(idCateg, idJuego) {
-    let carrito = getCarritoLocalStorage();
-    let cant = carrito.getProductosById(idJuego).cant * -1;
-    // carrito.deleteProductosById(idJuego)
-    modificarCarrito(idCateg, idJuego, cant)
+    const carrito = getCarritoLocalStorage();
+    const cant = carrito.getProductosById(idJuego).cant;
+    modificarCarrito(idCateg, idJuego, cant * -1)
 }
 
 function modificarCarrito(idCateg, idJuego, cant) {
     let estado = false;
     let carrito = getCarritoLocalStorage();
-    const index = carrito.getProductos().findIndex(d => d.id == idJuego)
-
+    const index = carrito.getProductos().findIndex(d => d.idJuego == idJuego)
+    // si el producto no existe en la canasta
     if (index == -1) {
-        carrito.setProducto(idJuego, cant, idCateg);
+        carrito.setProducto(idCateg, idJuego, cant);
         estado = true;
-    } 
-    
+    };
+    // si el producto existe en la canasta se hace esto
     if (index > -1) {
         const stockBodega = getStockBodega(idCateg, idJuego);
         const cantProdCarrito = carrito.getProductosById(idJuego).cant;
-
+        // se suma o se restan productos de la canasta
         if (!(cant > 0 && stockBodega == 0) && !(cant < 0 && cantProdCarrito == 0)) {
             carrito.getProductosById(idJuego).cant += cant;
             estado = true
+        }
+        // si el prodiucto de la canasta llega 0 se elimina
+        if (carrito.getProductosById(idJuego).cant == 0) {
+            carrito.deleteProductosById(idJuego) 
         }
     };
     
