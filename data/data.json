@@ -4,6 +4,7 @@
         "categorias": [
             {
                 "nombre": "PlayStation",
+                "id": 1,
                 "juegos": [
                     {
                         "id": 1,
@@ -54,6 +55,7 @@
             },
             {
                 "nombre": "X Box",
+                "id": 2,
                 "juegos": [
                     {
                         "id": 6,
@@ -95,6 +97,7 @@
             },
             {
                 "nombre": "PC",
+                "id": 3,
                 "juegos": [
                     {
                         "id": 10,
@@ -136,6 +139,7 @@
             },
             {
                 "nombre": "3DS",
+                "id": 4,
                 "juegos": [
                     {
                         "id": 14,

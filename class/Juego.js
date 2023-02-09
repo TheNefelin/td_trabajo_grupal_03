@@ -26,6 +26,15 @@ export class Juego {
     getLink() {
         return this._link;
     }
+    setDescontarStock(cant) {
+        if (parseInt(cant) <= parseInt(this._stock)) {
+            this._stock = parseInt(this._stock) - parseInt(cant)
+            return true;    
+            
+        } else {
+            return false;
+        }
+    }
 }
 
 

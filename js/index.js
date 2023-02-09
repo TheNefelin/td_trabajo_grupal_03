@@ -5,31 +5,31 @@ import { Tienda } from "../class/Tienda.js"
 import { Juego } from "../class/Juego.js"
 import { Carrito } from "../class/Carrito.js";
 
-let objTienda;
-
 window.onload = () => {
-    // deleteCarritoLocalStorage()
-    inicializarObjetos();
+    // deleteCarritoLocalStorage();
+    // deleteBodegaLocalStorage();
+    inicializarTienda();
     inisializarTemps()
     console.log("Sitio Iniciado")
 }
 
-function inicializarObjetos() {
+function inicializarTienda() {
     fetch("../data/data.json")
     .then(resp => resp.json())
     .then(data => {
-        let newCategoria;
-        objTienda = new Tienda(data.negocio.nombre);
+        let objTienda = new Tienda(data.negocio.nombre);
 
         data.negocio.categorias.map(categ => {
-            newCategoria = new Categoria(categ.nombre);
+            let newCategoria = new Categoria(categ.id, categ.nombre);
             
             categ.juegos.map(juego => {
                 newCategoria.setJuego( new Juego(juego.id, juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link));
             });
 
             objTienda.setCategria(newCategoria);
-        })
+        });
+
+        iniBodegaLocalStorage(objTienda);
     })
     .then(() => {
         renderProductos();
@@ -69,8 +69,11 @@ function deleteCarritoLocalStorage() {
     window.localStorage.removeItem("carrito"); 
 }
 
-function iniBodegaLocalStorage(data) {
-
+function iniBodegaLocalStorage(bodega) {
+    const localS = JSON.parse(window.localStorage.getItem("bodega"));
+    if (!localS) {
+        setBodegaLocalStorage(bodega);
+    };
 }
 
 function setBodegaLocalStorage(bodega) {
@@ -79,14 +82,23 @@ function setBodegaLocalStorage(bodega) {
 
 function getBodegaLocalStorage() {
     let localS = JSON.parse(window.localStorage.getItem("bodega"));
+    let bodega
 
     if (localS) {
+        bodega = new Tienda(localS._nombre);
 
-    } else {
+        localS._categorias.map(categ => {
+            let newCategoria = new Categoria(categ._id, categ._nombre);
+            
+            categ._juegos.map(juego => {
+                newCategoria.setJuego(new Juego(juego._id, juego._nombre, juego._precio, juego._dercripcion, juego._stock, juego._link));
+            });
 
+            bodega.setCategria(newCategoria);
+        });
     }
     
-    return
+    return bodega;
 }
 
 function deleteBodegaLocalStorage() {
@@ -137,7 +149,9 @@ function renderProductos() {
     const tienda = document.querySelector("#tienda");
     tienda.innerHTML = "";
 
-    objTienda.getCategorias().map((categ) => {
+    const bodega = getBodegaLocalStorage();
+
+    bodega.getCategorias().map((categ) => {
         categ.getJuegos().map((juego) => {
             let texto;
             let obj;
@@ -190,6 +204,7 @@ function renderProductos() {
             obj = document.createElement("h3");
             obj.appendChild(texto);
             obj.id = `cant_${juego.getId()}`;
+            obj.value = categ.getId();
             divContenedorBtn.appendChild(obj);
 
             obj = document.createElement("img");
@@ -259,6 +274,20 @@ function renderProductos() {
     });
 }
 
+function renerDetaCarrito() {
+    let obj;
+    let texto;
+    const carrito = getCarritoLocalStorage();
+    const bodega = getBodegaLocalStorage();
+    let detaCarritoContenedor = document.querySelector("#detaCarritoContenedor");
+
+
+    detaCarritoContenedor.innerHTML = "";
+    // detaCarritoContenedor.appendChild()
+}
+
+/* --- Tarjeta ------------------------------------------------- */
+/* ------------------------------------------------------------- */
 function sumarEnTarjeta(id, n) {
     let cantTarjeta = document.querySelector(`#cant_${id}`);
     let cant = parseInt(cantTarjeta.textContent);
@@ -300,33 +329,41 @@ function renderCarrito() {
     
     let canasta = getCarritoLocalStorage()
     cantCarrito.textContent = canasta.getCantProductos();
-}
 
-function renerDetaCarrito() {
-
+    renerDetaCarrito();
 }
 
 /* --- Carrito ------------------------------------------------- */
 /* ------------------------------------------------------------- */
 function agregarACarrito(id) {
     const cantTarjeta = document.querySelector(`#cant_${id}`);
-    
+    const idCateg = cantTarjeta.value;
+
     let carrito = getCarritoLocalStorage();
     const index = carrito.getProductos().findIndex(d => d.id == id)
+    const cant = parseInt(cantTarjeta.textContent);
 
     if (index >= 0) {
         carrito.getProductos().forEach(e => {
             if (e.id == id) {
-                e.cant = parseInt(e.cant) + parseInt(cantTarjeta.textContent);
+                e.cant = parseInt(e.cant) + cant;
             }
         })
     } else {
-        carrito.setProducto(id, cantTarjeta.textContent)
+        carrito.setProducto(id, cant)
     }
 
+    let bodega = getBodegaLocalStorage()
+    const indexCateg = bodega.getCategorias().findIndex(e => e.getId() == idCateg);
+    const indexJuego = bodega.getCategorias()[indexCateg].getJuegos().findIndex(e => e.getId() == id);
+
+    bodega.getCategorias()[indexCateg].getJuegos()[indexJuego].setDescontarStock(cant)
+    setBodegaLocalStorage(bodega);
+
+    cantTarjeta.textContent = 1;
     setCarritoLocalStorage(carrito);
     renderCarrito();
-    renerDetaCarrito()
+    renderProductos()
 }
 
 const carritoContenedor = document.querySelector(".carrito-contenedor");

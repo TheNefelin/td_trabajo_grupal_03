@@ -105,6 +105,7 @@ h1, h4, p {
         position: fixed;
         right: 1rem;
         top: 30vh;
+        z-index: 1;
     }
 
     .navBar01-btn {
