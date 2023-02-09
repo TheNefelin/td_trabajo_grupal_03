@@ -5,12 +5,13 @@ import { Tienda } from "../class/Tienda.js"
 import { Juego } from "../class/Juego.js"
 import { Carrito } from "../class/Carrito.js";
 
-window.onload = () => {
+window.onload = () => { //cambiado de window.onload a window.addeventlistner (?z)
     // deleteCarritoLocalStorage();
     // deleteBodegaLocalStorage();
     inicializarTienda();
     inisializarTemps()
     console.log("Sitio Iniciado")
+
 }
 
 function inicializarTienda() {
@@ -26,7 +27,7 @@ function inicializarTienda() {
                 newCategoria.setJuego( new Juego(juego.id, juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link));
             });
 
-            objTienda.setCategria(newCategoria);
+            objTienda.setCategoria(newCategoria);
         });
 
         iniBodegaLocalStorage(objTienda);
@@ -38,7 +39,7 @@ function inicializarTienda() {
     .catch((err) => console.log(`Error Fetch: ${err}`))
 };
 
-function inisializarTemps() {
+const inisializarTemps = ()=> {
     const iniCarrito = getCarritoLocalStorage();
 
     if (iniCarrito) {
@@ -51,18 +52,18 @@ linkResetSitio.addEventListener("click", () => {
     resetSitio();
 })
 
-function resetSitio() {
+const resetSitio=() => {
     deleteCarritoLocalStorage();
     deleteBodegaLocalStorage();
 }
 
 /* --- Local Storage ------------------------------------------- */
 /* ------------------------------------------------------------- */
-function setCarritoLocalStorage(carrito) {
+const setCarritoLocalStorage= (carrito)=> {
     window.localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
-function getCarritoLocalStorage() {
+const getCarritoLocalStorage= ()=> {
     let localS = JSON.parse(window.localStorage.getItem("carrito"));
     let carrito = new Carrito;
 
@@ -75,11 +76,11 @@ function getCarritoLocalStorage() {
     return carrito;
 }
 
-function deleteCarritoLocalStorage() {
+const deleteCarritoLocalStorage=()=> {
     window.localStorage.removeItem("carrito"); 
 }
 
-function iniBodegaLocalStorage(bodega) {
+const iniBodegaLocalStorage=(bodega)=> {
     const localS = JSON.parse(window.localStorage.getItem("bodega"));
     if (!localS) {
         setBodegaLocalStorage(bodega);
@@ -104,7 +105,7 @@ function getBodegaLocalStorage() {
                 newCategoria.setJuego(new Juego(juego._id, juego._nombre, juego._precio, juego._dercripcion, juego._stock, juego._link));
             });
 
-            bodega.setCategria(newCategoria);
+            bodega.setCategoria(newCategoria);
         });
     }
     
