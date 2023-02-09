@@ -46,6 +46,16 @@ function inisializarTemps() {
     }    
 }
 
+const linkResetSitio = document.querySelector("#resetSitio");
+linkResetSitio.addEventListener("click", () => {
+    resetSitio();
+})
+
+function resetSitio() {
+    deleteCarritoLocalStorage();
+    deleteBodegaLocalStorage();
+}
+
 /* --- Local Storage ------------------------------------------- */
 /* ------------------------------------------------------------- */
 function setCarritoLocalStorage(carrito) {
