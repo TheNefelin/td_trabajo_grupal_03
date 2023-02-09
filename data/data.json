@@ -8,7 +8,7 @@
                 "juegos": [
                     {
                         "id": 1,
-                        "nombre": "Valhalla",
+                        "nombre": "The Witcher 3",
                         "precio": 59990,
                         "dercripcion": "Un Manjar de Juego",
                         "stock": 10,

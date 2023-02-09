@@ -26,7 +26,7 @@ export class Juego {
     getLink() {
         return this._link;
     }
-    setDescontarStock(cant) {
+    setReducirStock(cant) {
         if (parseInt(cant) <= parseInt(this._stock)) {
             this._stock = parseInt(this._stock) - parseInt(cant)
             return true;    
@@ -34,6 +34,9 @@ export class Juego {
         } else {
             return false;
         }
+    }
+    setAumentarStock(cant) {
+        this._stock = parseInt(this._stock) + parseInt(cant)
     }
 }
 

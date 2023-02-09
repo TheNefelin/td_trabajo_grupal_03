@@ -35,7 +35,7 @@ function inicializarTienda() {
         renderProductos();
         console.log("Datos Cargados Correctamente")
     })
-    .catch((err) => console.log(err))
+    .catch((err) => console.log(`Error Fetch: ${err}`))
 };
 
 function inisializarTemps() {
@@ -58,7 +58,7 @@ function getCarritoLocalStorage() {
 
     if (localS) {
         localS._productos.forEach(e => {
-            carrito.setProducto(e.id, e.cant);
+            carrito.setProducto(e.id, e.cant, e.idCateg);
         });
     };
 
@@ -274,17 +274,91 @@ function renderProductos() {
     });
 }
 
+function renderCarrito() {
+    const cantCarrito = document.querySelector("#cantCarrito");
+    
+    let canasta = getCarritoLocalStorage()
+    cantCarrito.textContent = canasta.getCantProductos();
+
+    renerDetaCarrito();
+}
+
 function renerDetaCarrito() {
-    let obj;
-    let texto;
+    let padre, hijo, nieto, texto;
     const carrito = getCarritoLocalStorage();
     const bodega = getBodegaLocalStorage();
+
     let detaCarritoContenedor = document.querySelector("#detaCarritoContenedor");
-
-
     detaCarritoContenedor.innerHTML = "";
-    // detaCarritoContenedor.appendChild()
-}
+
+    carrito.getProductos().forEach(e => {
+        const juego = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getJuegos().find(juego => juego.getId() == e.id);
+
+        let objContenedor = document.createElement("div");
+        objContenedor.classList.add("itemCarrito");
+
+        // ------------------------------------
+        padre = document.createElement("div");
+        hijo = document.createElement("img");
+        hijo.src="./img/mas.svg";
+        padre.appendChild(hijo);
+
+        hijo = document.createElement("img");
+        hijo.src="./img/menos.svg";
+        padre.appendChild(hijo);
+        objContenedor.appendChild(padre);
+        // ------------------------------------
+        padre = document.createElement("div");
+        padre.classList.add("detaCarrito");
+
+        texto = document.createTextNode(`Item: ${juego.getNombre()}`);
+        hijo = document.createElement("div");
+        hijo.appendChild(texto);
+        padre.appendChild(hijo);
+
+        texto = document.createTextNode(`Desc: ${"Prueba"}`);
+        hijo = document.createElement("div");
+        hijo.appendChild(texto);
+        padre.appendChild(hijo);
+
+        hijo = document.createElement("hr");
+        padre.appendChild(hijo);
+        // -----
+        hijo = document.createElement("div");
+
+        texto = document.createTextNode(`Stock: ${juego.getStock()} - `);
+        nieto = document.createElement("span");
+        nieto.appendChild(texto);
+        hijo.appendChild(nieto);
+
+        texto = document.createTextNode(`Cant: ${e.cant} - `);
+        nieto = document.createElement("span");
+        nieto.appendChild(texto);
+        hijo.appendChild(nieto);
+
+        texto = document.createTextNode(`Precio: ${juego.getPrecio()} - `);
+        nieto = document.createElement("span");
+        nieto.appendChild(texto);
+        hijo.appendChild(nieto);
+
+        texto = document.createTextNode(`Total: ${e.cant * juego.getPrecio()}`);
+        nieto = document.createElement("span");
+        nieto.appendChild(texto);
+        hijo.appendChild(nieto);
+
+        padre.appendChild(hijo);
+        // -----
+        objContenedor.appendChild(padre);
+        // ------------------------------------
+        padre = document.createElement("img");
+        padre.src="./img/basura.svg";
+
+        objContenedor.appendChild(padre);
+        // ------------------------------------
+
+        detaCarritoContenedor.appendChild(objContenedor);
+    });
+};
 
 /* --- Tarjeta ------------------------------------------------- */
 /* ------------------------------------------------------------- */
@@ -324,17 +398,25 @@ function validarStock(id) {
     }
 }
 
-function renderCarrito() {
-    const cantCarrito = document.querySelector("#cantCarrito");
-    
-    let canasta = getCarritoLocalStorage()
-    cantCarrito.textContent = canasta.getCantProductos();
-
-    renerDetaCarrito();
-}
-
 /* --- Carrito ------------------------------------------------- */
 /* ------------------------------------------------------------- */
+function getProductoBy(idCateg, idJuego) {
+    let bodega = getBodegaLocalStorage()
+   console.log(bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego));
+}
+
+function reducirStock(idCateg, idJuego, cant) {
+    let bodega = getBodegaLocalStorage()
+    bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).setReducirStock(cant);
+    setBodegaLocalStorage(bodega);
+}
+
+function aumentarStock(idCateg, idJuego, cant) {
+    let bodega = getBodegaLocalStorage()
+    bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).setAumentarStock(cant);
+    setBodegaLocalStorage(bodega);
+}
+
 function agregarACarrito(id) {
     const cantTarjeta = document.querySelector(`#cant_${id}`);
     const idCateg = cantTarjeta.value;
@@ -350,18 +432,13 @@ function agregarACarrito(id) {
             }
         })
     } else {
-        carrito.setProducto(id, cant)
+        carrito.setProducto(id, cant, idCateg)
     }
 
-    let bodega = getBodegaLocalStorage()
-    const indexCateg = bodega.getCategorias().findIndex(e => e.getId() == idCateg);
-    const indexJuego = bodega.getCategorias()[indexCateg].getJuegos().findIndex(e => e.getId() == id);
-
-    bodega.getCategorias()[indexCateg].getJuegos()[indexJuego].setDescontarStock(cant)
-    setBodegaLocalStorage(bodega);
-
-    cantTarjeta.textContent = 1;
+    cantTarjeta.textContent = 1
+    reducirStock(idCateg, id, cant);
     setCarritoLocalStorage(carrito);
+
     renderCarrito();
     renderProductos()
 }

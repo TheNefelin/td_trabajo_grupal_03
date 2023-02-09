@@ -13,7 +13,7 @@ export class Carrito {
         })
         return this._cant;
     }
-    setProducto(id, cant) {
-        this._productos.push({id, cant});
+    setProducto(id, cant, idCateg) {
+        this._productos.push({id, cant, idCateg});
     }
 }
