@@ -26,7 +26,7 @@ function inicializarTienda() {
                 newCategoria.setJuego( new Juego(juego.id, juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link));
             });
 
-            objTienda.setCategria(newCategoria);
+            objTienda.setCategoria(newCategoria);
         });
 
         iniBodegaLocalStorage(objTienda);
@@ -104,7 +104,7 @@ function getBodegaLocalStorage() {
                 newCategoria.setJuego(new Juego(juego._id, juego._nombre, juego._precio, juego._dercripcion, juego._stock, juego._link));
             });
 
-            bodega.setCategria(newCategoria);
+            bodega.setCategoria(newCategoria);
         });
     }
     

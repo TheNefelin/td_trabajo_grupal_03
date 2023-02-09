@@ -10,7 +10,7 @@ export class Tienda {
     getCategorias() {
         return this._categorias;
     }
-    setCategria(categoria) {
+    setCategoria(categoria) {
         this._categorias.push(categoria);
     }
 };
