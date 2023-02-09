@@ -8,6 +8,7 @@ import { Carrito } from "../class/Carrito.js";
 let objTienda;
 
 window.onload = () => {
+    // deleteCarritoLocalStorage()
     inicializarObjetos();
     inisializarTemps()
     console.log("Sitio Iniciado")
@@ -299,10 +300,13 @@ function renderCarrito() {
     
     let canasta = getCarritoLocalStorage()
     cantCarrito.textContent = canasta.getCantProductos();
-    // deleteCarritoLocalStorage()
 }
 
-/* --- Agregar a Carrito --------------------------------------- */
+function renerDetaCarrito() {
+
+}
+
+/* --- Carrito ------------------------------------------------- */
 /* ------------------------------------------------------------- */
 function agregarACarrito(id) {
     const cantTarjeta = document.querySelector(`#cant_${id}`);
@@ -322,6 +326,28 @@ function agregarACarrito(id) {
 
     setCarritoLocalStorage(carrito);
     renderCarrito();
+    renerDetaCarrito()
 }
 
+const carritoContenedor = document.querySelector(".carrito-contenedor");
+carritoContenedor.addEventListener("click", () => {
+    verCarrito();
+});
 
+function verCarrito() {
+    const cantCarrito = document.querySelector("#cantCarrito");
+    if (cantCarrito.textContent > 0) {
+        let elCarrito = document.querySelector(".verCarrito");
+        elCarrito.classList.add("verCarrito_si");
+    };
+};
+
+const salirDetaCarrito = document.querySelector(".salirDetaCarrito");
+salirDetaCarrito.addEventListener("click", () => {
+    ocultarCarrito();
+});
+
+function ocultarCarrito() {
+    let elCarrito = document.querySelector(".verCarrito");
+    elCarrito.classList.remove("verCarrito_si");
+};

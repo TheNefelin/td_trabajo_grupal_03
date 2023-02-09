@@ -281,17 +281,29 @@ h1, h4, p {
 
 /* --- Ver Carrito --------------------------------------------- */
 /* ------------------------------------------------------------- */
-#verCarrito {
+.verCarrito {
     background-color: var(--colorTransparencia1);
     backdrop-filter: blur(8px);
     position: fixed;
-    top: 0;    
+    top: 0;
+    left: 100%;  
     width: 100%;
     height: 100vh;
     z-index: 2;
+    transition: 0.3s;
 }
 
-#salirDetaCarrito {
+.verCarrito_si {
+    left: 0
+}
+
+.verCarrito img {
+    display: grid;
+    height: 3rem;
+    cursor: pointer;
+}
+
+.salirDetaCarrito {
     background-color: var(--colorText1);
     color: var(--colorPrimario);
     padding: 0.5rem;
@@ -302,7 +314,7 @@ h1, h4, p {
     border-radius: 8px;
 }
 
-#salirDetaCarrito:hover {
+.salirDetaCarrito:hover {
     background-color: var(--colorText2);
 }
 
@@ -316,13 +328,8 @@ h1, h4, p {
     border-radius: 8px;
 }
 
-.itemCarrito img {
-    display: grid;
-    height: 3rem;
-    cursor: pointer;
-}
-
 .detaCarrito {
     width: 100%;
     margin: 0 1vw 0 1vw;
 }
+
