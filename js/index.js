@@ -6,8 +6,6 @@ import { Juego } from "../class/Juego.js"
 import { Carrito } from "../class/Carrito.js";
 
 window.onload = () => {
-    // deleteCarritoLocalStorage();
-    // deleteBodegaLocalStorage();
     inicializarTienda();
     inisializarTemps()
     console.log("Sitio Iniciado")
@@ -277,7 +275,13 @@ function renderProductos() {
     const btnAgregar = document.querySelectorAll(".cardBtn");
     btnAgregar.forEach(obj => {
         obj.addEventListener("click", () => {
-            agregarACarrito(obj.value);
+            const idJuego = obj.value;
+            const cantTarjeta = document.querySelector(`#cant_${idJuego}`);
+            const idCateg = cantTarjeta.value;
+            const cant = cantTarjeta.textContent;
+            cantTarjeta.textContent = 1;
+
+            modificarCarrito(idCateg, parseInt(idJuego), parseInt(cant));
         });
 
         validarStock(obj.value);
@@ -285,9 +289,8 @@ function renderProductos() {
 }
 
 function renderCarrito() {
-    const cantCarrito = document.querySelector("#cantCarrito");
-    
     let canasta = getCarritoLocalStorage()
+    const cantCarrito = document.querySelector("#cantCarrito");
     cantCarrito.textContent = canasta.getCantProductos();
 
     renerDetaCarrito();
@@ -299,7 +302,9 @@ function renerDetaCarrito() {
     const bodega = getBodegaLocalStorage();
 
     let detaCarritoContenedor = document.querySelector("#detaCarritoContenedor");
+    
     detaCarritoContenedor.innerHTML = "";
+    console.log(detaCarritoContenedor.innerHTML)
 
     carrito.getProductos().forEach(e => {
         const juego = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getJuegos().find(juego => juego.getId() == e.id);
@@ -310,10 +315,16 @@ function renerDetaCarrito() {
         // ------------------------------------
         padre = document.createElement("div");
         hijo = document.createElement("img");
+        hijo.classList.add("btnMasCarrito");
+        hijo.id = e.idCateg;
+        hijo.value = e.id;
         hijo.src="./img/mas.svg";
         padre.appendChild(hijo);
 
         hijo = document.createElement("img");
+        hijo.classList.add("btnMenosCarrito");
+        hijo.id = e.idCateg;
+        hijo.value = e.id;
         hijo.src="./img/menos.svg";
         padre.appendChild(hijo);
         objContenedor.appendChild(padre);
@@ -326,10 +337,10 @@ function renerDetaCarrito() {
         hijo.appendChild(texto);
         padre.appendChild(hijo);
 
-        texto = document.createTextNode(`Desc: ${"Prueba"}`);
-        hijo = document.createElement("div");
-        hijo.appendChild(texto);
-        padre.appendChild(hijo);
+        // texto = document.createTextNode(`Desc: ${"Prueba"}`);
+        // hijo = document.createElement("div");
+        // hijo.appendChild(texto);
+        // padre.appendChild(hijo);
 
         hijo = document.createElement("hr");
         padre.appendChild(hijo);
@@ -346,12 +357,12 @@ function renerDetaCarrito() {
         nieto.appendChild(texto);
         hijo.appendChild(nieto);
 
-        texto = document.createTextNode(`Precio: ${juego.getPrecio()} - `);
+        texto = document.createTextNode(`Precio: ${formatoCL.format(juego.getPrecio())} - `);
         nieto = document.createElement("span");
         nieto.appendChild(texto);
         hijo.appendChild(nieto);
 
-        texto = document.createTextNode(`Total: ${e.cant * juego.getPrecio()}`);
+        texto = document.createTextNode(`Total: ${formatoCL.format(e.cant * juego.getPrecio())}`);
         nieto = document.createElement("span");
         nieto.appendChild(texto);
         hijo.appendChild(nieto);
@@ -361,6 +372,9 @@ function renerDetaCarrito() {
         objContenedor.appendChild(padre);
         // ------------------------------------
         padre = document.createElement("img");
+        padre.classList.add("btnDeleteCarrito");
+        padre.id = e.idCateg;
+        padre.value = e.id;
         padre.src="./img/basura.svg";
 
         objContenedor.appendChild(padre);
@@ -368,6 +382,27 @@ function renerDetaCarrito() {
 
         detaCarritoContenedor.appendChild(objContenedor);
     });
+
+    const btnMasCarrito = document.querySelectorAll(".btnMasCarrito")
+    btnMasCarrito.forEach(obj => {
+        obj.addEventListener("click", () => {
+            modificarCarrito(obj.id, obj.value, 1)
+        })
+    })
+
+    const btnMenosCarrito = document.querySelectorAll(".btnMenosCarrito")
+    btnMenosCarrito.forEach(obj => {
+        obj.addEventListener("click", () => {
+            modificarCarrito(obj.id, obj.value, -1)
+        })
+    })
+
+    const btnDeleteCarrito = document.querySelectorAll(".btnDeleteCarrito")
+    btnDeleteCarrito.forEach(obj => {
+        obj.addEventListener("click", () => {
+            deleteElementoCarrito(obj.id, obj.value);
+        })
+    })
 };
 
 /* --- Tarjeta ------------------------------------------------- */
@@ -410,48 +445,54 @@ function validarStock(id) {
 
 /* --- Carrito ------------------------------------------------- */
 /* ------------------------------------------------------------- */
-function getProductoBy(idCateg, idJuego) {
+function setStockBodega(idCateg, idJuego, cant) {
     let bodega = getBodegaLocalStorage()
-   console.log(bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego));
-}
-
-function reducirStock(idCateg, idJuego, cant) {
-    let bodega = getBodegaLocalStorage()
-    bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).setReducirStock(cant);
+    bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).setModificarStock(cant);
     setBodegaLocalStorage(bodega);
 }
 
-function aumentarStock(idCateg, idJuego, cant) {
-    let bodega = getBodegaLocalStorage()
-    bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).setAumentarStock(cant);
-    setBodegaLocalStorage(bodega);
+function getStockBodega(idCateg, idJuego) {
+    const bodega = getBodegaLocalStorage()
+    const stock = bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).getStock();
+    return stock
 }
 
-function agregarACarrito(id) {
-    const cantTarjeta = document.querySelector(`#cant_${id}`);
-    const idCateg = cantTarjeta.value;
-
+function deleteElementoCarrito(idCateg, idJuego) {
     let carrito = getCarritoLocalStorage();
-    const index = carrito.getProductos().findIndex(d => d.id == id)
-    const cant = parseInt(cantTarjeta.textContent);
+    let cant = carrito.getProductosById(idJuego).cant * -1;
+    // carrito.deleteProductosById(idJuego)
+    modificarCarrito(idCateg, idJuego, cant)
+}
 
-    if (index >= 0) {
-        carrito.getProductos().forEach(e => {
-            if (e.id == id) {
-                e.cant = parseInt(e.cant) + cant;
-            }
-        })
-    } else {
-        carrito.setProducto(id, cant, idCateg)
+function modificarCarrito(idCateg, idJuego, cant) {
+    let estado = false;
+    let carrito = getCarritoLocalStorage();
+    const index = carrito.getProductos().findIndex(d => d.id == idJuego)
+
+    if (index == -1) {
+        carrito.setProducto(idJuego, cant, idCateg);
+        estado = true;
+    } 
+    
+    if (index > -1) {
+        const stockBodega = getStockBodega(idCateg, idJuego);
+        const cantProdCarrito = carrito.getProductosById(idJuego).cant;
+
+        if (!(cant > 0 && stockBodega == 0) && !(cant < 0 && cantProdCarrito == 0)) {
+            carrito.getProductosById(idJuego).cant += cant;
+            estado = true
+        }
+    };
+    
+    if (estado) {
+        setStockBodega(idCateg, idJuego, cant * (-1));
+        setCarritoLocalStorage(carrito);
     }
 
-    cantTarjeta.textContent = 1
-    reducirStock(idCateg, id, cant);
-    setCarritoLocalStorage(carrito);
-
     renderCarrito();
-    renderProductos()
-}
+    renderProductos()        
+    validarStock(idJuego)
+};
 
 const carritoContenedor = document.querySelector(".carrito-contenedor");
 carritoContenedor.addEventListener("click", () => {
