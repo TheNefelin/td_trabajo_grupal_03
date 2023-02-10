@@ -108,6 +108,11 @@ h1, h4, p {
         z-index: 1;
     }
 
+    .navBar01-logo img  {
+        height: 2rem;
+        margin-right: 0;
+    }
+
     .navBar01-btn {
         display: block;
     }
@@ -164,6 +169,7 @@ h1, h4, p {
 .mySlides > img {
     vertical-align: middle;
     height: 50vh;
+    width: 100%;
     object-fit: cover;
     top: 0;
 }
@@ -302,6 +308,7 @@ h1, h4, p {
     display: grid;
     height: 3rem;
     cursor: pointer;
+    margin-left: auto;
 }
 
 .salirDetaCarrito {
@@ -334,4 +341,23 @@ h1, h4, p {
     margin: 0 1vw 0 1vw;
 }
 
-/*------------------Formulario envío email---------------------*/
+.totalCarrito {
+    margin: 1vw;
+    background-color: var(--colorTransparencia2);
+    color: var(--colorPrimario);
+    border-radius: 8px;
+    display:  grid;
+}
+
+.totalCarrito > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.totalCarrito hr {
+   margin: 0.4rem 1rem;
+}
+
+.totalCarrito p {
+    margin: 0 1rem 0 1rem;
+}

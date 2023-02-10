@@ -6,10 +6,8 @@ import { Juego } from "../class/Juego.js"
 import { Carrito } from "../class/Carrito.js";
 
 window.onload = () => {
-    // deleteCarritoLocalStorage();
-    // deleteBodegaLocalStorage();
     inicializarTienda();
-    inisializarTemps()
+    inicializarTemps()
     console.log("Sitio Iniciado")
 }
 
@@ -38,7 +36,7 @@ function inicializarTienda() {
     .catch((err) => console.log(`Error Fetch: ${err}`))
 };
 
-function inisializarTemps() {
+function inicializarTemps() {
     const iniCarrito = getCarritoLocalStorage();
 
     if (iniCarrito) {
@@ -68,7 +66,7 @@ function getCarritoLocalStorage() {
 
     if (localS) {
         localS._productos.forEach(e => {
-            carrito.setProducto(e.id, e.cant, e.idCateg);
+            carrito.setProducto(e.idCateg, e.idJuego, e.cant);
         });
     };
 
@@ -241,22 +239,6 @@ function renderProductos() {
             // -------------------------------------------
 
             tienda.appendChild(divCart);
-
-            // Era lo anterior o Esto --------------------------------------------------
-            //--------------------------------------------------------------------------
-            // html += `
-            // <div class="card">
-            //     <img src="${juego.getLink()}">
-            //     <h1>${juego.getNombre()}</h1>
-            //     <h4>Categ: ${categ.getNombre()} - Stock: (${juego.getStock()})</h4>
-            //     <p class="price">${formatoCL.format(juego.getPrecio())}</p>
-            //     <div class="btnMasMenos">
-            //         <img id=${juego.getId()} class="btnMenos" src="./img/menos.svg"></class=>
-            //         <h3 id="cant_${juego.getId()}">0</h3>
-            //         <img id=${juego.getId()} class="btnMas" src="./img/mas.svg">
-            //     </div>
-            //     <div><button>Agregar</button></div>
-            // </div>`
         })
     })
 
@@ -277,7 +259,13 @@ function renderProductos() {
     const btnAgregar = document.querySelectorAll(".cardBtn");
     btnAgregar.forEach(obj => {
         obj.addEventListener("click", () => {
-            agregarACarrito(obj.value);
+            const idJuego = obj.value;
+            const cantTarjeta = document.querySelector(`#cant_${idJuego}`);
+            const idCateg = cantTarjeta.value;
+            const cant = cantTarjeta.textContent;
+            cantTarjeta.textContent = 1;
+
+            modificarCarrito(idCateg, parseInt(idJuego), parseInt(cant));
         });
 
         validarStock(obj.value);
@@ -285,35 +273,48 @@ function renderProductos() {
 }
 
 function renderCarrito() {
-    const cantCarrito = document.querySelector("#cantCarrito");
-    
     let canasta = getCarritoLocalStorage()
+    const cantCarrito = document.querySelector("#cantCarrito");
     cantCarrito.textContent = canasta.getCantProductos();
 
     renerDetaCarrito();
 }
 
 function renerDetaCarrito() {
-    let padre, hijo, nieto, texto;
+    let padre, hijo, nieto, texto, cant, subtotal, envio;
+    cant = 0; 
+    subtotal = 0; 
+    envio = 0;
     const carrito = getCarritoLocalStorage();
     const bodega = getBodegaLocalStorage();
 
     let detaCarritoContenedor = document.querySelector("#detaCarritoContenedor");
+    
     detaCarritoContenedor.innerHTML = "";
 
     carrito.getProductos().forEach(e => {
-        const juego = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getJuegos().find(juego => juego.getId() == e.id);
+        const juego = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getJuegos().find(juego => juego.getId() == e.idJuego);
 
+        cant += e.cant;
+        subtotal += (e.cant * juego.getPrecio())
+        envio = formatoCL.format(5500);
+        
         let objContenedor = document.createElement("div");
         objContenedor.classList.add("itemCarrito");
 
         // ------------------------------------
         padre = document.createElement("div");
         hijo = document.createElement("img");
+        hijo.classList.add("btnMasCarrito");
+        hijo.id = e.idCateg;
+        hijo.value = e.idJuego;
         hijo.src="./img/mas.svg";
         padre.appendChild(hijo);
 
         hijo = document.createElement("img");
+        hijo.classList.add("btnMenosCarrito");
+        hijo.id = e.idCateg;
+        hijo.value = e.idJuego;
         hijo.src="./img/menos.svg";
         padre.appendChild(hijo);
         objContenedor.appendChild(padre);
@@ -326,10 +327,10 @@ function renerDetaCarrito() {
         hijo.appendChild(texto);
         padre.appendChild(hijo);
 
-        texto = document.createTextNode(`Desc: ${"Prueba"}`);
-        hijo = document.createElement("div");
-        hijo.appendChild(texto);
-        padre.appendChild(hijo);
+        // texto = document.createTextNode(`Desc: ${"Prueba"}`);
+        // hijo = document.createElement("div");
+        // hijo.appendChild(texto);
+        // padre.appendChild(hijo);
 
         hijo = document.createElement("hr");
         padre.appendChild(hijo);
@@ -346,12 +347,12 @@ function renerDetaCarrito() {
         nieto.appendChild(texto);
         hijo.appendChild(nieto);
 
-        texto = document.createTextNode(`Precio: ${juego.getPrecio()} - `);
+        texto = document.createTextNode(`Precio: ${formatoCL.format(juego.getPrecio())} - `);
         nieto = document.createElement("span");
         nieto.appendChild(texto);
         hijo.appendChild(nieto);
 
-        texto = document.createTextNode(`Total: ${e.cant * juego.getPrecio()}`);
+        texto = document.createTextNode(`Total: ${formatoCL.format(e.cant * juego.getPrecio())}`);
         nieto = document.createElement("span");
         nieto.appendChild(texto);
         hijo.appendChild(nieto);
@@ -361,6 +362,9 @@ function renerDetaCarrito() {
         objContenedor.appendChild(padre);
         // ------------------------------------
         padre = document.createElement("img");
+        padre.classList.add("btnDeleteCarrito");
+        padre.id = e.idCateg;
+        padre.value = e.idJuego;
         padre.src="./img/basura.svg";
 
         objContenedor.appendChild(padre);
@@ -368,6 +372,96 @@ function renerDetaCarrito() {
 
         detaCarritoContenedor.appendChild(objContenedor);
     });
+
+    // Totales Final --------------------------
+    // -- generales --
+    let hr
+    let div; 
+    let totalCarrito = document.createElement("div");
+    totalCarrito.classList.add("totalCarrito");
+    
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
+
+    div = document.createElement("div");
+    texto = document.createTextNode("· Cant Productos:");
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    texto = document.createTextNode(cant);
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    totalCarrito.appendChild(div);
+
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
+    
+    div = document.createElement("div");
+    texto = document.createTextNode("· Sub Total:");
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    texto = document.createTextNode(formatoCL.format(subtotal));
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    totalCarrito.appendChild(div);
+
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
+
+    div = document.createElement("div");
+    texto = document.createTextNode("· Consto Envio:");
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    texto = document.createTextNode(envio);
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    totalCarrito.appendChild(div);
+
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
+
+    div = document.createElement("div");
+    texto = document.createTextNode("· TOTAL:");
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    texto = document.createTextNode(formatoCL.format(cant * subtotal));
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    totalCarrito.appendChild(div);
+
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
+
+    detaCarritoContenedor.appendChild(totalCarrito);
+    // ---------------------------------------
+
+    const btnMasCarrito = document.querySelectorAll(".btnMasCarrito")
+    btnMasCarrito.forEach(obj => {
+        obj.addEventListener("click", () => {
+            modificarCarrito(obj.id, obj.value, 1)
+        })
+    })
+
+    const btnMenosCarrito = document.querySelectorAll(".btnMenosCarrito")
+    btnMenosCarrito.forEach(obj => {
+        obj.addEventListener("click", () => {
+            modificarCarrito(obj.id, obj.value, -1)
+        })
+    })
+
+    const btnDeleteCarrito = document.querySelectorAll(".btnDeleteCarrito")
+    btnDeleteCarrito.forEach(obj => {
+        obj.addEventListener("click", () => {
+            deleteElementoCarrito(obj.id, obj.value);
+        })
+    })
 };
 
 /* --- Tarjeta ------------------------------------------------- */
@@ -410,48 +504,57 @@ function validarStock(id) {
 
 /* --- Carrito ------------------------------------------------- */
 /* ------------------------------------------------------------- */
-function getProductoBy(idCateg, idJuego) {
+function setStockBodega(idCateg, idJuego, cant) {
     let bodega = getBodegaLocalStorage()
-   console.log(bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego));
-}
-
-function reducirStock(idCateg, idJuego, cant) {
-    let bodega = getBodegaLocalStorage()
-    bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).setReducirStock(cant);
+    bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).setModificarStock(cant);
     setBodegaLocalStorage(bodega);
 }
 
-function aumentarStock(idCateg, idJuego, cant) {
-    let bodega = getBodegaLocalStorage()
-    bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).setAumentarStock(cant);
-    setBodegaLocalStorage(bodega);
+function getStockBodega(idCateg, idJuego) {
+    const bodega = getBodegaLocalStorage()
+    const stock = bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).getStock();
+    return stock
 }
 
-function agregarACarrito(id) {
-    const cantTarjeta = document.querySelector(`#cant_${id}`);
-    const idCateg = cantTarjeta.value;
+function deleteElementoCarrito(idCateg, idJuego) {
+    const carrito = getCarritoLocalStorage();
+    const cant = carrito.getProductosById(idJuego).cant;
+    modificarCarrito(idCateg, idJuego, cant * -1)
+}
 
+function modificarCarrito(idCateg, idJuego, cant) {
+    let estado = false;
     let carrito = getCarritoLocalStorage();
-    const index = carrito.getProductos().findIndex(d => d.id == id)
-    const cant = parseInt(cantTarjeta.textContent);
-
-    if (index >= 0) {
-        carrito.getProductos().forEach(e => {
-            if (e.id == id) {
-                e.cant = parseInt(e.cant) + cant;
-            }
-        })
-    } else {
-        carrito.setProducto(id, cant, idCateg)
+    const index = carrito.getProductos().findIndex(d => d.idJuego == idJuego)
+    // si el producto no existe en la canasta
+    if (index == -1) {
+        carrito.setProducto(idCateg, idJuego, cant);
+        estado = true;
+    };
+    // si el producto existe en la canasta se hace esto
+    if (index > -1) {
+        const stockBodega = getStockBodega(idCateg, idJuego);
+        const cantProdCarrito = carrito.getProductosById(idJuego).cant;
+        // se suma o se restan productos de la canasta
+        if (!(cant > 0 && stockBodega == 0) && !(cant < 0 && cantProdCarrito == 0)) {
+            carrito.getProductosById(idJuego).cant += cant;
+            estado = true
+        }
+        // si el prodiucto de la canasta llega 0 se elimina
+        if (carrito.getProductosById(idJuego).cant == 0) {
+            carrito.deleteProductosById(idJuego) 
+        }
+    };
+    
+    if (estado) {
+        setStockBodega(idCateg, idJuego, cant * (-1));
+        setCarritoLocalStorage(carrito);
     }
 
-    cantTarjeta.textContent = 1
-    reducirStock(idCateg, id, cant);
-    setCarritoLocalStorage(carrito);
-
     renderCarrito();
-    renderProductos()
-}
+    renderProductos()        
+    validarStock(idJuego)
+};
 
 const carritoContenedor = document.querySelector(".carrito-contenedor");
 carritoContenedor.addEventListener("click", () => {
