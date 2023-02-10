@@ -341,3 +341,23 @@ h1, h4, p {
     margin: 0 1vw 0 1vw;
 }
 
+.totalCarrito {
+    margin: 1vw;
+    background-color: var(--colorTransparencia2);
+    color: var(--colorPrimario);
+    border-radius: 8px;
+    display:  grid;
+}
+
+.totalCarrito > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.totalCarrito hr {
+   margin: 0.4rem 1rem;
+}
+
+.totalCarrito p {
+    margin: 0 1rem 0 1rem;
+}
