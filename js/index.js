@@ -7,7 +7,7 @@ import { Carrito } from "../class/Carrito.js";
 
 window.onload = () => {
     inicializarTienda();
-    inisializarTemps()
+    inicializarTemps()
     console.log("Sitio Iniciado")
 }
 
@@ -36,7 +36,7 @@ function inicializarTienda() {
     .catch((err) => console.log(`Error Fetch: ${err}`))
 };
 
-function inisializarTemps() {
+function inicializarTemps() {
     const iniCarrito = getCarritoLocalStorage();
 
     if (iniCarrito) {
@@ -239,22 +239,6 @@ function renderProductos() {
             // -------------------------------------------
 
             tienda.appendChild(divCart);
-
-            // Era lo anterior o Esto --------------------------------------------------
-            //--------------------------------------------------------------------------
-            // html += `
-            // <div class="card">
-            //     <img src="${juego.getLink()}">
-            //     <h1>${juego.getNombre()}</h1>
-            //     <h4>Categ: ${categ.getNombre()} - Stock: (${juego.getStock()})</h4>
-            //     <p class="price">${formatoCL.format(juego.getPrecio())}</p>
-            //     <div class="btnMasMenos">
-            //         <img id=${juego.getId()} class="btnMenos" src="./img/menos.svg"></class=>
-            //         <h3 id="cant_${juego.getId()}">0</h3>
-            //         <img id=${juego.getId()} class="btnMas" src="./img/mas.svg">
-            //     </div>
-            //     <div><button>Agregar</button></div>
-            // </div>`
         })
     })
 
@@ -297,18 +281,24 @@ function renderCarrito() {
 }
 
 function renerDetaCarrito() {
-    let padre, hijo, nieto, texto;
+    let padre, hijo, nieto, texto, cant, subtotal, envio;
+    cant = 0; 
+    subtotal = 0; 
+    envio = 0;
     const carrito = getCarritoLocalStorage();
     const bodega = getBodegaLocalStorage();
 
     let detaCarritoContenedor = document.querySelector("#detaCarritoContenedor");
     
     detaCarritoContenedor.innerHTML = "";
-    console.log(detaCarritoContenedor.innerHTML)
 
     carrito.getProductos().forEach(e => {
         const juego = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getJuegos().find(juego => juego.getId() == e.idJuego);
 
+        cant += e.cant;
+        subtotal += (e.cant * juego.getPrecio())
+        envio = formatoCL.format(5500);
+        
         let objContenedor = document.createElement("div");
         objContenedor.classList.add("itemCarrito");
 
@@ -384,16 +374,72 @@ function renerDetaCarrito() {
     });
 
     // Totales Final --------------------------
-    padre = document.createElement("div");
-    padre.classList.add("itemCarrito");
+    // -- generales --
+    let hr
+    let div; 
+    let totalCarrito = document.createElement("div");
+    totalCarrito.classList.add("totalCarrito");
+    
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
 
-    texto = document.createTextNode(`PRUEBA`);
-    hijo = document.createElement("div");
-    hijo.appendChild(texto);
-    padre.appendChild(hijo);
+    div = document.createElement("div");
+    texto = document.createTextNode("· Cant Productos:");
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    texto = document.createTextNode(cant);
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    totalCarrito.appendChild(div);
 
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
+    
+    div = document.createElement("div");
+    texto = document.createTextNode("· Sub Total:");
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    texto = document.createTextNode(formatoCL.format(subtotal));
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    totalCarrito.appendChild(div);
 
-    detaCarritoContenedor.appendChild(padre);
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
+
+    div = document.createElement("div");
+    texto = document.createTextNode("· Consto Envio:");
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    texto = document.createTextNode(envio);
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    totalCarrito.appendChild(div);
+
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
+
+    div = document.createElement("div");
+    texto = document.createTextNode("· TOTAL:");
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    texto = document.createTextNode(formatoCL.format(cant * subtotal));
+    padre = document.createElement("p")
+    padre.appendChild(texto);
+    div.appendChild(padre);
+    totalCarrito.appendChild(div);
+
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
+
+    detaCarritoContenedor.appendChild(totalCarrito);
     // ---------------------------------------
 
     const btnMasCarrito = document.querySelectorAll(".btnMasCarrito")
