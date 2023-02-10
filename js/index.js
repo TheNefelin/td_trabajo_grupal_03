@@ -383,6 +383,19 @@ function renerDetaCarrito() {
         detaCarritoContenedor.appendChild(objContenedor);
     });
 
+    // Totales Final --------------------------
+    padre = document.createElement("div");
+    padre.classList.add("itemCarrito");
+
+    texto = document.createTextNode(`PRUEBA`);
+    hijo = document.createElement("div");
+    hijo.appendChild(texto);
+    padre.appendChild(hijo);
+
+
+    detaCarritoContenedor.appendChild(padre);
+    // ---------------------------------------
+
     const btnMasCarrito = document.querySelectorAll(".btnMasCarrito")
     btnMasCarrito.forEach(obj => {
         obj.addEventListener("click", () => {
