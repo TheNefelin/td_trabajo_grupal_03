@@ -15,27 +15,27 @@ window.onload = () => {
 
 function inicializarTienda() {
     fetch("../data/data.json")
-    .then(resp => resp.json())
-    .then(data => {
-        let objTienda = new Tienda(data.negocio.nombre);
+        .then(resp => resp.json())
+        .then(data => {
+            let objTienda = new Tienda(data.negocio.nombre);
 
-        data.negocio.categorias.map(categ => {
-            let newCategoria = new Categoria(categ.id, categ.nombre);
-            
-            categ.juegos.map(juego => {
-                newCategoria.setJuego( new Juego(juego.id, juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link));
+            data.negocio.categorias.map(categ => {
+                let newCategoria = new Categoria(categ.id, categ.nombre);
+
+                categ.juegos.map(juego => {
+                    newCategoria.setJuego(new Juego(juego.id, juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link));
+                });
+
+                objTienda.setCategria(newCategoria);
             });
 
-            objTienda.setCategria(newCategoria);
-        });
-
-        iniBodegaLocalStorage(objTienda);
-    })
-    .then(() => {
-        renderProductos();
-        console.log("Datos Cargados Correctamente")
-    })
-    .catch((err) => console.log(`Error Fetch: ${err}`))
+            iniBodegaLocalStorage(objTienda);
+        })
+        .then(() => {
+            renderProductos();
+            console.log("Datos Cargados Correctamente")
+        })
+        .catch((err) => console.log(`Error Fetch: ${err}`))
 };
 
 function inisializarTemps() {
@@ -43,7 +43,7 @@ function inisializarTemps() {
 
     if (iniCarrito) {
         renderCarrito()
-    }    
+    }
 }
 
 const linkResetSitio = document.querySelector("#resetSitio");
@@ -76,7 +76,7 @@ function getCarritoLocalStorage() {
 }
 
 function deleteCarritoLocalStorage() {
-    window.localStorage.removeItem("carrito"); 
+    window.localStorage.removeItem("carrito");
 }
 
 function iniBodegaLocalStorage(bodega) {
@@ -99,7 +99,7 @@ function getBodegaLocalStorage() {
 
         localS._categorias.map(categ => {
             let newCategoria = new Categoria(categ._id, categ._nombre);
-            
+
             categ._juegos.map(juego => {
                 newCategoria.setJuego(new Juego(juego._id, juego._nombre, juego._precio, juego._dercripcion, juego._stock, juego._link));
             });
@@ -107,17 +107,17 @@ function getBodegaLocalStorage() {
             bodega.setCategria(newCategoria);
         });
     }
-    
+
     return bodega;
 }
 
 function deleteBodegaLocalStorage() {
-    window.localStorage.removeItem("bodega"); 
+    window.localStorage.removeItem("bodega");
 }
 
 /* --- Paltas -------------------------------------------------- */
 /* ------------------------------------------------------------- */
-const formatoCL = new Intl.NumberFormat('es-CL', { 
+const formatoCL = new Intl.NumberFormat('es-CL', {
     style: "currency",
     currency: "CLP",
 });
@@ -129,7 +129,7 @@ const navBar01Btn = document.querySelector(".navBar01-btn");
 navBar01Btn.addEventListener("click", () => {
     navBar01Btn.classList.toggle("navBar01-btn_click");
 
-    const navBar01Links = document.querySelector(".navBar01-links"); 
+    const navBar01Links = document.querySelector(".navBar01-links");
     navBar01Links.classList.toggle("navBar01-links_noOcultar");
 });
 
@@ -150,7 +150,7 @@ function showSlides() {
     if (slideIndex > slides.length) { slideIndex = 1 }
 
     slides[slideIndex - 1].style.display = "block";
-    setTimeout(showSlides, 4000); 
+    setTimeout(showSlides, 4000);
 }
 
 /* --- Render Sitio -------------------------------------------- */
@@ -202,7 +202,7 @@ function renderProductos() {
             // -------------------------------------------
             const divContenedorBtn = document.createElement("div");
             divContenedorBtn.classList.add("btnMasMenos");
-            
+
             // -- Nietos --
             obj = document.createElement("img");
             obj.classList.add("btnMenos");
@@ -227,7 +227,7 @@ function renderProductos() {
 
             // -------------------------------------------
             const divContenedorAgregar = document.createElement("div");
-            
+
             // -- Nieto --
             texto = document.createTextNode("Agregar");
             obj = document.createElement("button");
@@ -286,7 +286,7 @@ function renderProductos() {
 
 function renderCarrito() {
     const cantCarrito = document.querySelector("#cantCarrito");
-    
+
     let canasta = getCarritoLocalStorage()
     cantCarrito.textContent = canasta.getCantProductos();
 
@@ -310,11 +310,11 @@ function renerDetaCarrito() {
         // ------------------------------------
         padre = document.createElement("div");
         hijo = document.createElement("img");
-        hijo.src="./img/mas.svg";
+        hijo.src = "./img/mas.svg";
         padre.appendChild(hijo);
 
         hijo = document.createElement("img");
-        hijo.src="./img/menos.svg";
+        hijo.src = "./img/menos.svg";
         padre.appendChild(hijo);
         objContenedor.appendChild(padre);
         // ------------------------------------
@@ -361,7 +361,7 @@ function renerDetaCarrito() {
         objContenedor.appendChild(padre);
         // ------------------------------------
         padre = document.createElement("img");
-        padre.src="./img/basura.svg";
+        padre.src = "./img/basura.svg";
 
         objContenedor.appendChild(padre);
         // ------------------------------------
@@ -412,7 +412,7 @@ function validarStock(id) {
 /* ------------------------------------------------------------- */
 function getProductoBy(idCateg, idJuego) {
     let bodega = getBodegaLocalStorage()
-   console.log(bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego));
+    console.log(bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego));
 }
 
 function reducirStock(idCateg, idJuego, cant) {
@@ -475,3 +475,35 @@ function ocultarCarrito() {
     let elCarrito = document.querySelector(".verCarrito");
     elCarrito.classList.remove("verCarrito_si");
 };
+
+
+
+
+
+
+const myInput=document.getElementById("myInput")
+myInput.addEventListener("keyup", () => {
+    myFunction()
+
+});
+function myFunction() {
+    var input = document.getElementById("myInput");
+    var filter = input.value.toUpperCase();
+    var ul= document.getElementById("tienda");
+    var li= ul.getElementsByClassName('card');
+    
+        for (let i = 0; i < li.length; i++) {
+           var name =li[i].getElementsByTagName("h1")[0];
+           console.log(name);
+        //    var txtValue = name.textContent || name.innerText;
+        //    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        //        li[i].style.display = "";
+        //    } else {
+        //        li[i].style.display = "none";
+        //    }
+
+       }
+}
+
+
+
