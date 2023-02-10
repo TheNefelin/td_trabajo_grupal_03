@@ -4,7 +4,8 @@ import { Categoria } from "../class/Categoria.js";
 import { Tienda } from "../class/Tienda.js"
 import { Juego } from "../class/Juego.js"
 import { Carrito } from "../class/Carrito.js";
-
+import { correo } from "../js/correo.js"
+ 
 window.onload = () => {
     inicializarTienda();
     inicializarTemps()
@@ -599,6 +600,9 @@ function pagarCarrito() {
     });
 
     if (estado) {
+
+        enviarCorreo();
+
         inputDespachoCarrito.forEach(obj => {
             obj.value = "";
             obj.classList.remove("despachoCarritoInput_no");
@@ -607,3 +611,10 @@ function pagarCarrito() {
         console.log("Pago Exitoso");
     }
 };
+
+function enviarCorreo() {
+    const despachoCarrito = document.querySelector(".despachoCarrito");
+    const newCorreo = correo(despachoCarrito);
+    console.log(newCorreo);
+    
+}

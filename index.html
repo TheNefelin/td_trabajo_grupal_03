@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./img/logo.svg">
 
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <link rel="icon" href="./img/logo.svg">
     <link rel="stylesheet" href="./lib/normalize.css">
     <link rel="stylesheet" href="./css/index.css" />
 
@@ -98,7 +100,7 @@
                 <img src="./img/basura.svg">
             </div> -->
         </div>
-        <div div class="itemCarrito despachoCarrito">
+        <form class="itemCarrito despachoCarrito">
             <h3>Formulario de Despacho</h3>
             <label>Nombre</label>
             <input type="text">
@@ -110,8 +112,8 @@
             <input type="text">
             <label>Contacto</label>
             <input type="number">
-            <label>EMail</label>
-            <input type="email">
+            <label for="frm_EMail">EMail</label>
+            <input id="frm_EMail" name="frm_EMail" type="email">
             <hr>
             <h3>Formulario de Págo</h3>
             <label>Nombre Completo</label>
@@ -123,7 +125,7 @@
             <label>Código CVC</label>
             <input type="text">
             <button class="btnPagar">Pagar</button>
-        </div>
+        </form>
     </section>
 
     <script type="module" src="./js/index.js"></script>
