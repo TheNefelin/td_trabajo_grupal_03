@@ -475,3 +475,40 @@ function ocultarCarrito() {
     let elCarrito = document.querySelector(".verCarrito");
     elCarrito.classList.remove("verCarrito_si");
 };
+
+/*-----------------Envio email-----------------*/
+//const button = document.querySelector("button");
+//button.addEventListener("click", sendMail);
+function sendMail() {
+    var params = {
+        titulo: document.getElementById("tituloDespacho"),
+        name: document.getElementById("name").value,
+        direccion: document.getElementById("direccion").value,
+        comuna: document.getElementById("comuna").value,
+        region: document.getElementById("region").value,
+        email: document.getElementById("email").value,
+        destinatario: document.getElementById("destinatario").value,
+        resumen: document.querySelector("#carrito-productos").innerHTML,
+        Total: document.querySelector("#total").innerHTML,
+        
+    };
+
+    const serviceID = "service_jnf9tgi"; //pamela.alvarez.l@gmail.com
+    const templateID = "template_zwdoe5b";
+
+    emailjs.send(serviceID, templateID, params)
+        .then(res => {
+            document.getElementById("name").value = "",
+                document.getElementById("direccion").value = "",
+                document.getElementById("comuna").value = "",
+                document.getElementById("region").value = "",
+                document.getElementById("destinatario").value = "",
+                document.querySelector("#carrito-productos").innerHTML = "";
+            document.querySelector("#total").innerHTML = "";
+            console.log(res);
+            alert("Mensaje enviado exitosamente!!")
+
+        })
+        .catch(err => console.log(err));
+
+}
