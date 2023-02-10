@@ -4,7 +4,8 @@ import { Categoria } from "../class/Categoria.js";
 import { Tienda } from "../class/Tienda.js"
 import { Juego } from "../class/Juego.js"
 import { Carrito } from "../class/Carrito.js";
-
+import { correo } from "../js/correo.js"
+ 
 window.onload = () => {
     inicializarTienda();
     inicializarTemps()
@@ -579,39 +580,42 @@ function ocultarCarrito() {
     elCarrito.classList.remove("verCarrito_si");
 };
 
-/*-----------------Envio email-----------------*/
-//const button = document.querySelector("button");
-//button.addEventListener("click", sendMail);
-function sendMail() {
-    var params = {
-        titulo: document.getElementById("tituloDespacho"),
-        name: document.getElementById("name").value,
-        direccion: document.getElementById("direccion").value,
-        comuna: document.getElementById("comuna").value,
-        region: document.getElementById("region").value,
-        email: document.getElementById("email").value,
-        destinatario: document.getElementById("destinatario").value,
-        resumen: document.querySelector("#carrito-productos").innerHTML,
-        Total: document.querySelector("#total").innerHTML,
-        
-    };
 
-    const serviceID = "service_jnf9tgi"; //pamela.alvarez.l@gmail.com
-    const templateID = "template_zwdoe5b";
+const btnPagar = document.querySelector(".btnPagar");
+btnPagar.addEventListener("click", pagarCarrito)
 
-    emailjs.send(serviceID, templateID, params)
-        .then(res => {
-            document.getElementById("name").value = "",
-                document.getElementById("direccion").value = "",
-                document.getElementById("comuna").value = "",
-                document.getElementById("region").value = "",
-                document.getElementById("destinatario").value = "",
-                document.querySelector("#carrito-productos").innerHTML = "";
-            document.querySelector("#total").innerHTML = "";
-            console.log(res);
-            alert("Mensaje enviado exitosamente!!")
+const inputDespachoCarrito = document.querySelectorAll(".despachoCarrito > input")
+inputDespachoCarrito.forEach(obj => {
+    obj.addEventListener("keyup", () => {
+        obj.classList.remove("despachoCarritoInput_no");
+    })
+});
 
-        })
-        .catch(err => console.log(err));
+function pagarCarrito() {
+    let estado = true;
+    inputDespachoCarrito.forEach(obj => {
+        if (!obj.value) {
+            estado = false;
+            obj.classList.add("despachoCarritoInput_no");
+        }
+    });
 
+    if (estado) {
+
+        enviarCorreo();
+
+        inputDespachoCarrito.forEach(obj => {
+            obj.value = "";
+            obj.classList.remove("despachoCarritoInput_no");
+        });
+
+        console.log("Pago Exitoso");
+    }
+};
+
+function enviarCorreo() {
+    const despachoCarrito = document.querySelector(".despachoCarrito");
+    const newCorreo = correo(despachoCarrito);
+    console.log(newCorreo);
+    
 }
