@@ -491,16 +491,18 @@ function myFunction() {
     var filter = input.value.toUpperCase();
     var ul= document.getElementById("tienda");
     var li= ul.getElementsByClassName('card');
-    
+  
+    for (let i = 0; i < li.length; i++) {
+        li[i].style.display = "none"; //la lista estará oculta hasta que se encuentre lo que se está buscando en el filtro.
+    }
         for (let i = 0; i < li.length; i++) {
            var name =li[i].getElementsByTagName("h1")[0];
-           console.log(name);
-        //    var txtValue = name.textContent || name.innerText;
-        //    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        //        li[i].style.display = "";
-        //    } else {
-        //        li[i].style.display = "none";
-        //    }
+           var txtValue = name.textContent || name.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = ""; //se muestra la card cuando la encuentra
+            } else {
+               li[i].style.display = "none";
+         }
 
        }
 }
