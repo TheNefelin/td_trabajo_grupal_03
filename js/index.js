@@ -578,3 +578,32 @@ function ocultarCarrito() {
     let elCarrito = document.querySelector(".verCarrito");
     elCarrito.classList.remove("verCarrito_si");
 };
+
+const btnPagar = document.querySelector(".btnPagar");
+btnPagar.addEventListener("click", pagarCarrito)
+
+const inputDespachoCarrito = document.querySelectorAll(".despachoCarrito > input")
+inputDespachoCarrito.forEach(obj => {
+    obj.addEventListener("keyup", () => {
+        obj.classList.remove("despachoCarritoInput_no");
+    })
+});
+
+function pagarCarrito() {
+    let estado = true;
+    inputDespachoCarrito.forEach(obj => {
+        if (!obj.value) {
+            estado = false;
+            obj.classList.add("despachoCarritoInput_no");
+        }
+    });
+
+    if (estado) {
+        inputDespachoCarrito.forEach(obj => {
+            obj.value = "";
+            obj.classList.remove("despachoCarritoInput_no");
+        });
+
+        console.log("Pago Exitoso");
+    }
+};
