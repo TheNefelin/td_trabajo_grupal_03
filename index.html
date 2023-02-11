@@ -53,17 +53,13 @@
     <section>
         <div class="buscarJuego">
             <div>
-                <label>Filtro por Precio $ 125.000</label>
-                <input type="range" min="1000" max="100000" value="90000">
+                <label>Filtro por Precio: <span id="txtRangeBuscar">125000</span></label>
+                <input id="rangeBuscar" type="range" min="1000" max="125000" value="125000">
             </div>
             <div>
                 <label>Filtro por Categoria</label>
-                <select name="cars" id="cars">
-                    <option value="1">Todos</option>
-                    <option value="1">PlayStation</option>
-                    <option value="2">X Box</option>
-                    <option value="3">Nintendo 3DS</option>
-                    <option value="4">PC</option>
+                <select id="filtroCategoria">
+                    <option value="0">Todos</option>
                 </select>
             </div>
             <div>
@@ -140,8 +136,8 @@
                 <input type="text">
                 <label>Código CVC</label>
                 <input type="text">
-                <button class="btnPagar">Pagar</button>
             </form>
+            <button class="btnPagar">Pagar</button>
         </div>
     </section>
 

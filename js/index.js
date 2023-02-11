@@ -152,9 +152,56 @@ function showSlides() {
     setTimeout(showSlides, 4000); 
 }
 
+/* --- Buscador ------------------------------------------------ */
+/* ------------------------------------------------------------- */
+const txtBuscar = document.querySelector("#txtBuscar")
+txtBuscar.addEventListener("keyup", () => {
+    buscarTarjeta(txtBuscar.value.toUpperCase(), rangeBuscar.value, filtroCategoria.value);
+});
+
+const rangeBuscar = document.querySelector("#rangeBuscar");
+rangeBuscar.addEventListener("input", () => {
+    buscarTarjeta(txtBuscar.value.toUpperCase(), rangeBuscar.value, filtroCategoria.value);
+});
+
+const filtroCategoria = document.querySelector("#filtroCategoria");
+filtroCategoria.addEventListener("change", () => {
+    buscarTarjeta(txtBuscar.value.toUpperCase(), rangeBuscar.value, filtroCategoria.value);
+});
+
+function buscarTarjeta(txtFilter, precioFilter, categoriaFilter) {
+    //Setea el precion sobre la barra del filtro por precio
+    let txtRangeBuscar = document.querySelector("#txtRangeBuscar");
+    txtRangeBuscar.textContent = formatoCL.format(precioFilter);
+
+    let card = document.querySelectorAll(".card");
+
+    card.forEach(e => {
+        e.style.display = "none";
+        let valueH1 = e.querySelector("h1").value   //referencia para filtrar por Texto
+        let valueP = e.querySelector("p").value     //referencia para filtrar por Precio
+        let valueH4 = e.querySelector("h4").value 
+
+        
+        if (categoriaFilter == valueH4) {
+            console.log(categoriaFilter + " --- " + valueH4)
+
+        }
+        //console.log(categoriaFilter == valueH4 ? categoriaFilter: "NO");
+        
+
+        if ((valueH1.toUpperCase().indexOf(txtFilter) > -1) && (precioFilter >= parseInt(valueP)) && ((categoriaFilter == valueH4) || categoriaFilter == 0)) {
+            e.style.display = "";
+        }
+    });
+}
+
 /* --- Render Sitio -------------------------------------------- */
 /* ------------------------------------------------------------- */
 function renderProductos() {
+    let obj, texto, precioMin, precioMax;
+    precioMin = 0; 
+    precioMax = 0;
     const tienda = document.querySelector("#tienda");
     tienda.innerHTML = "";
 
@@ -162,10 +209,13 @@ function renderProductos() {
 
     bodega.getCategorias().map((categ) => {
         categ.getJuegos().map((juego) => {
-            let texto;
-            let obj;
             const divCart = document.createElement("div");
             divCart.classList.add("card");
+
+            if (juego.getStock() > 0) {
+                juego.getPrecio() < precioMin || precioMin == 0 ? precioMin = juego.getPrecio() : false;
+                juego.getPrecio() > precioMax ? precioMax = juego.getPrecio() : false;
+            };
 
             // -- Hijos --
             obj = document.createElement("img");
@@ -181,6 +231,7 @@ function renderProductos() {
             // ------------------------------------------
             texto = document.createTextNode(`Categ: ${categ.getNombre()} - Stock: `);
             const divContenedorStock = document.createElement("h4");
+            divContenedorStock.value = categ.getId();
             divContenedorStock.appendChild(texto);
 
             // -- Nieto --
@@ -195,6 +246,7 @@ function renderProductos() {
             // ------------------------------------------
             texto = document.createTextNode(formatoCL.format(juego.getPrecio()));
             obj = document.createElement("p");
+            obj.value = juego.getPrecio();
             obj.classList.add("price");
             obj.appendChild(texto);
             divCart.appendChild(obj);
@@ -242,6 +294,14 @@ function renderProductos() {
 
             tienda.appendChild(divCart);
         })
+
+        // -- Inicializa el filtro de categoria -----------------------
+        const filtroCategoria = document.querySelector("#filtroCategoria");
+        obj = document.createElement("option");
+        obj.value = categ.getId();
+        obj.innerText = categ.getNombre();
+        filtroCategoria.appendChild(obj);
+        // ------------------------------------------------------------
     })
 
     const btnMenos = document.querySelectorAll(".btnMenos");
@@ -272,6 +332,15 @@ function renderProductos() {
 
         validarStock(obj.value);
     });
+
+    // -- Inicializa el filtro con los precio mayores y menores ----------
+    rangeBuscar.min = precioMin;
+    rangeBuscar.max = precioMax;
+    rangeBuscar.value = precioMax;
+
+    let txtRangeBuscar =  document.querySelector("#txtRangeBuscar");
+    txtRangeBuscar.textContent = formatoCL.format(precioMax);
+    // -------------------------------------------------------------------
 }
 
 function renderCarrito() {
@@ -448,43 +517,26 @@ function renerDetaCarrito() {
     btnMasCarrito.forEach(obj => {
         obj.addEventListener("click", () => {
             modificarCarrito(obj.id, obj.value, 1)
-        })
-    })
+        });
+    });
 
     const btnMenosCarrito = document.querySelectorAll(".btnMenosCarrito")
     btnMenosCarrito.forEach(obj => {
         obj.addEventListener("click", () => {
             modificarCarrito(obj.id, obj.value, -1)
-        })
-    })
+        });
+    });
 
     const btnDeleteCarrito = document.querySelectorAll(".btnDeleteCarrito")
     btnDeleteCarrito.forEach(obj => {
         obj.addEventListener("click", () => {
             deleteElementoCarrito(obj.id, obj.value);
-        })
-    })
+        });
+    });
 };
 
 /* --- Tarjeta ------------------------------------------------- */
 /* ------------------------------------------------------------- */
-const txtBuscar = document.querySelector("#txtBuscar")
-txtBuscar.addEventListener("keyup", () => buscarTarjeta());
-
-function buscarTarjeta() {
-    const filter = document.querySelector("#txtBuscar").value.toUpperCase()
-    let card = document.querySelectorAll(".card");
-
-    card.forEach(e => {
-        e.style.display = "none";
-        let txtValue = e.querySelector("h1").value
-
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            e.style.display = "";
-        }
-    });
-}
-
 function sumarEnTarjeta(id, n) {
     let cantTarjeta = document.querySelector(`#cant_${id}`);
     let cant = parseInt(cantTarjeta.textContent);
