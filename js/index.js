@@ -22,7 +22,7 @@ function inicializarTienda() {
             let newCategoria = new Categoria(categ.id, categ.nombre);
             
             categ.juegos.map(juego => {
-                newCategoria.setJuego( new Juego(juego.id, juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link));
+                newCategoria.setJuego( new Juego(juego.id, juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link, juego.etiqueta));
             });
 
             objTienda.setCategoria(newCategoria);
@@ -100,7 +100,7 @@ function getBodegaLocalStorage() {
             let newCategoria = new Categoria(categ._id, categ._nombre);
             
             categ._juegos.map(juego => {
-                newCategoria.setJuego(new Juego(juego._id, juego._nombre, juego._precio, juego._dercripcion, juego._stock, juego._link));
+                newCategoria.setJuego(new Juego(juego._id, juego._nombre, juego._precio, juego._dercripcion, juego._stock, juego._link, juego._etiqueta));
             });
 
             bodega.setCategoria(newCategoria);
@@ -174,6 +174,7 @@ function renderProductos() {
 
             texto = document.createTextNode(juego.getNombre());
             obj = document.createElement("h1");
+            obj.value = juego.getEtiqueta();
             obj.appendChild(texto);
             divCart.appendChild(obj);
 
@@ -298,7 +299,7 @@ function renerDetaCarrito() {
 
         cant += e.cant;
         subtotal += (e.cant * juego.getPrecio())
-        envio = formatoCL.format(5500);
+        envio = 5500;
         
         let objContenedor = document.createElement("div");
         objContenedor.classList.add("itemCarrito");
@@ -417,7 +418,7 @@ function renerDetaCarrito() {
     padre = document.createElement("p")
     padre.appendChild(texto);
     div.appendChild(padre);
-    texto = document.createTextNode(envio);
+    texto = document.createTextNode(formatoCL.format(envio));
     padre = document.createElement("p")
     padre.appendChild(texto);
     div.appendChild(padre);
@@ -431,7 +432,7 @@ function renerDetaCarrito() {
     padre = document.createElement("p")
     padre.appendChild(texto);
     div.appendChild(padre);
-    texto = document.createTextNode(formatoCL.format(cant * subtotal));
+    texto = document.createTextNode(formatoCL.format(subtotal + envio));
     padre = document.createElement("p")
     padre.appendChild(texto);
     div.appendChild(padre);
@@ -467,6 +468,23 @@ function renerDetaCarrito() {
 
 /* --- Tarjeta ------------------------------------------------- */
 /* ------------------------------------------------------------- */
+const txtBuscar = document.querySelector("#txtBuscar")
+txtBuscar.addEventListener("keyup", () => buscarTarjeta());
+
+function buscarTarjeta() {
+    const filter = document.querySelector("#txtBuscar").value.toUpperCase()
+    let card = document.querySelectorAll(".card");
+
+    card.forEach(e => {
+        e.style.display = "none";
+        let txtValue = e.querySelector("h1").value
+
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            e.style.display = "";
+        }
+    });
+}
+
 function sumarEnTarjeta(id, n) {
     let cantTarjeta = document.querySelector(`#cant_${id}`);
     let cant = parseInt(cantTarjeta.textContent);

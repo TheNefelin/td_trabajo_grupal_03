@@ -1,12 +1,13 @@
 
 export class Juego {
-    constructor(id, nombre, precio, dercripcion, stock, link) {
+    constructor(id, nombre, precio, dercripcion, stock, link, etiqueta) {
         this._id = id;
         this._nombre = nombre;
         this._precio = precio;
         this._dercripcion = dercripcion;
         this._stock = stock;
-        this._link = link;
+        this._link = link
+        this._etiqueta = etiqueta;
     }
     getId() {
         return this._id;
@@ -25,6 +26,9 @@ export class Juego {
     }
     getLink() {
         return this._link;
+    }
+    getEtiqueta() {
+        return this._etiqueta;
     }
     setModificarStock(cant) {
         this._stock = parseInt(this._stock) + parseInt(cant)
