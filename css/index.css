@@ -199,36 +199,28 @@ h1, h4, p {
 /* --- Buscar Juego -------------------------------------------- */
 /* ------------------------------------------------------------- */
 .buscarJuego {
-    text-align: center;
+    background-color: var(--colorPrimario);
+    margin: 1rem;
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-.buscarJuego > input[type=text] {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid grey;
-    max-width: 70vw;
-    background: #f1f1f1;
+.buscarJuego > div {
+    display: flex;
+    flex-direction: column;
+    padding: auto;
 }
 
-.buscarJuego > button {
-    max-width: 20vw;
-    padding: 10px;
-    background: var(--colorText1);
-    color: var(--colorPrimario);
-    font-size: 17px;
-    border: none;
-    border-left: none;
-    cursor: pointer;
+.buscarJuego input {
+    height: 2rem;
 }
-  
-.buscarJuego button:hover {
-    background: var(--colorCajaFondo);
-}
-  
-.buscarJuego::after {
-    content: "";
-    clear: both;
-    display: table;
+
+.buscarJuego select {
+    height: 2.4rem;
 }
 
 /* --- Tarjeta ------------------------------------------------- */
@@ -236,7 +228,7 @@ h1, h4, p {
 #tienda {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
 }
 
 .card {

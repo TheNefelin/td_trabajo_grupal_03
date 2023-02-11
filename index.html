@@ -48,13 +48,28 @@
         <div class="mySlides fade">
             <img src="./img/fondo03.jpg">
         </div>
-        <br>
     </section>
     
     <section>
         <div class="buscarJuego">
-            <input id="txtBuscar" type="text" placeholder="Buscar Juego...">
-            <button type="submit"><i>Buscar</i></button>
+            <div>
+                <label>Filtro por Precio $ 125.000</label>
+                <input type="range" min="1000" max="100000" value="90000">
+            </div>
+            <div>
+                <label>Filtro por Categoria</label>
+                <select name="cars" id="cars">
+                    <option value="1">Todos</option>
+                    <option value="1">PlayStation</option>
+                    <option value="2">X Box</option>
+                    <option value="3">Nintendo 3DS</option>
+                    <option value="4">PC</option>
+                </select>
+            </div>
+            <div>
+                <label>Filtro por texto</label>
+                <input id="txtBuscar" type="text" placeholder="Buscar Juego...">
+            </div>
         </div>
         <br>
     </section>
