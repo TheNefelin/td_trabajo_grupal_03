@@ -32,8 +32,8 @@
                 <div class="navBar01-C"></div>
             </div>
             <div class="navBar01-links">
-                <a href="#">Inventario</a>
-                <a href="index.html" id="resetSitio">reset</a>
+                <a id="linkInventario" href="#">Inventario</a>
+                <a id="resetSitio" href="#">reset</a>
             </div>
         </nav>
     </header>
@@ -59,7 +59,7 @@
             <div>
                 <label>Filtro por Categoria</label>
                 <select id="filtroCategoria">
-                    <option value="0">Todos</option>
+                    <!-- Aqui se cargarn todas las categorias -->
                 </select>
             </div>
             <div>
@@ -71,46 +71,14 @@
     </section>
 
     <section id="tienda">
-        <!-- <div class="card">
-            <img src="./img/PS_01.jpg">
-            <h1>Tailored Jeans</h1>
-            <h4>Categ: PlayStation - Stock: <span>30</span></h4>
-            <p class="price">$19.99</p>
-            <div class="btnMasMenos">
-                <img class="btnMenos" src="./img/menos.svg">
-                <h3>(25)</h3>
-                <img class="btnMas" src="./img/mas.svg">
-            </div>
-            <div><button>Agregar</button></div>
-        </div> -->
+        <!-- Aqui se renderiza la tienda -->
     </section>
 
     <section class="verCarrito">
         <img class="salirDetaCarrito" src="./img/exit.svg">
         <div class="salidaCarrito">
             <div id="detaCarritoContenedor">
-                <!-- <div class="itemCarrito">
-                    <div>
-                        <img src="./img/mas.svg">
-                        <img src="./img/menos.svg">
-                    </div>
-                    <div class="detaCarrito">
-                        <div>
-                            Item: asdasdasdasdasdsasdas
-                        </div>
-                        <div>
-                            Desc: asdasdasdasdasdsasdas
-                        </div>
-                        <hr>
-                        <div>
-                            <span>Stock: 0000</span> -
-                            <span> Cant: 0000</span> -
-                            <span>Precio: 0000</span> -
-                            <span>Total: 0000</span>
-                        </div>
-                    </div>
-                    <img src="./img/basura.svg">
-                </div> -->
+                <!-- Aqui se renderiza el contenido del carrito y los totales -->
             </div>
             <form class="itemCarrito despachoCarrito">
                 <h3>Formulario de Despacho</h3>
@@ -140,6 +108,13 @@
             <button class="btnPagar">Pagar</button>
         </div>
     </section>
+
+    <section class="verInventario">
+        <img class="btnSalirInventario" src="./img/exit.svg">
+    </section>
+    
+    <footer>
+    </footer>
 
     <script type="module" src="./js/index.js"></script>
 </body>

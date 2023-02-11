@@ -7,6 +7,10 @@ import { Carrito } from "../class/Carrito.js";
 import { correo } from "../js/correo.js"
  
 window.onload = () => {
+    inicializar()
+}
+
+function inicializar() {
     inicializarTienda();
     inicializarTemps()
     console.log("Sitio Iniciado")
@@ -53,6 +57,20 @@ linkResetSitio.addEventListener("click", () => {
 function resetSitio() {
     deleteCarritoLocalStorage();
     deleteBodegaLocalStorage();
+    inicializar();
+    cerrarMenu();
+    console.log("Sitio Reseteado");
+}
+
+const linkLogo = document.querySelector(".navBar01-logo");
+linkLogo.addEventListener("click", () => {
+    inicializar();
+    cerrarMenu();
+});
+
+function cerrarMenu() {
+    navBar01Btn.classList.remove("navBar01-btn_click");
+    navBar01Links.classList.remove("navBar01-links_noOcultar");
 }
 
 /* --- Local Storage ------------------------------------------- */
@@ -124,11 +142,10 @@ const formatoCL = new Intl.NumberFormat('es-CL', {
 /* --- NavBar -------------------------------------------------- */
 /* ------------------------------------------------------------- */
 const navBar01Btn = document.querySelector(".navBar01-btn");
+const navBar01Links = document.querySelector(".navBar01-links"); 
 
 navBar01Btn.addEventListener("click", () => {
     navBar01Btn.classList.toggle("navBar01-btn_click");
-
-    const navBar01Links = document.querySelector(".navBar01-links"); 
     navBar01Links.classList.toggle("navBar01-links_noOcultar");
 });
 
@@ -178,17 +195,9 @@ function buscarTarjeta(txtFilter, precioFilter, categoriaFilter) {
 
     card.forEach(e => {
         e.style.display = "none";
-        let valueH1 = e.querySelector("h1").value   //referencia para filtrar por Texto
-        let valueP = e.querySelector("p").value     //referencia para filtrar por Precio
-        let valueH4 = e.querySelector("h4").value 
-
-        
-        if (categoriaFilter == valueH4) {
-            console.log(categoriaFilter + " --- " + valueH4)
-
-        }
-        //console.log(categoriaFilter == valueH4 ? categoriaFilter: "NO");
-        
+        let valueH1 = e.querySelector("h1").value   //Referencia para filtrar por texto
+        let valueP = e.querySelector("p").value     //Referencia para filtrar por precio
+        let valueH4 = e.querySelector("h4").value   //Referencia para filtrar por categoria
 
         if ((valueH1.toUpperCase().indexOf(txtFilter) > -1) && (precioFilter >= parseInt(valueP)) && ((categoriaFilter == valueH4) || categoriaFilter == 0)) {
             e.style.display = "";
@@ -199,13 +208,20 @@ function buscarTarjeta(txtFilter, precioFilter, categoriaFilter) {
 /* --- Render Sitio -------------------------------------------- */
 /* ------------------------------------------------------------- */
 function renderProductos() {
-    let obj, texto, precioMin, precioMax;
+    let obj, precioMin, precioMax;
     precioMin = 0; 
     precioMax = 0;
     const tienda = document.querySelector("#tienda");
     tienda.innerHTML = "";
 
     const bodega = getBodegaLocalStorage();
+
+    const filtroCategoria = document.querySelector("#filtroCategoria");
+    obj = document.createElement("option");
+    obj.value = 0;
+    obj.innerText = "Todos";
+    filtroCategoria.innerHTML = "";
+    filtroCategoria.appendChild(obj);
 
     bodega.getCategorias().map((categ) => {
         categ.getJuegos().map((juego) => {
@@ -222,33 +238,29 @@ function renderProductos() {
             obj.src = juego.getLink();
             divCart.appendChild(obj);
 
-            texto = document.createTextNode(juego.getNombre());
             obj = document.createElement("h1");
             obj.value = juego.getEtiqueta();
-            obj.appendChild(texto);
+            obj.innerText = juego.getNombre();
             divCart.appendChild(obj);
 
             // ------------------------------------------
-            texto = document.createTextNode(`Categ: ${categ.getNombre()} - Stock: `);
             const divContenedorStock = document.createElement("h4");
             divContenedorStock.value = categ.getId();
-            divContenedorStock.appendChild(texto);
+            divContenedorStock.innerText = `Categ: ${categ.getNombre()} - Stock: `
 
             // -- Nieto --
-            texto = document.createTextNode(juego.getStock());
             obj = document.createElement("span");
             obj.id = `stock_${juego.getId()}`;
-            obj.appendChild(texto);
+            obj.innerText = juego.getStock();
             divContenedorStock.appendChild(obj);
 
             divCart.appendChild(divContenedorStock);
 
             // ------------------------------------------
-            texto = document.createTextNode(formatoCL.format(juego.getPrecio()));
             obj = document.createElement("p");
             obj.value = juego.getPrecio();
+            obj.innerText = formatoCL.format(juego.getPrecio());
             obj.classList.add("price");
-            obj.appendChild(texto);
             divCart.appendChild(obj);
 
             // -------------------------------------------
@@ -262,11 +274,10 @@ function renderProductos() {
             obj.id = juego.getId();
             divContenedorBtn.appendChild(obj);
 
-            texto = document.createTextNode("1");
             obj = document.createElement("h3");
-            obj.appendChild(texto);
             obj.id = `cant_${juego.getId()}`;
             obj.value = categ.getId();
+            obj.innerText = 1;
             divContenedorBtn.appendChild(obj);
 
             obj = document.createElement("img");
@@ -281,12 +292,11 @@ function renderProductos() {
             const divContenedorAgregar = document.createElement("div");
             
             // -- Nieto --
-            texto = document.createTextNode("Agregar");
             obj = document.createElement("button");
             obj.id = `btnAgregar_${juego.getId()}`
             obj.value = juego.getId();
+            obj.innerText = "Agregar";
             obj.classList.add("cardBtn");
-            obj.appendChild(texto);
             divContenedorAgregar.appendChild(obj);
 
             divCart.appendChild(divContenedorAgregar);
@@ -296,7 +306,6 @@ function renderProductos() {
         })
 
         // -- Inicializa el filtro de categoria -----------------------
-        const filtroCategoria = document.querySelector("#filtroCategoria");
         obj = document.createElement("option");
         obj.value = categ.getId();
         obj.innerText = categ.getNombre();
@@ -393,40 +402,30 @@ function renerDetaCarrito() {
         padre = document.createElement("div");
         padre.classList.add("detaCarrito");
 
-        texto = document.createTextNode(`Item: ${juego.getNombre()}`);
         hijo = document.createElement("div");
-        hijo.appendChild(texto);
+        hijo.innerText = `Item: ${juego.getNombre()}`;
         padre.appendChild(hijo);
-
-        // texto = document.createTextNode(`Desc: ${"Prueba"}`);
-        // hijo = document.createElement("div");
-        // hijo.appendChild(texto);
-        // padre.appendChild(hijo);
 
         hijo = document.createElement("hr");
         padre.appendChild(hijo);
         // -----
         hijo = document.createElement("div");
+        hijo.innerText = `Stock: ${juego.getStock()} - Cant: ${e.cant} - Precio: ${formatoCL.format(juego.getPrecio())} - Total: ${formatoCL.format(e.cant * juego.getPrecio())}`;
+        // nieto = document.createElement("span");
+        // nieto.innerText = `Stock: ${juego.getStock()} - `
+        // hijo.appendChild(nieto);
 
-        texto = document.createTextNode(`Stock: ${juego.getStock()} - `);
-        nieto = document.createElement("span");
-        nieto.appendChild(texto);
-        hijo.appendChild(nieto);
+        // nieto = document.createElement("span");
+        // nieto.innerText = `Cant: ${e.cant} - `
+        // hijo.appendChild(nieto);
 
-        texto = document.createTextNode(`Cant: ${e.cant} - `);
-        nieto = document.createElement("span");
-        nieto.appendChild(texto);
-        hijo.appendChild(nieto);
+        // nieto = document.createElement("span");
+        // nieto.innerText = `Precio: ${formatoCL.format(juego.getPrecio())} - `
+        // hijo.appendChild(nieto);
 
-        texto = document.createTextNode(`Precio: ${formatoCL.format(juego.getPrecio())} - `);
-        nieto = document.createElement("span");
-        nieto.appendChild(texto);
-        hijo.appendChild(nieto);
-
-        texto = document.createTextNode(`Total: ${formatoCL.format(e.cant * juego.getPrecio())}`);
-        nieto = document.createElement("span");
-        nieto.appendChild(texto);
-        hijo.appendChild(nieto);
+        // nieto = document.createElement("span");
+        // nieto.innerText = `Total: ${formatoCL.format(e.cant * juego.getPrecio())}`;
+        // hijo.appendChild(nieto);
 
         padre.appendChild(hijo);
         // -----
@@ -454,56 +453,56 @@ function renerDetaCarrito() {
     hr = document.createElement("hr");
     totalCarrito.appendChild(hr);
 
+    // -- Resumen de cantidad de productos ---
     div = document.createElement("div");
-    texto = document.createTextNode("· Cant Productos:");
-    padre = document.createElement("p")
-    padre.appendChild(texto);
+    padre = document.createElement("p");
+    padre.innerText = "· Cant Productos:";
     div.appendChild(padre);
-    texto = document.createTextNode(cant);
-    padre = document.createElement("p")
-    padre.appendChild(texto);
-    div.appendChild(padre);
-    totalCarrito.appendChild(div);
 
-    hr = document.createElement("hr");
-    totalCarrito.appendChild(hr);
-    
-    div = document.createElement("div");
-    texto = document.createTextNode("· Sub Total:");
-    padre = document.createElement("p")
-    padre.appendChild(texto);
-    div.appendChild(padre);
-    texto = document.createTextNode(formatoCL.format(subtotal));
-    padre = document.createElement("p")
-    padre.appendChild(texto);
+    padre = document.createElement("p");
+    padre.innerText = cant;
     div.appendChild(padre);
     totalCarrito.appendChild(div);
 
     hr = document.createElement("hr");
     totalCarrito.appendChild(hr);
 
+    // -- Resumen sub total ------------------
     div = document.createElement("div");
-    texto = document.createTextNode("· Consto Envio:");
-    padre = document.createElement("p")
-    padre.appendChild(texto);
+    padre = document.createElement("p");
+    padre.innerText = "· Sub Total:";
     div.appendChild(padre);
-    texto = document.createTextNode(formatoCL.format(envio));
+
     padre = document.createElement("p")
-    padre.appendChild(texto);
+    padre.innerText = formatoCL.format(subtotal);
     div.appendChild(padre);
     totalCarrito.appendChild(div);
 
     hr = document.createElement("hr");
     totalCarrito.appendChild(hr);
 
+    // -- Costo de envio ---------------------
     div = document.createElement("div");
-    texto = document.createTextNode("· TOTAL:");
-    padre = document.createElement("p")
-    padre.appendChild(texto);
+    padre = document.createElement("p");
+    padre.innerText = "· Consto Envio:";
     div.appendChild(padre);
-    texto = document.createTextNode(formatoCL.format(subtotal + envio));
+
     padre = document.createElement("p")
-    padre.appendChild(texto);
+    padre.innerText = formatoCL.format(envio);
+    div.appendChild(padre);
+    totalCarrito.appendChild(div);
+
+    hr = document.createElement("hr");
+    totalCarrito.appendChild(hr);
+
+    // -- Resumen Total ----------------------
+    div = document.createElement("div");
+    padre = document.createElement("p");
+    padre.innerText = "· TOTAL:";
+    div.appendChild(padre);
+
+    padre = document.createElement("p");
+    padre.innerText = formatoCL.format(subtotal + envio);
     div.appendChild(padre);
     totalCarrito.appendChild(div);
 
@@ -629,6 +628,7 @@ function modificarCarrito(idCateg, idJuego, cant) {
 
 const carritoContenedor = document.querySelector(".carrito-contenedor");
 carritoContenedor.addEventListener("click", () => {
+    cerrarMenu();
     verCarrito();
 });
 
@@ -657,7 +657,7 @@ const inputDespachoCarrito = document.querySelectorAll(".despachoCarrito > input
 inputDespachoCarrito.forEach(obj => {
     obj.addEventListener("keyup", () => {
         obj.classList.remove("despachoCarritoInput_no");
-    })
+    });
 });
 
 function pagarCarrito() {
@@ -666,7 +666,7 @@ function pagarCarrito() {
         if (!obj.value) {
             estado = false;
             obj.classList.add("despachoCarritoInput_no");
-        }
+        };
     });
 
     if (estado) {
@@ -679,12 +679,31 @@ function pagarCarrito() {
         });
 
         console.log("Pago Exitoso");
-    }
+    };
 };
 
 function enviarCorreo() {
     const despachoCarrito = document.querySelector(".despachoCarrito");
     const newCorreo = correo(despachoCarrito);
-    console.log(newCorreo);
-    
-}
+};
+
+/* --- Inventario ---------------------------------------------- */
+/* ------------------------------------------------------------- */
+const verInventario = document.querySelector(".verInventario");
+const linkInventario = document.querySelector("#linkInventario");
+
+linkInventario.addEventListener("click", () => {
+    verInventario.classList.add("verInventario_si");
+    cerrarMenu();
+});
+
+const btnSalirInventario = document.querySelector(".btnSalirInventario");
+
+btnSalirInventario.addEventListener("click", () => {
+    verInventario.classList.remove("verInventario_si");
+});
+
+
+
+/* ------------------------------------------------------------- */
+/* ------------------------------------------------------------- */
