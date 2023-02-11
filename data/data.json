@@ -13,7 +13,8 @@
                         "dercripcion": "Un Manjar de Juego",
                         "stock": 10,
                         "link": "../img/PS_01.jpg",
-                        "desarrollador": "Ubisoft"
+                        "desarrollador": "Ubisoft",
+                        "etiqueta": "ps The Witcher 3 rpg acción occidental mundo abierto rol"
                     },
                     {
                         "id": 2,
@@ -22,7 +23,8 @@
                         "dercripcion": "Explora. Lucha. Crea. Construye. En el mundo post-apocalíptico de Fallout 4, todas y cada una de tus acciones cambiará el mundo que te rodea, en la experiencia de rol definitiva en un mundo abierto.",
                         "stock": 0,
                         "link": "../img/PS_02.jpg",
-                        "desarrollador": "Bethesda"
+                        "desarrollador": "Bethesda",
+                        "etiqueta": "Ps ps PS4 play station apocaliptico rol Rol Accion accion RPG rpg Ciencia ficción perros"
                     },
                     {
                         "id": 3,
@@ -31,7 +33,8 @@
                         "dercripcion": "Cuphead es un juego de acción clásico de correr y disparar centrado especialmente en batallas con jefes. Inspirado en los dibujos animados de la década de 1930, los aspectos visuales y sonoros se han creado meticulosamente con las mismas técnicas de la época (es decir, animación tradicional en transparencias dibujadas a mano, fondos de acuarela y grabaciones de jazz originales).",
                         "stock": 10,
                         "link": "../img/PS_03.jpg",
-                        "desarrollador": ""
+                        "desarrollador": "",
+                        "etiqueta": "corre dispara batallas juego animado PS ps Cuphead cuphead"
                     },
                     {
                         "id": 4,
@@ -40,7 +43,8 @@
                         "descripcion": "En Power Rangers: Battle for the Grid, la última entrega de la serie que cuenta con 25 años a sus espaldas, disfrutarás de gráficos asombrosos y detalles realistas. Enfrenta a Rangers y villanos actuales y clásicos como nunca en batallas por equipos de 3 contra 3. Pon a prueba tus habilidades en línea contra amigos y jugadores de todos los rincones del mundo en una partida tras otras.",
                         "stock": 10,
                         "link": "../img/PS_04.jpg",
-                        "desarrollador": "Maximum"
+                        "desarrollador": "Maximum",
+                        "etiqueta": "PS4 PS ps Power Rangers villanos rangers habilidad batallas"
                     },
                     {
                         "id": 5,
@@ -49,7 +53,8 @@
                         "dercripcion": "Viaja a través de las Tierras Intermedias, un nuevo mundo de fantasía creado por Hidetaka Miyazaki, creador de la influyente serie de videojuegos DARK SOULS, y George RR Martin, autor de la serie de fantasía más vendida del New York Times, A Song of Ice and Fire. Desentraña los misterios del poder del Anillo de Elden.",
                         "stock": 10,
                         "link": "../img/PS_05.jpg",
-                        "desarrollador": "Bandai Namco"
+                        "desarrollador": "Bandai Namco",
+                        "etiqueta": "PS4 PS ps RPG rpg accion batalla rol Elden ring"
                     }
                 ]
             },
@@ -64,7 +69,8 @@
                         "dercripcion": "Disfruta de una aventura al más puro estilo de TellTale Games, con el tradicional sistema de elección de diálogo y decisiones que hará que la historia en cada sesión de juego sea diferente según tus elecciones.",
                         "stock": 8,
                         "link": "../img/XB_01.jpg",
-                        "desarrollador": "2K"
+                        "desarrollador": "2K",
+                        "etiqueta": "Borderlands XBOX xbox ultra hd shooter acción multijugador "
                     },
                     {
                         "id": 7,
@@ -73,7 +79,8 @@
                         "dercripcion": "Hace cinco años, Carl Johnson dejó atrás su vida en Los Santos, San Andreas, una ciudad consumida por las pandillas, las drogas y la corrupción. Estamos a principios de los noventa y Carl debe regresar. Su madre fue asesinada, su familia se rompe en pedazos y sus amigos de la infancia van camino al desastre. Además, un par de policías corruptos lo acusan de homicidio. CJ se ve arrastrado a un viaje por todo San Andreas para salvar a su familia y obtener el control de las calles.",
                         "stock": 16,
                         "link": "../img/XB_02.jpg",
-                        "desarrollador": "Rockstar Studios"
+                        "desarrollador": "Rockstar Studios",
+                        "etiqueta": "GTA San Andreas acción aventura mundo abierto conduccion disparos en tercera persona"
                     },
                     {
                         "id": 8,
@@ -82,7 +89,8 @@
                         "dercripcion": "Guía a Snake en una misión por salvar a sus aliados y sus soldados de una amenaza implacable surgida de las cenizas del pasado, en una aventura que hará que te cuestiones todo lo que creías saber de la saga creada por Hideo Kojima.",
                         "stock": 8,
                         "link": "../img/XB_03.jpg",
-                        "desarrollador": "Konami"
+                        "desarrollador": "Konami",
+                        "etiqueta": "Metal Gear Solid V acción aventura sigilo xbox XBOX"
                     },
                     {
                         "id": 9,
@@ -91,7 +99,8 @@
                         "dercripcion": "El juego que redefinió tanto a los juegos de puzzles y los FPS regresa en una secuela más grande, más compleja y más demente que su predecesor, todo por cortesía de Aperture Science Laboratories",
                         "stock": 18,
                         "link": "../img/XB_04.jpg",
-                        "desarrollador": "Valve"
+                        "desarrollador": "Valve",
+                        "etiqueta": "XBOX xbox Portal 2 puzzles FPS portales "
                     }
                 ]
             },
@@ -106,7 +115,8 @@
                         "dercripcion": "Uno de los juegos de estrategia en tiempo real más queridos vuelve a la carga con Age of Empires IV, una nueva entrega que te pondrá en el centro de épicas batallas históricas que transformaron el mundo, con formas nuevas y conocidas de expandir tu imperio en amplios paisajes con una increíble fidelidad visual en 4K.",
                         "stock": 18,
                         "link": "../img/PC_01.jpg",
-                        "desarrollador": "Microsoft"
+                        "desarrollador": "Microsoft",
+                        "etiqueta": "PC pc Age of Empires IV estrategia en tiempo real edad media campañas"
                     },
                     {
                         "id": 11,
@@ -115,7 +125,8 @@
                         "dercripcion": "Juego de un solo jugador con una historia en la que te metes en la piel de un Padawan Jedi que logró escapar de milagro de la purga de la Orden 66 luego de los acontecimientos del Episodio 3: La venganza de los Sith.",
                         "stock": 25,
                         "link": "../img/PC_02.jpg",
-                        "desarrollador":"Electronic Arts"
+                        "desarrollador":"Electronic Arts",
+                        "etiqueta": "Jedi Fallen Order PC pc star wars accion aventura un jugador "
                     },
                     {
                         "id": 12,
@@ -124,7 +135,8 @@
                         "dercripcion": "Únete a la nueva cosecha de esta milenaria batalla entre plantas y zombis con 20 clases totalmente personalizables en el lanzamiento, con una clase que se juega en equipo para cada facción. Lleva las habilidades únicas de cada clase de personaje a los seis modos JcJ, como la nueva Arena de batallas, y vive las emociones alucinantes de estos combates.",
                         "stock": 25,
                         "link": "../img/PC_03.jpg",
-                        "desarrollador":"Electronic Arts"
+                        "desarrollador":"Electronic Arts",
+                        "etiqueta": "Pc pc Plants vs Zombies defensa de torres ataque defensa"
                     },
                     {
                         "id": 13,
@@ -133,7 +145,8 @@
                         "dercripcion": "El fútbol vuelve a las calles con la auténtica cultura, la creatividad y el estilo de las pistas urbanas.",
                         "stock": 30,
                         "link": "../img/PC_04.jpg",
-                        "desarrollador":"Electronic Arts"
+                        "desarrollador":"Electronic Arts",
+                        "etiqueta": "Pc pc FIFA 20 futbol simulación soccer"
                     }
                 ]
             },
@@ -148,7 +161,8 @@
                         "dercripcion": "Lucha contra legiones de fieros soldados y feroces monstruos en la piel de Marth, Xander, Corrin y otros héroes de Fire Emblem para desatar potentes y exorbitantes ataques al estilo Dynasty Warriors.",
                         "stock": 12,
                         "link": "../img/DS_01.jpg",
-                        "desarrollador": "Nintendo"
+                        "desarrollador": "Nintendo",
+                        "etiqueta": "3DS 3ds Fire Emblem Warriors lucha mosntruos soldados hack and slash accion rol "
                     },
                     {
                         "id": 15,
@@ -157,7 +171,8 @@
                         "dercripcion": "Las sencillas pero potentes herramientas del juego te permiten insuflar vida a las historias nacidas de tu imaginación. Personaliza a personajes, historias, combates y muchas más cosas para convertirte en el próximo gran desarrollador. Luego podrás compartir tus creaciones y jugar con las de otros gracias a RPG Maker Player.",
                         "stock": 15,
                         "link": "../img/DS_02.jpg",
-                        "desarrollador": "NIS"
+                        "desarrollador": "NIS",
+                        "etiqueta": "RPG Maker 3DS 3ds personalizar desarrollar"
                     },
                     {
                         "id": 16,
@@ -166,7 +181,8 @@
                         "dercripcion": "Runbow lleva toda la diversión y el colorido caos de Runbow a la consola New Nintendo 3DS. Domina los modos Aventura, Bowhemoth y La aventura espacial de Satura, en solitario o con amigos a través del juego local. También es posible crear tarjetas StreetPass para compartir estadísticas divertidas con tus amigos.",
                         "stock": 8,
                         "link": "../img/DS_03.jpg",
-                        "desarrollador": "Nighthawk Interactive"
+                        "desarrollador": "Nighthawk Interactive",
+                        "etiqueta": "Runbow pocket 3DS 3ds aventura espacial"
                     },
                     {
                         "id": 17,
@@ -175,7 +191,8 @@
                         "dercripcion": "El icónico erizo azul, Sonic the Hedgehog, correrá una vez más en Sonic Boom: Fire & Ice, un juego que introduce más aventura, velocidad, exploración y un nuevo elemento de jugabilidad de fuego y hielo que contribuirá a impulsar la acción. El juego también supone el retorno triunfal de Sonic, Tails, Knuckles, Amy y Sticks.",
                         "stock": 30,
                         "link": "../img/DS_04.jpg",
-                        "desarrollador": "Sega"
+                        "desarrollador": "Sega",
+                        "etiqueta": "3DS 3ds Sonic Boom erizo aventura velocidad correr"
                     }
                 ]
             }
