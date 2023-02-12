@@ -538,7 +538,7 @@ function renderInventario() {
     const filtroTextContenedor = document.querySelector("#filtroTextContenedor");
 
     // buscadorInventario.appendChild(filtroTextContenedor);
-    console.log("YA")
+    console.log("buscadorInventario")
 }
 
 /* --- Tarjeta ------------------------------------------------- */
