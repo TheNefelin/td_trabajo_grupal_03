@@ -13,7 +13,6 @@ window.onload = () => {
 function inicializar() {
     inicializarTienda();
     inicializarTemps()
-    console.log("Sitio Iniciado")
 }
 
 function inicializarTienda() {
@@ -36,7 +35,7 @@ function inicializarTienda() {
     })
     .then(() => {
         renderProductos();
-        console.log("Datos Cargados Correctamente")
+        renderInventario()
     })
     .catch((err) => console.log(`Error Fetch: ${err}`))
 };
@@ -533,6 +532,14 @@ function renerDetaCarrito() {
         });
     });
 };
+
+function renderInventario() {
+    const buscadorInventario = document.querySelector(".buscadorInventario");
+    const filtroTextContenedor = document.querySelector("#filtroTextContenedor");
+
+    // buscadorInventario.appendChild(filtroTextContenedor);
+    console.log("YA")
+}
 
 /* --- Tarjeta ------------------------------------------------- */
 /* ------------------------------------------------------------- */

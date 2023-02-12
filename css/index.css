@@ -15,6 +15,10 @@
     --colorCajaBorde: black;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 a {
     color: var(--colorText1);
     text-decoration: none;
@@ -198,38 +202,39 @@ h1, h4, p {
 
 /* --- Buscar Juego -------------------------------------------- */
 /* ------------------------------------------------------------- */
-.buscarJuego {
+.buscador {
     background-color: var(--colorPrimario);
     margin: 1rem;
     padding: 0.5rem;
     display: grid;
+    grid-auto-flow: dense;
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
     gap: 0.5rem;
     border-radius: 8px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-.buscarJuego > div {
+.buscador > div {
     display: flex;
     flex-direction: column;
     padding: auto;
 }
 
-.buscarJuego select {
+.buscador select {
     height: 2.4rem;
     color: var(--colorText1) ;
 }
 
-.buscarJuego label {
+.buscador label {
     color: var(--colorText2);
     margin-bottom: 0.5rem;
 }
 
-#rangeBuscar {
+#rangeBuscar, #rangeBuscarInv {
     margin: auto 0 auto 0;
 }
 
-#txtBuscar {
+#txtBuscar, #txtBuscarInv {
     height: 2rem;
 }
 
@@ -403,12 +408,31 @@ h1, h4, p {
     backdrop-filter: blur(8px);;
     width: 100%;
     height: 100vh;
-    right: 100%;
+    /* right: 100%; */
     transition: 0.3s;
 }
 
 .verInventario_si {
     right: 0;
+}
+
+.buscadorInventario {
+    background-color: var(--colorPrimario);
+    margin: 1rem;
+    border-radius: 8px;
+}
+
+.listaInventario {
+    color: var(--colorText1);
+    background-color: var(--colorPrimario);
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.cardInventario > img {
+    height: 30vw;
+    border: 1px solid var(--colorText1);
 }
 
 /* --- Footer -------------------------------------------------- */
