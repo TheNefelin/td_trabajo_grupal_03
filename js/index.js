@@ -206,11 +206,12 @@ function buscarTarjeta(txtFilter, precioFilter, categoriaFilter) {
 
 /* --- Render Sitio -------------------------------------------- */
 /* ------------------------------------------------------------- */
+const tienda = document.querySelector("#tienda");
+
 function renderProductos() {
     let obj, precioMin, precioMax;
     precioMin = 0; 
     precioMax = 0;
-    const tienda = document.querySelector("#tienda");
     tienda.innerHTML = "";
 
     const bodega = getBodegaLocalStorage();
@@ -702,12 +703,14 @@ const linkInventario = document.querySelector("#linkInventario");
 linkInventario.addEventListener("click", () => {
     verInventario.classList.add("verInventario_si");
     cerrarMenu();
+    tienda.innerHTML = "";
 });
 
 const btnSalirInventario = document.querySelector(".btnSalirInventario");
 
 btnSalirInventario.addEventListener("click", () => {
     verInventario.classList.remove("verInventario_si");
+    renderProductos()
 });
 
 var acc = document.getElementsByClassName("accordion");
@@ -717,11 +720,11 @@ for (i = 0; i < acc.length; i++) {
   acc[i].addEventListener("click", function() {
     this.classList.toggle("active");
     var panel = this.nextElementSibling;
-    if (panel.style.display === "block") {
-      panel.style.display = "none";
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
     } else {
-      panel.style.display = "block";
-    }
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
   });
 }
 
