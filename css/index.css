@@ -204,7 +204,7 @@ h1, h4, p {
 /* ------------------------------------------------------------- */
 .buscador {
     background-color: var(--colorPrimario);
-    margin: 1rem;
+    margin: .2rem 1rem 1rem 1rem;
     padding: 0.5rem;
     display: grid;
     grid-auto-flow: dense;
@@ -328,7 +328,7 @@ h1, h4, p {
 .salirDetaCarrito, .btnSalirInventario {
     background-color: var(--colorText1);
     color: var(--colorPrimario);
-    margin: 1rem;
+    margin: 1rem 0.5rem 0 1rem;
     text-align: center;
     font-size: 2rem;
     cursor: pointer;
@@ -426,14 +426,65 @@ h1, h4, p {
     color: var(--colorText1);
     background-color: var(--colorPrimario);
     margin: 1rem;
-    padding: 1rem;
+    padding: 1vw;
     border-radius: 8px;
 }
 
-.cardInventario > img {
-    height: 30vw;
-    border: 1px solid var(--colorText1);
+.cardInventario {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 1rem;
+    align-items: center;
 }
+
+.cardInventario input {
+    width: 90%;
+}
+
+.cardInventario button {
+    height: 2rem;
+    width: 100%;
+    margin: 0.2rem 0;
+}
+
+.imgInventario {
+    margin: auto;
+    height: 6rem;
+    width: 6rem;
+    object-fit: cover;
+}
+
+.stockInventario  img {
+    height: 3rem;
+}
+
+
+
+.btnEliminar {
+    width: 3rem;
+    object-fit: btnEliminar;
+}
+
+.accordion {
+    background-color: var(--colorText1);
+    color: var(--colorPrimario);
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+  }
+  
+  .panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+    transition: 0.3s;
+  }
 
 /* --- Footer -------------------------------------------------- */
 /* ------------------------------------------------------------- */
