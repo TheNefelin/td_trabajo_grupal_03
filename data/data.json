@@ -40,7 +40,7 @@
                         "id": 4,
                         "nombre": "Power Rangers",
                         "precio": 19990,
-                        "descripcion": "En Power Rangers: Battle for the Grid, la última entrega de la serie que cuenta con 25 años a sus espaldas, disfrutarás de gráficos asombrosos y detalles realistas. Enfrenta a Rangers y villanos actuales y clásicos como nunca en batallas por equipos de 3 contra 3. Pon a prueba tus habilidades en línea contra amigos y jugadores de todos los rincones del mundo en una partida tras otras.",
+                        "dercripcion": "En Power Rangers: Battle for the Grid, la última entrega de la serie que cuenta con 25 años a sus espaldas, disfrutarás de gráficos asombrosos y detalles realistas. Enfrenta a Rangers y villanos actuales y clásicos como nunca en batallas por equipos de 3 contra 3. Pon a prueba tus habilidades en línea contra amigos y jugadores de todos los rincones del mundo en una partida tras otras.",
                         "stock": 10,
                         "link": "../img/PS_04.jpg",
                         "desarrollador": "Maximum",

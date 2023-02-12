@@ -204,7 +204,7 @@ h1, h4, p {
 /* ------------------------------------------------------------- */
 .buscador {
     background-color: var(--colorPrimario);
-    margin: .2rem 1rem 1rem 1rem;
+    margin: 1rem 1rem 1rem 1rem;
     padding: 0.5rem;
     display: grid;
     grid-auto-flow: dense;
@@ -417,6 +417,8 @@ h1, h4, p {
 }
 
 .menuInventario {
+    position: fixed;
+    width: 100%;
     background-color: var(--colorPrimario);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
@@ -438,14 +440,16 @@ h1, h4, p {
 }
 
 .cardInventContenedor {
-    margin: 1rem;
+    margin: 3rem 1rem;
+    overflow-y: scroll;
+    height: 90%;
 }
 
 .cardInventario {
     cursor: pointer;
     display: flex;
-    background-color: var(--colorPrimario);
-
+    background-color: white;
+    margin-top: 0.3rem;
 }
 
 .cardInventImg {
@@ -455,6 +459,7 @@ h1, h4, p {
 }
 
 .cardinventTxt {
+    color: var(--colorText1);
     margin: 0.5rem 0;
     display: grid;
     justify-content: space-between;
@@ -486,7 +491,7 @@ h1, h4, p {
   
 .panel {
     padding: 0 18px;
-    background-color: white;
+    background-color: var(--colorPrimario);
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;

@@ -35,7 +35,6 @@ function inicializarTienda() {
     })
     .then(() => {
         renderProductos();
-        renderInventario()
     })
     .catch((err) => console.log(`Error Fetch: ${err}`))
 };
@@ -349,7 +348,10 @@ function renderProductos() {
 
     let txtRangeBuscar =  document.querySelector("#txtRangeBuscar");
     txtRangeBuscar.textContent = formatoCL.format(precioMax);
-    // -------------------------------------------------------------------
+    // -- Footer ---------------------------------------------------------
+    const footer = document.querySelector("footer");
+    footer.hidden = false
+    // -------------------------------------------------------------------  
 }
 
 function renderCarrito() {
@@ -535,12 +537,112 @@ function renerDetaCarrito() {
 };
 
 function renderInventario() {
-    const buscadorInventario = document.querySelector(".buscadorInventario");
-    const filtroTextContenedor = document.querySelector("#filtroTextContenedor");
+    let padre, hijo, nieto;
+    let cantSinStock = 0;
+    let cantPocoStock = 0;
+    let cantConStock = 0;
+    let inventario = getBodegaLocalStorage()
+    let verInventario = document.querySelector(".verInventario");
+    let cardInventContenedor = document.querySelector(".cardInventContenedor");
+    cardInventContenedor.innerHTML = ""
 
-    // buscadorInventario.appendChild(filtroTextContenedor);
-    console.log("buscadorInventario")
-}
+    inventario.getCategorias().forEach(categ => {
+        categ.getJuegos().map(juego => {
+            if (juego.getStock() == 0) {
+                cantSinStock += 1;
+            } else if (juego.getStock() <= 5) {
+                cantPocoStock += 1;
+            } else {
+                cantConStock += 1
+            }
+
+            // -- Card img ------------------------------
+            padre = document.createElement("div");
+            padre.classList.add("cardInventario");
+
+            hijo = document.createElement("img");
+            hijo.classList.add("cardInventImg");
+            hijo.src = juego.getLink();
+            padre.appendChild(hijo);
+            // -- Card Txt ------------------------------
+            hijo = document.createElement("div");
+            hijo.classList.add("cardinventTxt");
+
+            nieto = document.createElement("label");
+            nieto.innerText = `Nombre: ${juego.getNombre()}`;
+            hijo.appendChild(nieto);    
+            
+            nieto = document.createElement("label");
+            nieto.innerText = `Categ: ${categ.getNombre()}`;
+            hijo.appendChild(nieto);    
+
+            nieto = document.createElement("label");
+            nieto.innerText = `Stock: ${juego.getStock()}`;
+            hijo.appendChild(nieto);    
+
+            padre.appendChild(hijo);
+            cardInventContenedor.appendChild(padre);
+            // -- Card descripcion ----------------------      
+            padre = document.createElement("button");
+            padre.classList.add("accordion");
+            padre.innerText = "Descripción";
+
+            cardInventContenedor.appendChild(padre);
+
+            padre = document.createElement("div");
+            padre.classList.add("panel");
+
+            hijo = document.createElement("p");
+            hijo.innerText = juego.getDercripcion();
+            padre.appendChild(hijo);
+
+            cardInventContenedor.appendChild(padre);
+            // ------------------------------------------
+        });
+    });
+
+    verInventario.appendChild(cardInventContenedor);
+
+    // -- Filtro inventario -----------------------
+    padre = document.querySelector("#selectInventario");
+    padre.innerHTML = "";
+
+    hijo = document.createElement("option");
+    hijo.value = 0;
+    hijo.innerText = "Todos los Productos";
+    padre.appendChild(hijo);
+
+    hijo = document.createElement("option");
+    hijo.value = 1;
+    hijo.innerText = `Sin Stock (${cantSinStock})`;
+    padre.appendChild(hijo);
+
+    hijo = document.createElement("option");
+    hijo.value = 2;
+    hijo.innerText = `Poco Stock (${cantPocoStock})`;
+    padre.appendChild(hijo);
+
+    hijo = document.createElement("option");
+    hijo.value = 3;
+    hijo.innerText = `Con Stock (${cantConStock})`;
+    padre.appendChild(hijo);
+    // --------------------------------------------
+
+    const accordion = document.querySelectorAll(".accordion");
+
+    accordion.forEach(e => {
+        e.addEventListener("click", () => {
+            e.classList.toggle("active");
+            let p = e.nextElementSibling;
+
+            if(p.style.maxHeight){
+                p.style.maxHeight = null;
+            } else {
+                p.style.maxHeight = p.scrollHeight + "px";
+            };
+        });
+    });
+};
 
 /* --- Tarjeta ------------------------------------------------- */
 /* ------------------------------------------------------------- */
@@ -702,31 +804,19 @@ const linkInventario = document.querySelector("#linkInventario");
 
 linkInventario.addEventListener("click", () => {
     verInventario.classList.add("verInventario_si");
+    renderInventario();
     cerrarMenu();
     tienda.innerHTML = "";
+    const footer = document.querySelector("footer");
+    footer.hidden = true
 });
 
 const btnSalirInventario = document.querySelector(".btnSalirInventario");
 
 btnSalirInventario.addEventListener("click", () => {
     verInventario.classList.remove("verInventario_si");
-    renderProductos()
+    renderProductos();
 });
-
-var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling;
-    if (panel.style.maxHeight) {
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
-  });
-}
 
 /* ------------------------------------------------------------- */
 /* ------------------------------------------------------------- */
