@@ -561,6 +561,7 @@ function renderInventario() {
 
             // -- Card img ------------------------------
             padre = document.createElement("div");
+            padre.value = juego.getEtiqueta();
             padre.classList.add("cardInventario");
 
             hijo = document.createElement("img");
@@ -636,7 +637,7 @@ function renderInventario() {
     hijo.innerText = `Con Stock (${cantConStock})`;
     padre.appendChild(hijo);
 
-    // -- add function filtrar --------------------
+    // -- add function filtrar Stock --------------
     padre.addEventListener("change", () => {
         filtrarInventario(padre.value);
     });
@@ -838,14 +839,14 @@ function filtrarInventario(id) {
     if (id == 0) {
         getInventStock.forEach(e => {
             e.style.display = "";
-        })
+        });
     } else if (id == 1) {
         getInventStock.forEach(e => {
             e.style.display = "none";
     
             if (e.value == 0) {
                 e.style.display = "";
-            }
+            };
         });
     } else if (id == 2) {
         getInventStock.forEach(e => {
@@ -853,7 +854,7 @@ function filtrarInventario(id) {
 
             if (e.value <= 5 && e.value > 0) {
                 e.style.display = "";
-            }
+            };
         });
     } else if (id == 3) {
         getInventStock.forEach(e => {
@@ -861,10 +862,25 @@ function filtrarInventario(id) {
     
             if (e.value > 5) {
                 e.style.display = "";
-            }
+            };
         });
     };
 }
 
+const buscarPorEtiqueta = document.querySelector("#filtrarInventarioEti");
+buscarPorEtiqueta.addEventListener("keyup", () => filtrarInventarioEti(buscarPorEtiqueta.value));
+
+function filtrarInventarioEti(txt) {
+    const getInventStock = document.querySelectorAll("#getInventStock");
+
+    const cardInventario = document.querySelectorAll(".cardInventario")
+    cardInventario.forEach(e => {
+        e.parentNode.style.display = "none";
+
+        if (e.value.toUpperCase().indexOf(txt.toUpperCase()) > -1) {
+            e.parentNode.style.display = "";
+        }
+    });
+}
 /* ------------------------------------------------------------- */
 /* ------------------------------------------------------------- */
