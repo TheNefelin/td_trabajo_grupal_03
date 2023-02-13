@@ -5,14 +5,15 @@ import { Tienda } from "../class/Tienda.js"
 import { Juego } from "../class/Juego.js"
 import { Carrito } from "../class/Carrito.js";
 import { correo } from "../js/correo.js"
- 
+
 window.onload = () => {
     inicializar()
 }
 
 function inicializar() {
     inicializarTienda();
-    inicializarTemps()
+    iniCarrito()
+    getTempLocalStorage()
 }
 
 function inicializarTienda() {
@@ -23,7 +24,7 @@ function inicializarTienda() {
 
         data.negocio.categorias.map(categ => {
             let newCategoria = new Categoria(categ.id, categ.nombre);
-            
+
             categ.juegos.map(juego => {
                 newCategoria.setJuego( new Juego(juego.id, juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link, juego.etiqueta));
             });
@@ -39,12 +40,12 @@ function inicializarTienda() {
     .catch((err) => console.log(`Error Fetch: ${err}`))
 };
 
-function inicializarTemps() {
+function iniCarrito() {
     const iniCarrito = getCarritoLocalStorage();
 
     if (iniCarrito) {
         renderCarrito()
-    }    
+    }
 }
 
 const linkResetSitio = document.querySelector("#resetSitio");
@@ -55,6 +56,7 @@ linkResetSitio.addEventListener("click", () => {
 function resetSitio() {
     deleteCarritoLocalStorage();
     deleteBodegaLocalStorage();
+    deleteTempLocalStorage();
     inicializar();
     cerrarMenu();
 }
@@ -90,7 +92,7 @@ function getCarritoLocalStorage() {
 }
 
 function deleteCarritoLocalStorage() {
-    window.localStorage.removeItem("carrito"); 
+    window.localStorage.removeItem("carrito");
 }
 
 function iniBodegaLocalStorage(bodega) {
@@ -113,7 +115,7 @@ function getBodegaLocalStorage() {
 
         localS._categorias.map(categ => {
             let newCategoria = new Categoria(categ._id, categ._nombre);
-            
+
             categ._juegos.map(juego => {
                 newCategoria.setJuego(new Juego(juego._id, juego._nombre, juego._precio, juego._dercripcion, juego._stock, juego._link, juego._etiqueta));
             });
@@ -121,17 +123,60 @@ function getBodegaLocalStorage() {
             bodega.setCategoria(newCategoria);
         });
     }
-    
+
     return bodega;
 }
 
 function deleteBodegaLocalStorage() {
-    window.localStorage.removeItem("bodega"); 
+    window.localStorage.removeItem("bodega");
+}
+
+const inputs = document.querySelectorAll("input");
+inputs.forEach(e => {
+    e.addEventListener("keyup", () => {
+        setTempLocalStorage(e)
+    });
+});
+
+let arrInputs = [];
+function setTempLocalStorage(obj) {
+    if (obj.id) {
+        if (arrInputs) {
+            let index = arrInputs.findIndex(e => e.id == obj.id)
+            console.log(index + " -- " + obj.id)
+            if (index > -1) {
+                arrInputs.find(e => e.id == obj.id ? e.value = obj.value : false);
+            } else {
+                arrInputs.push({id: obj.id, value: obj.value});
+            };
+        } else {
+            arrInputs.push({id: obj.id, value: obj.value});
+        };
+
+        window.localStorage.setItem("temp", JSON.stringify(arrInputs));
+    } else {
+        console.log("NO")
+    };
+};
+
+function getTempLocalStorage() {
+    let localS = JSON.parse(window.localStorage.getItem("temp"));
+
+    if (localS) {
+        localS.forEach(e => {
+            let input = document.getElementById(`${e.id}`);
+            input.value = e.value;
+        });
+    };
+}
+
+function deleteTempLocalStorage() {
+    window.localStorage.removeItem("temp")
 }
 
 /* --- Paltas -------------------------------------------------- */
 /* ------------------------------------------------------------- */
-const formatoCL = new Intl.NumberFormat('es-CL', { 
+const formatoCL = new Intl.NumberFormat('es-CL', {
     style: "currency",
     currency: "CLP",
 });
@@ -139,7 +184,7 @@ const formatoCL = new Intl.NumberFormat('es-CL', {
 /* --- NavBar -------------------------------------------------- */
 /* ------------------------------------------------------------- */
 const navBar01Btn = document.querySelector(".navBar01-btn");
-const navBar01Links = document.querySelector(".navBar01-links"); 
+const navBar01Links = document.querySelector(".navBar01-links");
 
 navBar01Btn.addEventListener("click", () => {
     navBar01Btn.classList.toggle("navBar01-btn_click");
@@ -163,7 +208,7 @@ function showSlides() {
     if (slideIndex > slides.length) { slideIndex = 1 }
 
     slides[slideIndex - 1].style.display = "block";
-    setTimeout(showSlides, 4000); 
+    setTimeout(showSlides, 4000);
 }
 
 /* --- Buscador ------------------------------------------------ */
@@ -208,7 +253,7 @@ const tienda = document.querySelector("#tienda");
 
 function renderProductos() {
     let obj, precioMin, precioMax;
-    precioMin = 0; 
+    precioMin = 0;
     precioMax = 0;
     tienda.innerHTML = "";
 
@@ -264,7 +309,7 @@ function renderProductos() {
             // -------------------------------------------
             const divContenedorBtn = document.createElement("div");
             divContenedorBtn.classList.add("btnMasMenos");
-            
+
             // -- Nietos --
             obj = document.createElement("img");
             obj.classList.add("btnMenos");
@@ -288,7 +333,7 @@ function renderProductos() {
 
             // -------------------------------------------
             const divContenedorAgregar = document.createElement("div");
-            
+
             // -- Nieto --
             obj = document.createElement("button");
             obj.id = `btnAgregar_${juego.getId()}`
@@ -350,7 +395,7 @@ function renderProductos() {
     // -- Footer ---------------------------------------------------------
     const footer = document.querySelector("footer");
     footer.hidden = false
-    // -------------------------------------------------------------------  
+    // -------------------------------------------------------------------
 }
 
 function renderCarrito() {
@@ -363,14 +408,14 @@ function renderCarrito() {
 
 function renerDetaCarrito() {
     let padre, hijo, nieto, texto, cant, subtotal, envio;
-    cant = 0; 
-    subtotal = 0; 
+    cant = 0;
+    subtotal = 0;
     envio = 0;
     const carrito = getCarritoLocalStorage();
     const bodega = getBodegaLocalStorage();
 
     let detaCarritoContenedor = document.querySelector("#detaCarritoContenedor");
-    
+
     detaCarritoContenedor.innerHTML = "";
 
     carrito.getProductos().forEach(e => {
@@ -379,7 +424,7 @@ function renerDetaCarrito() {
         cant += e.cant;
         subtotal += (e.cant * juego.getPrecio())
         envio = 5500;
-        
+
         let objContenedor = document.createElement("div");
         objContenedor.classList.add("itemCarrito");
 
@@ -447,10 +492,10 @@ function renerDetaCarrito() {
     // Totales Final --------------------------
     // -- generales --
     let hr
-    let div; 
+    let div;
     let totalCarrito = document.createElement("div");
     totalCarrito.classList.add("totalCarrito");
-    
+
     hr = document.createElement("hr");
     totalCarrito.appendChild(hr);
 
@@ -574,11 +619,11 @@ function renderInventario() {
 
             nieto = document.createElement("label");
             nieto.innerText = `Nombre: ${juego.getNombre()}`;
-            hijo.appendChild(nieto);    
-            
+            hijo.appendChild(nieto);
+
             nieto = document.createElement("label");
             nieto.innerText = `Categ: ${categ.getNombre()}`;
-            hijo.appendChild(nieto);    
+            hijo.appendChild(nieto);
 
             let obj = document.createElement("span");
             obj.id = "cardInventStock";
@@ -587,11 +632,11 @@ function renderInventario() {
             nieto = document.createElement("label");
             nieto.innerText = `Stock: `;
             nieto.appendChild(obj);
-            hijo.appendChild(nieto);    
+            hijo.appendChild(nieto);
 
             padre.appendChild(hijo);
             getInventStock.appendChild(padre)
-            // -- Card descripcion ----------------------      
+            // -- Card descripcion ----------------------
             padre = document.createElement("button");
             padre.classList.add("accordion");
             padre.innerText = "Descripción";
@@ -737,17 +782,17 @@ function modificarCarrito(idCateg, idJuego, cant) {
         }
         // si el prodiucto de la canasta llega 0 se elimina
         if (carrito.getProductosById(idJuego).cant == 0) {
-            carrito.deleteProductosById(idJuego) 
+            carrito.deleteProductosById(idJuego)
         }
     };
-    
+
     if (estado) {
         setStockBodega(idCateg, idJuego, cant * (-1));
         setCarritoLocalStorage(carrito);
     }
 
     renderCarrito();
-    renderProductos()        
+    renderProductos()
     validarStock(idJuego)
 };
 
@@ -795,13 +840,12 @@ function pagarCarrito() {
     });
 
     if (estado) {
-
         enviarCorreo();
 
-        inputDespachoCarrito.forEach(obj => {
-            obj.value = "";
-            obj.classList.remove("despachoCarritoInput_no");
-        });
+        // inputDespachoCarrito.forEach(obj => {
+        //     obj.value = "";
+        //     obj.classList.remove("despachoCarritoInput_no");
+        // });
 
         console.log("Pago Exitoso");
     };
@@ -843,7 +887,7 @@ function filtrarInventario(id) {
     } else if (id == 1) {
         getInventStock.forEach(e => {
             e.style.display = "none";
-    
+
             if (e.value == 0) {
                 e.style.display = "";
             };
@@ -859,7 +903,7 @@ function filtrarInventario(id) {
     } else if (id == 3) {
         getInventStock.forEach(e => {
             e.style.display = "none";
-    
+
             if (e.value > 5) {
                 e.style.display = "";
             };
