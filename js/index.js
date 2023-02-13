@@ -57,7 +57,6 @@ function resetSitio() {
     deleteBodegaLocalStorage();
     inicializar();
     cerrarMenu();
-    console.log("Sitio Reseteado");
 }
 
 const linkLogo = document.querySelector(".navBar01-logo");
@@ -576,8 +575,13 @@ function renderInventario() {
             nieto.innerText = `Categ: ${categ.getNombre()}`;
             hijo.appendChild(nieto);    
 
+            let obj = document.createElement("span");
+            obj.id = "cardInventStock";
+            obj.innerText = juego.getStock();
+
             nieto = document.createElement("label");
-            nieto.innerText = `Stock: ${juego.getStock()}`;
+            nieto.innerText = `Stock: `;
+            nieto.appendChild(obj);
             hijo.appendChild(nieto);    
 
             padre.appendChild(hijo);
@@ -627,20 +631,10 @@ function renderInventario() {
     hijo.innerText = `Con Stock (${cantConStock})`;
     padre.appendChild(hijo);
 
-    const arr = padre.children
-
-    for (let i = 0; i < arr.length; i++) {
-        let obj = arr[i];
-        console.log(obj)
-        // console.log(padre)
-        obj.addEventListener("click", () => {
-            console.log(obj)
-        });
-    };
-
-    // opcion.addEventListener("change", () => {
-    //     console.log(opcion.value)
-    // });
+    // -- add function filtrar --------------------
+    padre.addEventListener("change", () => {
+        filtrarInventario(padre.value);
+    });
     // --------------------------------------------
 
     const accordion = document.querySelectorAll(".accordion");
@@ -832,6 +826,27 @@ btnSalirInventario.addEventListener("click", () => {
     verInventario.classList.remove("verInventario_si");
     renderProductos();
 });
+
+function filtrarInventario(id) {
+    const cardInventario = document.querySelectorAll("#cardInventStock");
+    
+    if (id == 0) {
+        console.log("Todo")
+    } else if (id == 1) {
+        console.log("Sin Stock")
+        cardInventario.forEach(e => {
+            e.style.display = "none";
+    
+            if (e.innerText == 1) {
+                e.style.display = "";
+            }
+        })
+    } else if (id == 2) {
+        console.log("Poco Stock")
+    } else if (id == 3) {
+        console.log("Con Stock")
+    };
+}
 
 /* ------------------------------------------------------------- */
 /* ------------------------------------------------------------- */
