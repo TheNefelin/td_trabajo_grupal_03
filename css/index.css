@@ -410,6 +410,7 @@ h1, h4, p {
     height: 100vh;
     right: 100%;
     transition: 0.3s;
+    overflow-y: scroll;
 }
 
 .verInventario_si {
@@ -417,7 +418,6 @@ h1, h4, p {
 }
 
 .menuInventario {
-    position: fixed;
     width: 100%;
     background-color: var(--colorPrimario);
     display: grid;
@@ -440,8 +440,7 @@ h1, h4, p {
 }
 
 .cardInventContenedor {
-    margin: 3rem 1rem;
-    overflow-y: scroll;
+    margin: 0.5vh 1vw;
     height: 90%;
 }
 

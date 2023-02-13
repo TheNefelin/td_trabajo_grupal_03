@@ -626,6 +626,21 @@ function renderInventario() {
     hijo.value = 3;
     hijo.innerText = `Con Stock (${cantConStock})`;
     padre.appendChild(hijo);
+
+    const arr = padre.children
+
+    for (let i = 0; i < arr.length; i++) {
+        let obj = arr[i];
+        console.log(obj)
+        // console.log(padre)
+        obj.addEventListener("click", () => {
+            console.log(obj)
+        });
+    };
+
+    // opcion.addEventListener("change", () => {
+    //     console.log(opcion.value)
+    // });
     // --------------------------------------------
 
     const accordion = document.querySelectorAll(".accordion");
