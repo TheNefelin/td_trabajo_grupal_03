@@ -555,6 +555,10 @@ function renderInventario() {
                 cantConStock += 1
             }
 
+            let getInventStock = document.createElement("div");
+            getInventStock.value = juego.getStock();
+            getInventStock.id = "getInventStock"
+
             // -- Card img ------------------------------
             padre = document.createElement("div");
             padre.classList.add("cardInventario");
@@ -585,13 +589,13 @@ function renderInventario() {
             hijo.appendChild(nieto);    
 
             padre.appendChild(hijo);
-            cardInventContenedor.appendChild(padre);
+            getInventStock.appendChild(padre)
             // -- Card descripcion ----------------------      
             padre = document.createElement("button");
             padre.classList.add("accordion");
             padre.innerText = "Descripción";
 
-            cardInventContenedor.appendChild(padre);
+            getInventStock.appendChild(padre)
 
             padre = document.createElement("div");
             padre.classList.add("panel");
@@ -600,7 +604,8 @@ function renderInventario() {
             hijo.innerText = juego.getDercripcion();
             padre.appendChild(hijo);
 
-            cardInventContenedor.appendChild(padre);
+            getInventStock.appendChild(padre)
+            cardInventContenedor.appendChild(getInventStock);
             // ------------------------------------------
         });
     });
@@ -828,23 +833,36 @@ btnSalirInventario.addEventListener("click", () => {
 });
 
 function filtrarInventario(id) {
-    const cardInventario = document.querySelectorAll("#cardInventStock");
-    
+    const getInventStock = document.querySelectorAll("#getInventStock");
+
     if (id == 0) {
-        console.log("Todo")
+        getInventStock.forEach(e => {
+            e.style.display = "";
+        })
     } else if (id == 1) {
-        console.log("Sin Stock")
-        cardInventario.forEach(e => {
+        getInventStock.forEach(e => {
             e.style.display = "none";
     
-            if (e.innerText == 1) {
+            if (e.value == 0) {
                 e.style.display = "";
             }
-        })
+        });
     } else if (id == 2) {
-        console.log("Poco Stock")
+        getInventStock.forEach(e => {
+            e.style.display = "none";
+
+            if (e.value <= 5 && e.value > 0) {
+                e.style.display = "";
+            }
+        });
     } else if (id == 3) {
-        console.log("Con Stock")
+        getInventStock.forEach(e => {
+            e.style.display = "none";
+    
+            if (e.value > 5) {
+                e.style.display = "";
+            }
+        });
     };
 }
 
