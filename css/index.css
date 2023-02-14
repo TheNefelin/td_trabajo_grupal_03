@@ -519,11 +519,11 @@ h1, h4, p {
     backdrop-filter: blur(8px);
     color: var(--colorPrimario);
     max-width: 300px;
-    margin: 4rem auto;
+    margin: 1rem auto;
     border-radius: 8px;
     padding: 1rem;
     display: grid;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 .nuevoProd > div > div {
