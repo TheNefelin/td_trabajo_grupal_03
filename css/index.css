@@ -15,6 +15,10 @@
     --colorCajaBorde: black;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 a {
     color: var(--colorText1);
     text-decoration: none;
@@ -98,7 +102,7 @@ h1, h4, p {
 /* navBar01 comportamineto ----------- */
 @media (max-width: 767.98px) {
     body {
-        font-size: 14px; 
+        font-size: 14px;
     }
 
     .carrito-contenedor {
@@ -171,7 +175,7 @@ h1, h4, p {
     height: 50vh;
     width: 100%;
     object-fit: cover;
-    top: 0;
+    /* object-position: top; */
 }
 
 .slideshow-container {
@@ -185,12 +189,12 @@ h1, h4, p {
     animation-name: fade;
     animation-duration: 1.5s;
 }
-  
+
 @keyframes fade {
-    from {opacity: .4} 
+    from {opacity: .4}
     to {opacity: 1}
 }
-  
+
 /* On smaller screens, decrease text size */
 @media only screen and (max-width: 300px) {
     .text {font-size: 11px}
@@ -198,37 +202,40 @@ h1, h4, p {
 
 /* --- Buscar Juego -------------------------------------------- */
 /* ------------------------------------------------------------- */
-.buscarJuego {
-    text-align: center;
+.buscador {
+    background-color: var(--colorPrimario);
+    margin: 1rem 1rem 1rem 1rem;
+    padding: 0.5rem;
+    display: grid;
+    grid-auto-flow: dense;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
-.buscarJuego > input[type=text] {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid grey;
-    max-width: 70vw;
-    background: #f1f1f1;
+.buscador > div {
+    display: flex;
+    flex-direction: column;
+    padding: auto;
 }
 
-.buscarJuego > button {
-    max-width: 20vw;
-    padding: 10px;
-    background: var(--colorText1);
-    color: var(--colorPrimario);
-    font-size: 17px;
-    border: none;
-    border-left: none;
-    cursor: pointer;
+.buscador select {
+    height: 2.4rem;
+    color: var(--colorText1) ;
 }
-  
-.buscarJuego button:hover {
-    background: var(--colorCajaFondo);
+
+.buscador label {
+    color: var(--colorText2);
+    margin-bottom: 0.5rem;
 }
-  
-.buscarJuego::after {
-    content: "";
-    clear: both;
-    display: table;
+
+#rangeBuscar {
+    margin: auto 0 auto 0;
+}
+
+#txtBuscar {
+    height: 2rem;
 }
 
 /* --- Tarjeta ------------------------------------------------- */
@@ -236,7 +243,7 @@ h1, h4, p {
 #tienda {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
 }
 
 .card {
@@ -299,7 +306,7 @@ h1, h4, p {
     backdrop-filter: blur(8px);
     position: fixed;
     top: 0;
-    left: 100%;  
+    left: 100%;
     width: 100%;
     height: 100vh;
     z-index: 2;
@@ -313,24 +320,30 @@ h1, h4, p {
 
 .verCarrito img {
     display: grid;
-    height: 3rem;
     cursor: pointer;
     margin-left: auto;
+    height: 3rem;
 }
 
 .salirDetaCarrito {
     background-color: var(--colorText1);
     color: var(--colorPrimario);
-    padding: 0.5rem;
-    margin: 1rem;
+    margin: 1rem 0.5rem 0 1rem;
     text-align: center;
     font-size: 2rem;
-    cursor: pointer;
+
     border-radius: 8px;
+    height: 3rem;
 }
 
-.salirDetaCarrito:hover {
+.salirDetaCarrito:hover, .btnSalirInventario:hover, #btnNuevoProd:hover {
     background-color: var(--colorText2);
+    cursor: pointer;
+}
+
+.salidaCarrito {
+    max-width: 500px;
+    margin: auto;
 }
 
 .itemCarrito {
@@ -385,4 +398,168 @@ h1, h4, p {
 .despachoCarrito hr {
     width: 100%;
 }
+
+/* --- Inventario ---------------------------------------------- */
+/* ------------------------------------------------------------- */
+.verInventario {
+    position: fixed;
+    top: 0;
+    z-index: 3;
+    background-color: var(--colorTransparencia1);
+    backdrop-filter: blur(8px);;
+    width: 100%;
+    height: 100vh;
+    right: 100%;
+    transition: 0.3s;
+    overflow-y: scroll;
+}
+
+.verInventario_si {
+    right: 0;
+}
+
+.menuInventario {
+    width: 100%;
+    background-color: var(--colorPrimario);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    text-align: center;
+}
+
+.menuInventario > input, .menuInventario  > select {
+    text-decoration: none;
+    border: none;
+    height: 2.5rem;
+}
+
+.menuInventario a {
+    padding: 0.7rem;
+}
+
+.menuInventario a:hover {
+    background-color: var(--colorText2);
+}
+
+.cardInventContenedor {
+    margin: 0.5vh 1vw;
+    height: 90%;
+}
+
+.cardInventario {
+    cursor: pointer;
+    display: flex;
+    background-color: white;
+    margin-top: 0.3rem;
+}
+
+.cardInventImg {
+    height: 5rem;
+    width: 5rem;
+    object-fit: cover;
+}
+
+.cardinventTxt {
+    color: var(--colorText1);
+    display: grid;
+    justify-content: space-between;
+}
+
+.accordion {
+    background-color: var(--colorText1);
+    color: var(--colorPrimario);
+    cursor: pointer;
+    padding: 0.7rem;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 1rem;
+    transition: 0.4s;
+}
+
+.accordion:after {
+    content: '\002B';
+    font-weight: bold;
+    float: right;
+    margin-left: 1rem;
+}
+
+.active:after {
+    content: "\2212";
+}
+
+.panel {
+    padding: 0 18px;
+    background-color: var(--colorPrimario);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+/* --- Nuevo Producto ------------------------------------------ */
+/* ------------------------------------------------------------- */
+.nuevoProd {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    left: 100%;
+    transition: 0.3s;
+    background-color: var(--colorTransparencia1);
+    backdrop-filter: blur(8px);
+}
+
+.nuevoProd_si {
+    left: 0;
+}
+
+.nuevoProd > div {
+    background-color: var(--colorTransparencia2);
+    backdrop-filter: blur(8px);
+    color: var(--colorPrimario);
+    max-width: 300px;
+    margin: 1rem auto;
+    border-radius: 8px;
+    padding: 1rem;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.nuevoProd > div > div {
+    display: grid;
+}
+
+.nuevoProd input {
+    width: 100%;
+    height: 2rem;
+}
+
+.nuevoProd textarea {
+    width: 100%;
+    height: 2rem;
+}
+
+.nuevoProd textarea {
+    height: 100px;
+    max-width: 300px;
+}
+
+.nuevoProd button {
+    width: 100%;
+    height: 2rem;
+}
+
+/* --- Footer -------------------------------------------------- */
+/* ------------------------------------------------------------- */
+footer {
+    margin-top: 1rem;
+    background-image: url("../img/original.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 300px;
+}
+
 

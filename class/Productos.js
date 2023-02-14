@@ -1,5 +1,5 @@
 
-export class Juego {
+export class Productos {
     constructor(id, nombre, precio, dercripcion, stock, link, etiqueta) {
         this._id = id;
         this._nombre = nombre;
@@ -30,32 +30,7 @@ export class Juego {
     getEtiqueta() {
         return this._etiqueta;
     }
-    setNombre(nombre) {
-        this._nombre = nombre;
-    }
-    setPrecio(precio) {
-        this._precio = precio;
-    }
-    setDercripcion(descripcion) {
-        this._dercripcion = descripcion;
-    }
-    setStock(stock) {
-        this._stock = stock;
-    }
-    setLink(link) {
-        this._link = link;
-    }
-    setLink(etiqueta) {
-        this._etiqueta = etiqueta;
-    }
     setModificarStock(cant) {
         this._stock = parseInt(this._stock) + parseInt(cant)
     }
 }
-
-
-
-
-
-
-

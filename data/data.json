@@ -14,7 +14,7 @@
                         "stock": 10,
                         "link": "../img/PS_01.jpg",
                         "desarrollador": "Ubisoft",
-                        "etiqueta": "ps The Witcher 3 rpg acción occidental mundo abierto rol"
+                        "etiqueta": "Witcher 3 Ubisoft rpg Play PlayStation"
                     },
                     {
                         "id": 2,
@@ -24,7 +24,7 @@
                         "stock": 0,
                         "link": "../img/PS_02.jpg",
                         "desarrollador": "Bethesda",
-                        "etiqueta": "Ps ps PS4 play station apocaliptico rol Rol Accion accion RPG rpg Ciencia ficción perros"
+                        "etiqueta": "Fallout Bethesda Play PlayStation"
                     },
                     {
                         "id": 3,
@@ -34,27 +34,27 @@
                         "stock": 10,
                         "link": "../img/PS_03.jpg",
                         "desarrollador": "",
-                        "etiqueta": "corre dispara batallas juego animado PS ps Cuphead cuphead"
+                        "etiqueta": "Cuphead disparo Play PlayStation"
                     },
                     {
                         "id": 4,
                         "nombre": "Power Rangers",
                         "precio": 19990,
-                        "descripcion": "En Power Rangers: Battle for the Grid, la última entrega de la serie que cuenta con 25 años a sus espaldas, disfrutarás de gráficos asombrosos y detalles realistas. Enfrenta a Rangers y villanos actuales y clásicos como nunca en batallas por equipos de 3 contra 3. Pon a prueba tus habilidades en línea contra amigos y jugadores de todos los rincones del mundo en una partida tras otras.",
+                        "dercripcion": "En Power Rangers: Battle for the Grid, la última entrega de la serie que cuenta con 25 años a sus espaldas, disfrutarás de gráficos asombrosos y detalles realistas. Enfrenta a Rangers y villanos actuales y clásicos como nunca en batallas por equipos de 3 contra 3. Pon a prueba tus habilidades en línea contra amigos y jugadores de todos los rincones del mundo en una partida tras otras.",
                         "stock": 10,
                         "link": "../img/PS_04.jpg",
                         "desarrollador": "Maximum",
-                        "etiqueta": "PS4 PS ps Power Rangers villanos rangers habilidad batallas"
+                        "etiqueta": "Power Rangers Battle Maximum Play PlayStation"
                     },
                     {
                         "id": 5,
-                        "nombre": "Elden Ring (Euro)",
+                        "nombre": "Elden Ring",
                         "precio": 49990,
                         "dercripcion": "Viaja a través de las Tierras Intermedias, un nuevo mundo de fantasía creado por Hidetaka Miyazaki, creador de la influyente serie de videojuegos DARK SOULS, y George RR Martin, autor de la serie de fantasía más vendida del New York Times, A Song of Ice and Fire. Desentraña los misterios del poder del Anillo de Elden.",
                         "stock": 10,
                         "link": "../img/PS_05.jpg",
                         "desarrollador": "Bandai Namco",
-                        "etiqueta": "PS4 PS ps RPG rpg accion batalla rol Elden ring"
+                        "etiqueta": "Elden Ring Hidetaka Miyazaki Bandai Namco Play PlayStation"
                     }
                 ]
             },
@@ -70,7 +70,7 @@
                         "stock": 8,
                         "link": "../img/XB_01.jpg",
                         "desarrollador": "2K",
-                        "etiqueta": "Borderlands XBOX xbox ultra hd shooter acción multijugador "
+                        "etiqueta": "Borderlands 2K aventura X Box"
                     },
                     {
                         "id": 7,
@@ -80,7 +80,7 @@
                         "stock": 16,
                         "link": "../img/XB_02.jpg",
                         "desarrollador": "Rockstar Studios",
-                        "etiqueta": "GTA San Andreas acción aventura mundo abierto conduccion disparos en tercera persona"
+                        "etiqueta": "GTA San Andreas Rockstar Studios Carl Johnson X Box"
                     },
                     {
                         "id": 8,
@@ -90,7 +90,7 @@
                         "stock": 8,
                         "link": "../img/XB_03.jpg",
                         "desarrollador": "Konami",
-                        "etiqueta": "Metal Gear Solid V acción aventura sigilo xbox XBOX"
+                        "etiqueta": "Metal Gear Solid V Konami Snake X Box"
                     },
                     {
                         "id": 9,
@@ -100,7 +100,7 @@
                         "stock": 18,
                         "link": "../img/XB_04.jpg",
                         "desarrollador": "Valve",
-                        "etiqueta": "XBOX xbox Portal 2 puzzles FPS portales "
+                        "etiqueta": "Portal 2 Valve puzzles X Box"
                     }
                 ]
             },
@@ -116,7 +116,7 @@
                         "stock": 18,
                         "link": "../img/PC_01.jpg",
                         "desarrollador": "Microsoft",
-                        "etiqueta": "PC pc Age of Empires IV estrategia en tiempo real edad media campañas"
+                        "etiqueta": "Age of Empires IV Microsoft estrategia PC"
                     },
                     {
                         "id": 11,
@@ -126,7 +126,7 @@
                         "stock": 25,
                         "link": "../img/PC_02.jpg",
                         "desarrollador":"Electronic Arts",
-                        "etiqueta": "Jedi Fallen Order PC pc star wars accion aventura un jugador "
+                        "etiqueta": "Jedi Fallen Order Electronic Arts historia Padawan Jedi PC"
                     },
                     {
                         "id": 12,
@@ -136,7 +136,7 @@
                         "stock": 25,
                         "link": "../img/PC_03.jpg",
                         "desarrollador":"Electronic Arts",
-                        "etiqueta": "Pc pc Plants vs Zombies defensa de torres ataque defensa"
+                        "etiqueta": "Plants vs Zombies Electronic Arts batalla plantas zombis PC"
                     },
                     {
                         "id": 13,
@@ -146,7 +146,7 @@
                         "stock": 30,
                         "link": "../img/PC_04.jpg",
                         "desarrollador":"Electronic Arts",
-                        "etiqueta": "Pc pc FIFA 20 futbol simulación soccer"
+                        "etiqueta": "FIFA 20 Electronic Arts futbol PC"
                     }
                 ]
             },
@@ -162,7 +162,7 @@
                         "stock": 12,
                         "link": "../img/DS_01.jpg",
                         "desarrollador": "Nintendo",
-                        "etiqueta": "3DS 3ds Fire Emblem Warriors lucha mosntruos soldados hack and slash accion rol "
+                        "etiqueta": "Fire Emblem Warriors Nintendo soldados monstruos Nintendo 3DS"
                     },
                     {
                         "id": 15,
@@ -172,7 +172,7 @@
                         "stock": 15,
                         "link": "../img/DS_02.jpg",
                         "desarrollador": "NIS",
-                        "etiqueta": "RPG Maker 3DS 3ds personalizar desarrollar"
+                        "etiqueta": "RPG Maker NIS Nintendo 3DS"
                     },
                     {
                         "id": 16,
@@ -182,7 +182,7 @@
                         "stock": 8,
                         "link": "../img/DS_03.jpg",
                         "desarrollador": "Nighthawk Interactive",
-                        "etiqueta": "Runbow pocket 3DS 3ds aventura espacial"
+                        "etiqueta": "Runbow Pocket Nighthawk Interactive Nintendo 3DS"
                     },
                     {
                         "id": 17,
@@ -192,7 +192,7 @@
                         "stock": 30,
                         "link": "../img/DS_04.jpg",
                         "desarrollador": "Sega",
-                        "etiqueta": "3DS 3ds Sonic Boom erizo aventura velocidad correr"
+                        "etiqueta": "Sonic Boom Sega Nintendo 3DS Hedgehog Fire Ice"
                     }
                 ]
             }
