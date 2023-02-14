@@ -634,6 +634,10 @@ function renderInventario() {
             nieto.appendChild(obj);
             hijo.appendChild(nieto);
 
+            nieto = document.createElement("label");
+            nieto.innerText = `Precio: ${formatoCL.format(juego.getPrecio())}`;
+            hijo.appendChild(nieto);
+
             padre.appendChild(hijo);
             getInventStock.appendChild(padre)
             // -- Card descripcion ----------------------
@@ -653,6 +657,11 @@ function renderInventario() {
             getInventStock.appendChild(padre)
             cardInventContenedor.appendChild(getInventStock);
             // ------------------------------------------
+
+            getInventStock.addEventListener("click", () => {
+                handleNuevoProdEntrar();
+                prepararNuevoProducto(categ.getId(), juego.getId(), "Modificar")
+            });
         });
     });
 
@@ -688,8 +697,12 @@ function renderInventario() {
     });
     // --------------------------------------------
 
-    const accordion = document.querySelectorAll(".accordion");
+    const cards_Inventario = document.querySelectorAll(".cardInventario");
+    cards_Inventario.forEach(e => {
+  
+    });
 
+    const accordion = document.querySelectorAll(".accordion");
     accordion.forEach(e => {
         e.addEventListener("click", () => {
             e.classList.toggle("active");
@@ -871,9 +884,9 @@ linkInventario.addEventListener("click", () => {
 });
 
 const btnSalirInventario = document.querySelector(".btnSalirInventario");
-
 btnSalirInventario.addEventListener("click", () => {
     verInventario.classList.remove("verInventario_si");
+    handleNuevoProdSalir();
     renderProductos();
 });
 
@@ -923,8 +936,71 @@ function filtrarInventarioEti(txt) {
 
         if (e.value.toUpperCase().indexOf(txt.toUpperCase()) > -1) {
             e.parentNode.style.display = "";
-        }
+        };
     });
 }
+
+const nuevoProd = document.querySelector(".nuevoProd");
+const btnNuevoProd = document.querySelector("#btnNuevoProd");
+btnNuevoProd.addEventListener("click", () => {
+    handleNuevoProdEntrar();
+    prepararNuevoProducto(null, null, "Crear Nuevo")
+});
+
+function prepararNuevoProducto(idCateg, idJuego, msge) {
+    const bodega = getBodegaLocalStorage();
+    const idProdNoM = document.querySelector("#idProdNoM");
+    const nuevoProdNombre = document.querySelector("#nuevoProdNombre");
+    const nuevoProdPrecio = document.querySelector("#nuevoProdPrecio");
+    const nuevoProdStock = document.querySelector("#nuevoProdStock");
+    const nuevoProdLink = document.querySelector("#nuevoProdLink");
+    const nuevoProdDesc = document.querySelector("#nuevoProdDesc");
+
+    btnNuevoModificarPrdo.innerText = msge;
+    nuevoProdNombre.value = "";
+    nuevoProdPrecio.value = "";
+    nuevoProdStock.value = "";
+    nuevoProdLink.value = "";
+    nuevoProdDesc.value = "";
+
+    if (msge == "Crear Nuevo"){
+        idProdNoM.innerText = "NUEVO PRODUCTO (idCateg = na, idProd = na)";
+    } else if(msge == "Modificar") {
+        console.log(idCateg + " -- " + idJuego);
+        let producto = bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego)
+
+        if (producto) {
+            console.log(producto);
+            idProdNoM.innerText = `MODIFICAR PRODUCTO (idCateg = ${idCateg}, idProd = ${idJuego})"`;
+            btnNuevoModificarPrdo.innerText = msge;
+            nuevoProdNombre.value = producto.getNombre();
+            nuevoProdPrecio.value = producto.getPrecio();
+            nuevoProdStock.value = producto.getStock();
+            nuevoProdLink.value = producto.getLink();
+            nuevoProdDesc.value = producto.getDercripcion();
+        }
+    }
+}
+
+const btnNuevoProdSalir = document.querySelector("#btnNuevoProdSalir");
+btnNuevoProdSalir.addEventListener("click", () => {
+    handleNuevoProdSalir()
+});
+
+function handleNuevoProdEntrar() {
+    nuevoProd.classList.add("nuevoProd_si");
+}
+
+function handleNuevoProdSalir() {
+    nuevoProd.classList.remove("nuevoProd_si");
+}
+
+const btnNuevoModificarPrdo = document.querySelector("#btnNuevoModificarPrdo");
+btnNuevoModificarPrdo.addEventListener("click", () => {
+
+});
+
+
+
 /* ------------------------------------------------------------- */
 /* ------------------------------------------------------------- */

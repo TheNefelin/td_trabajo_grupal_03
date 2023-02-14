@@ -111,8 +111,8 @@
 
     <section class="verInventario">
         <div class="menuInventario">
-            <a class="btnSalirInventario" href="#">Salir</a>
-            <a href="#">Nuevo</a>
+            <a class="btnSalirInventario">Salir</a>
+            <a id="btnNuevoProd">Nuevo</a>
             <input id="filtrarInventarioEti" type="search" placeholder="Buscar Producto...">
             <select id="selectInventario">
                 <!-- <option value="">Todos los Productos</option> -->
@@ -120,7 +120,7 @@
             </select>
 
             <div class="cardInventContenedor">
-                
+                <!-- getInventStock -->
                 <!-- <div class="cardInventario">
                     <img class="cardInventImg" src="./img/PS_01.jpg">
                     <div class="cardinventTxt">
@@ -137,6 +137,34 @@
         </div>
     </section>
     
+    <div class="nuevoProd">
+        <div>
+            <label id="idProdNoM"></label>
+            <div>
+                <label>Nombre Producto:</label>
+                <input id="nuevoProdNombre" type="text" placeholder="nombre...">
+            </div>
+            <div>
+                <label>Precio Producto:</label>
+                <input id="nuevoProdPrecio" type="number" placeholder="Precio...">
+            </div>
+            <div>
+                <label>Stock:</label>
+                <input id="nuevoProdStock" type="number" placeholder="Stock...">
+            </div>
+            <div>
+                <label>Link (img):</label>
+                <input id="nuevoProdLink" type="text" placeholder="Link...">
+            </div>
+            <div>
+                <label>Descripcion Producto:</label>
+                <textarea id="nuevoProdDesc" placeholder="Descripcion..."></textarea>
+            </div>
+            <button id="btnNuevoModificarPrdo">Btn</button>
+            <button id="btnNuevoProdSalir">Salir</button>
+        </div>
+    </div>
+
     <footer>
     </footer>
 

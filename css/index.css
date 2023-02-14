@@ -102,7 +102,7 @@ h1, h4, p {
 /* navBar01 comportamineto ----------- */
 @media (max-width: 767.98px) {
     body {
-        font-size: 14px; 
+        font-size: 14px;
     }
 
     .carrito-contenedor {
@@ -189,12 +189,12 @@ h1, h4, p {
     animation-name: fade;
     animation-duration: 1.5s;
 }
-  
+
 @keyframes fade {
-    from {opacity: .4} 
+    from {opacity: .4}
     to {opacity: 1}
 }
-  
+
 /* On smaller screens, decrease text size */
 @media only screen and (max-width: 300px) {
     .text {font-size: 11px}
@@ -306,7 +306,7 @@ h1, h4, p {
     backdrop-filter: blur(8px);
     position: fixed;
     top: 0;
-    left: 100%;  
+    left: 100%;
     width: 100%;
     height: 100vh;
     z-index: 2;
@@ -331,13 +331,14 @@ h1, h4, p {
     margin: 1rem 0.5rem 0 1rem;
     text-align: center;
     font-size: 2rem;
-    cursor: pointer;
+
     border-radius: 8px;
     height: 3rem;
 }
 
-.salirDetaCarrito:hover, .btnSalirInventario:hover {
+.salirDetaCarrito:hover, .btnSalirInventario:hover, #btnNuevoProd:hover {
     background-color: var(--colorText2);
+    cursor: pointer;
 }
 
 .salidaCarrito {
@@ -459,7 +460,6 @@ h1, h4, p {
 
 .cardinventTxt {
     color: var(--colorText1);
-    margin: 0.5rem 0;
     display: grid;
     justify-content: space-between;
 }
@@ -476,24 +476,63 @@ h1, h4, p {
     font-size: 1rem;
     transition: 0.4s;
 }
-    
+
 .accordion:after {
     content: '\002B';
     font-weight: bold;
     float: right;
     margin-left: 1rem;
 }
-  
+
 .active:after {
     content: "\2212";
 }
-  
+
 .panel {
     padding: 0 18px;
     background-color: var(--colorPrimario);
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
+}
+
+/* --- Nuevo Producto ------------------------------------------ */
+/* ------------------------------------------------------------- */
+.nuevoProd {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    left: 100%;
+    transition: 0.3s;
+    background-color: var(--colorTransparencia1);
+    backdrop-filter: blur(8px);
+}
+
+.nuevoProd_si {
+    left: 0;
+}
+
+.nuevoProd > div {
+    background-color: var(--colorTransparencia2);
+    backdrop-filter: blur(8px);
+    color: var(--colorPrimario);
+    max-width: 300px;
+    margin: 4rem auto;
+    border-radius: 8px;
+    padding: 1rem;
+    display: grid;
+    gap: 1rem;
+}
+
+.nuevoProd > div > div {
+    display: grid;
+}
+
+.nuevoProd input, .nuevoProd textarea, .nuevoProd button {
+    max-width: 300px;
+    height: 2rem;
 }
 
 /* --- Footer -------------------------------------------------- */
