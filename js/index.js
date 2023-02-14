@@ -954,6 +954,7 @@ function prepararNuevoProducto(idCateg, idJuego, msge) {
     const nuevoProdStock = document.querySelector("#nuevoProdStock");
     const nuevoProdLink = document.querySelector("#nuevoProdLink");
     const nuevoProdDesc = document.querySelector("#nuevoProdDesc");
+    const btn = document.querySelector(".btnNuevoModificarPrdo");
 
     btnNuevoModificarPrdo.innerText = msge;
     nuevoProdNombre.value = "";
@@ -971,14 +972,14 @@ function prepararNuevoProducto(idCateg, idJuego, msge) {
         if (producto) {
             idProdNoM.innerText = "MODIFICAR PRODUCTO";
             idProdDeta.innerText = `(idCateg = ${idCateg}, idProd = ${idJuego})`;
-            idProdDeta.id = idCateg;
-            idProdDeta.value = idJuego;
             btnNuevoModificarPrdo.innerText = msge;
             nuevoProdNombre.value = producto.getNombre();
             nuevoProdPrecio.value = producto.getPrecio();
             nuevoProdStock.value = producto.getStock();
             nuevoProdLink.value = producto.getLink();
             nuevoProdDesc.value = producto.getDercripcion();
+            btn.id = idCateg;
+            btn.value = idJuego;
         };
     };
 };
@@ -998,23 +999,58 @@ function handleNuevoProdSalir() {
 
 const btnNuevoModificarPrdo = document.querySelector(".btnNuevoModificarPrdo");
 btnNuevoModificarPrdo.addEventListener("click", () => {
+    console.log(btnNuevoModificarPrdo.id + " --- " + btnNuevoModificarPrdo.value);
+
      if (btnNuevoModificarPrdo.innerText == "Crear Nuevo") {
         console.log("No Algun Dia")
         handleNuevoProdSalir();
     } else if (btnNuevoModificarPrdo.innerText == "Modificar") {
         console.log("Datos Modificados")
         // -- FALTA LA ETIQUETA ----------------
-        let bodega = getBodegaLocalStorage()
-        console.log(btnNuevoModificarPrdo)
-        // console.log(bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego));
-        handleNuevoProdSalir();
-    }
+        if (validarNuevoProducto) {
+            let bodega = getBodegaLocalStorage()
+            console.log(btnNuevoModificarPrdo)
+            alert("EN CONSTRUCCIÓN")
+            handleNuevoProdSalir();
+        } else {
+            alert("DEBE COMPLETAR TODOS LOS DATOS")
+        };
+    };
 
     renderProductos();
     renderInventario();
 });
 
+function validarNuevoProducto() {
+    let estado = true;
+    const nuevoProdNombre = document.querySelector("#nuevoProdNombre");
+    const nuevoProdPrecio = document.querySelector("#nuevoProdPrecio");
+    const nuevoProdStock = document.querySelector("#nuevoProdStock");
+    const nuevoProdLink = document.querySelector("#nuevoProdLink");
+    const nuevoProdDesc = document.querySelector("#nuevoProdDesc");
 
+    if (nuevoProdNombre.value = "") {
+        estado = false;
+    };
+
+    if (nuevoProdPrecio.value = "") {
+        estado = false;
+    };
+
+    if (nuevoProdStock.value = "") {
+        estado = false;
+    };
+
+    if (nuevoProdLink.value = "") {
+        estado = false;
+    };
+
+    if (nuevoProdDesc.value = "") {
+        estado = false;
+    };
+
+    return estado;
+}
 
 /* ------------------------------------------------------------- */
 /* ------------------------------------------------------------- */
