@@ -1,10 +1,42 @@
 /* --- Inicializar Sitio --------------------------------------- */
 /* ------------------------------------------------------------- */
 import { Categoria } from "../class/Categoria.js";
-import { Tienda } from "../class/Tienda.js"
+import { Sucursal } from "../class/Sucursal.js"
 import { Juego } from "../class/Juego.js"
 import { Carrito } from "../class/Carrito.js";
 import { correo } from "../js/correo.js"
+
+import { FetchSucursalApi } from "../class/FetchSucursalApi.js";
+import { FetchCategoriaApi } from "../class/FetchCategoriaApi.js";
+import { FetchProductoApi } from "../class/FetchProductoApi.js";
+
+const objSucursal = new FetchSucursalApi();
+objSucursal.getSucursal()
+.then(sucursales => {
+    let arrSucursales = []
+    sucursales.forEach(e => {
+        const categoria = new Categoria(e.id, e.nombre);
+        arrSucursales.push(categoria);
+        console.log(categoria)
+        console.log(arrSucursales)
+    });
+});
+
+// const objCategoria = new FetchCategoriaApi();
+// objCategoria.getCategoria()
+// .then(categorias => {
+//     categorias.forEach(e => {
+//         console.log(e)
+//     });
+// });
+
+// const objProductos = new FetchProductosApi();
+// objProductos.getProducto()
+// .then(productos => {
+//     productos.forEach(e => {
+//         console.log(e)
+//     });
+// });
 
 window.onload = () => {
     inicializar()
@@ -16,11 +48,11 @@ function inicializar() {
     getTempLocalStorage()
 }
 
-function inicializarTienda() {
+export function inicializarTienda() {
     fetch("../data/data.json")
     .then(resp => resp.json())
     .then(data => {
-        let objTienda = new Tienda(data.negocio.nombre);
+        let objTienda = new Sucursal(data.negocio.nombre);
 
         data.negocio.categorias.map(categ => {
             let newCategoria = new Categoria(categ.id, categ.nombre);
@@ -111,7 +143,7 @@ function getBodegaLocalStorage() {
     let bodega
 
     if (localS) {
-        bodega = new Tienda(localS._nombre);
+        bodega = new Sucursal(localS._nombre);
 
         localS._categorias.map(categ => {
             let newCategoria = new Categoria(categ._id, categ._nombre);
