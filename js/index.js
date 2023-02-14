@@ -610,6 +610,8 @@ function renderInventario() {
             padre.classList.add("cardInventario");
 
             hijo = document.createElement("img");
+            hijo.id = categ.getId();
+            hijo.value = juego.getId();
             hijo.classList.add("cardInventImg");
             hijo.src = juego.getLink();
             padre.appendChild(hijo);
@@ -657,11 +659,6 @@ function renderInventario() {
             getInventStock.appendChild(padre)
             cardInventContenedor.appendChild(getInventStock);
             // ------------------------------------------
-
-            getInventStock.addEventListener("click", () => {
-                handleNuevoProdEntrar();
-                prepararNuevoProducto(categ.getId(), juego.getId(), "Modificar")
-            });
         });
     });
 
@@ -697,11 +694,6 @@ function renderInventario() {
     });
     // --------------------------------------------
 
-    const cards_Inventario = document.querySelectorAll(".cardInventario");
-    cards_Inventario.forEach(e => {
-  
-    });
-
     const accordion = document.querySelectorAll(".accordion");
     accordion.forEach(e => {
         e.addEventListener("click", () => {
@@ -713,6 +705,14 @@ function renderInventario() {
             } else {
                 p.style.maxHeight = p.scrollHeight + "px";
             };
+        });
+    });
+
+    const cardInventario = document.querySelectorAll(".cardInventario");
+    cardInventario.forEach(e => {
+        e.addEventListener("click", () => {
+            handleNuevoProdEntrar();
+            prepararNuevoProducto(e.children[0].id, e.children[0].value, "Modificar")
         });
     });
 };
@@ -928,8 +928,6 @@ const buscarPorEtiqueta = document.querySelector("#filtrarInventarioEti");
 buscarPorEtiqueta.addEventListener("keyup", () => filtrarInventarioEti(buscarPorEtiqueta.value));
 
 function filtrarInventarioEti(txt) {
-    const getInventStock = document.querySelectorAll("#getInventStock");
-
     const cardInventario = document.querySelectorAll(".cardInventario")
     cardInventario.forEach(e => {
         e.parentNode.style.display = "none";
@@ -950,7 +948,7 @@ btnNuevoProd.addEventListener("click", () => {
 function prepararNuevoProducto(idCateg, idJuego, msge) {
     const bodega = getBodegaLocalStorage();
     const idProdNoM = document.querySelector("#idProdNoM");
-    const idProdDeta = document.querySelector("#idProdDeta");
+    const idProdDeta = document.querySelector(".idProdDeta");
     const nuevoProdNombre = document.querySelector("#nuevoProdNombre");
     const nuevoProdPrecio = document.querySelector("#nuevoProdPrecio");
     const nuevoProdStock = document.querySelector("#nuevoProdStock");
@@ -971,17 +969,19 @@ function prepararNuevoProducto(idCateg, idJuego, msge) {
         let producto = bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego)
 
         if (producto) {
-            idProdNoM.innerText = `MODIFICAR PRODUCTO`;
-            idProdDeta.innerText = `(idCateg = ${idCateg}, idProd = ${idJuego})"`
+            idProdNoM.innerText = "MODIFICAR PRODUCTO";
+            idProdDeta.innerText = `(idCateg = ${idCateg}, idProd = ${idJuego})`;
+            idProdDeta.id = idCateg;
+            idProdDeta.value = idJuego;
             btnNuevoModificarPrdo.innerText = msge;
             nuevoProdNombre.value = producto.getNombre();
             nuevoProdPrecio.value = producto.getPrecio();
             nuevoProdStock.value = producto.getStock();
             nuevoProdLink.value = producto.getLink();
             nuevoProdDesc.value = producto.getDercripcion();
-        }
-    }
-}
+        };
+    };
+};
 
 const btnNuevoProdSalir = document.querySelector("#btnNuevoProdSalir");
 btnNuevoProdSalir.addEventListener("click", () => {
@@ -996,9 +996,22 @@ function handleNuevoProdSalir() {
     nuevoProd.classList.remove("nuevoProd_si");
 }
 
-const btnNuevoModificarPrdo = document.querySelector("#btnNuevoModificarPrdo");
+const btnNuevoModificarPrdo = document.querySelector(".btnNuevoModificarPrdo");
 btnNuevoModificarPrdo.addEventListener("click", () => {
+     if (btnNuevoModificarPrdo.innerText == "Crear Nuevo") {
+        console.log("No Algun Dia")
+        handleNuevoProdSalir();
+    } else if (btnNuevoModificarPrdo.innerText == "Modificar") {
+        console.log("Datos Modificados")
+        // -- FALTA LA ETIQUETA ----------------
+        let bodega = getBodegaLocalStorage()
+        console.log(btnNuevoModificarPrdo)
+        // console.log(bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego));
+        handleNuevoProdSalir();
+    }
 
+    renderProductos();
+    renderInventario();
 });
 
 
