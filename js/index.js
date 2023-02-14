@@ -950,6 +950,7 @@ btnNuevoProd.addEventListener("click", () => {
 function prepararNuevoProducto(idCateg, idJuego, msge) {
     const bodega = getBodegaLocalStorage();
     const idProdNoM = document.querySelector("#idProdNoM");
+    const idProdDeta = document.querySelector("#idProdDeta");
     const nuevoProdNombre = document.querySelector("#nuevoProdNombre");
     const nuevoProdPrecio = document.querySelector("#nuevoProdPrecio");
     const nuevoProdStock = document.querySelector("#nuevoProdStock");
@@ -964,14 +965,14 @@ function prepararNuevoProducto(idCateg, idJuego, msge) {
     nuevoProdDesc.value = "";
 
     if (msge == "Crear Nuevo"){
-        idProdNoM.innerText = "NUEVO PRODUCTO (idCateg = na, idProd = na)";
+        idProdNoM.innerText = "NUEVO PRODUCTO";
+        idProdDeta.innerText = "(idCateg = na, idProd = na)";
     } else if(msge == "Modificar") {
-        console.log(idCateg + " -- " + idJuego);
         let producto = bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego)
 
         if (producto) {
-            console.log(producto);
-            idProdNoM.innerText = `MODIFICAR PRODUCTO (idCateg = ${idCateg}, idProd = ${idJuego})"`;
+            idProdNoM.innerText = `MODIFICAR PRODUCTO`;
+            idProdDeta.innerText = `(idCateg = ${idCateg}, idProd = ${idJuego})"`
             btnNuevoModificarPrdo.innerText = msge;
             nuevoProdNombre.value = producto.getNombre();
             nuevoProdPrecio.value = producto.getPrecio();

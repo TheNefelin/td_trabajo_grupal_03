@@ -530,8 +530,23 @@ h1, h4, p {
     display: grid;
 }
 
-.nuevoProd input, .nuevoProd textarea, .nuevoProd button {
+.nuevoProd input {
+    width: 100%;
+    height: 2rem;
+}
+
+.nuevoProd textarea {
+    width: 100%;
+    height: 2rem;
+}
+
+.nuevoProd textarea {
+    height: 100px;
     max-width: 300px;
+}
+
+.nuevoProd button {
+    width: 100%;
     height: 2rem;
 }
 
