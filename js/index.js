@@ -12,47 +12,52 @@ import { ModelSucursal } from "../class/ModelSucursal.js"
 import { ModelCategoria } from "../class/ModelCategoria.js"
 import { ModelProducto } from "../class/ModelProducto.js";
 
-// ---------------------------------------------------
-const objProducto = new ProductoApi();
-objProducto.getProducto()
-.then(data => {
-    data.forEach(e => {
-
-    });
-    console.log(data);
-});
-
-const objCategoria = new CategoriaApi();
-objCategoria.getCategoria()
-.then(data => {
-    data.forEach(e => {
-
-    });
-    console.log(data);
-});
-
-const objSucursal = new SucursalApi();
-objSucursal.getSucursal()
-.then(data => {
-    data.forEach(e => {
-
-    });
-    console.log(data);
-});
-
-// ---------------------------------------------------
-
 window.onload = () => {
     inicializar()
 }
 
 function inicializar() {
-    inicializarTienda();
+    inicializarTiendaLocal();
+    inicializarTiendaApi(9)
     iniCarrito()
     getTempLocalStorage()
 }
 
-function inicializarTienda() {
+function inicializarTiendaApi() {
+    let arrSucursal = []
+    let arrCategoria = []
+    let arrProducto = []
+    const objProducto = new ProductoApi();
+    const objCategoria = new CategoriaApi();
+    const objSucursal = new SucursalApi();
+
+    objSucursal.getSucursal().then(data => {
+        data.forEach(e => {
+            arrSucursal.push(new SucursalApi(e.id, e.nombre))
+        });
+    });
+
+    objProducto.getProducto().then(data => {
+        data.forEach(e => {
+            arrProducto.push(new ProductoApi(e.id, e.nombre, e.precio, e.dercripcion, e.stock, e.link, e.etiqueta))
+        });
+    });
+    
+    objCategoria.getCategoria().then(data => {
+        data.forEach(e => {
+            arrCategoria.push(new CategoriaApi(e.id, e.nombre))
+        });
+    });
+
+    arrSucursal.forEach(sucursal => {
+        console.log(sucursal.getId())
+    });
+   console.log(arrSucursal)
+   console.log(arrCategoria)
+   console.log(arrProducto)
+}
+
+function inicializarTiendaLocal() {
     fetch("../data/data.json")
     .then(resp => resp.json())
     .then(data => {
