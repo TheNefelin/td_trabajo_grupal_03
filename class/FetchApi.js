@@ -47,7 +47,6 @@ export class ProductoApi extends API {
 
     async getProductoById(id) {
         const url = `${this.getUrl()}/td-producto/idSucursal/${id}`
-        console.log(url)
         const resp = await fetch(url);
         const data = await resp.json();
         return data;

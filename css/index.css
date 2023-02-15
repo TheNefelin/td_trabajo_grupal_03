@@ -100,7 +100,7 @@ h1, h4, p {
 }
 
 /* navBar01 comportamineto ----------- */
-@media (max-width: 767.98px) {
+@media (max-width: 820px) {
     body {
         font-size: 14px;
     }
@@ -220,7 +220,7 @@ h1, h4, p {
     padding: auto;
 }
 
-.buscador select {
+.buscador select, .listaSucursales {
     height: 2.4rem;
     color: var(--colorText1) ;
 }

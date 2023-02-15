@@ -13,12 +13,12 @@ window.onload = () => {
 }
 
 function inicializar() {
-    inicializarTiendaApi();
+    inicializarApi();
     iniCarrito();
     getTempLocalStorage();
 }
 
-function inicializarTiendaApi() {
+function inicializarApi() {
     const objSucursal = new SucursalApi();
 
     Promise.all([
@@ -38,10 +38,10 @@ function inicializarTiendaApi() {
         });
 
         listaSucursales.addEventListener("change", () => {
-            ini(listaSucursales.options[listaSucursales.selectedIndex].value, listaSucursales.options[listaSucursales.selectedIndex].innerText)
+            inicializarTiendaApiOLocal(listaSucursales.options[listaSucursales.selectedIndex].value, listaSucursales.options[listaSucursales.selectedIndex].innerText)
         });
 
-        ini(listaSucursales.options[listaSucursales.selectedIndex].value, listaSucursales.options[listaSucursales.selectedIndex].innerText)
+        inicializarTiendaApiOLocal(listaSucursales.options[listaSucursales.selectedIndex].value, listaSucursales.options[listaSucursales.selectedIndex].innerText)
     })
     .catch(err => {
         console.log(err)
@@ -49,7 +49,7 @@ function inicializarTiendaApi() {
     });
 };
 
-function ini(idSucursal, nomSucursal) {
+function inicializarTiendaApiOLocal(idSucursal, nomSucursal) {
     let objSucursal = new Sucursal(idSucursal, nomSucursal);
     const objProducto = new ProductoApi();
     const objCategoria = new CategoriaApi();
@@ -76,7 +76,8 @@ function ini(idSucursal, nomSucursal) {
             objSucursal.getCategorias().forEach(categ => {
                 arr[0].forEach(producto => {
                     if (producto.idCategoria == categ.getId()) {
-                        categ.setProducto(new Producto(producto.id, producto.nombre, producto.precio, producto.descripcion, producto.stock, producto.link, producto.etiqueta))
+                        let imagen = objSucursal.getId() == 1 ? producto.link : "";
+                        categ.setProducto(new Producto(producto.id, producto.nombre, producto.precio, producto.descripcion, parseInt(producto.stock), imagen, producto.etiqueta))
                     }
                 });
             })
@@ -1049,6 +1050,8 @@ function prepararNuevoProducto(idCateg, idJuego, msge) {
     } else if(msge == "Modificar") {
         let producto = bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idJuego)
 
+        console.log(producto)
+
         if (producto) {
             idProdNoM.innerText = "MODIFICAR PRODUCTO";
             idProdDeta.innerText = `(idCateg = ${idCateg}, idProd = ${idJuego})`;
@@ -1088,9 +1091,9 @@ btnNuevoModificarPrdo.addEventListener("click", () => {
         console.log("Datos Modificados")
         // -- FALTA LA ETIQUETA ----------------
         if (validarNuevoProducto) {
-            let bodega = getBodegaLocalStorage()
             console.log(btnNuevoModificarPrdo)
             alert("EN CONSTRUCCIÓN")
+            
             handleNuevoProdSalir();
         } else {
             alert("DEBE COMPLETAR TODOS LOS DATOS")
