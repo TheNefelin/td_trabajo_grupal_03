@@ -1,5 +1,5 @@
 
-export class Tienda {
+export class Sucursal {
     constructor(nombre) {
         this._nombre = nombre;
         this._categorias = [];
@@ -14,6 +14,3 @@ export class Tienda {
         this._categorias.push(categoria);
     }
 };
-
-
-

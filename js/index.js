@@ -1,26 +1,67 @@
 /* --- Inicializar Sitio --------------------------------------- */
 /* ------------------------------------------------------------- */
 import { Categoria } from "../class/Categoria.js";
-import { Tienda } from "../class/Tienda.js"
+import { Sucursal } from "../class/Sucursal.js"
 import { Juego } from "../class/Juego.js"
 import { Carrito } from "../class/Carrito.js";
 import { correo } from "../js/correo.js"
+
+
+import { SucursalApi,  CategoriaApi, ProductoApi} from "../class/FetchApi.js";
+import { ModelSucursal } from "../class/ModelSucursal.js"
+import { ModelCategoria } from "../class/ModelCategoria.js"
+import { ModelProducto } from "../class/ModelProducto.js";
 
 window.onload = () => {
     inicializar()
 }
 
 function inicializar() {
-    inicializarTienda();
+    inicializarTiendaLocal();
+    inicializarTiendaApi(9)
     iniCarrito()
     getTempLocalStorage()
 }
 
-function inicializarTienda() {
+function inicializarTiendaApi() {
+    let arrSucursal = []
+    let arrCategoria = []
+    let arrProducto = []
+    const objProducto = new ProductoApi();
+    const objCategoria = new CategoriaApi();
+    const objSucursal = new SucursalApi();
+
+    objSucursal.getSucursal().then(data => {
+        data.forEach(e => {
+            arrSucursal.push(new SucursalApi(e.id, e.nombre))
+        });
+    });
+
+    objProducto.getProducto().then(data => {
+        data.forEach(e => {
+            arrProducto.push(new ProductoApi(e.id, e.nombre, e.precio, e.dercripcion, e.stock, e.link, e.etiqueta))
+        });
+    });
+    
+    objCategoria.getCategoria().then(data => {
+        data.forEach(e => {
+            arrCategoria.push(new CategoriaApi(e.id, e.nombre))
+        });
+    });
+
+    arrSucursal.forEach(sucursal => {
+        console.log(sucursal.getId())
+    });
+   console.log(arrSucursal)
+   console.log(arrCategoria)
+   console.log(arrProducto)
+}
+
+function inicializarTiendaLocal() {
     fetch("../data/data.json")
     .then(resp => resp.json())
     .then(data => {
-        let objTienda = new Tienda(data.negocio.nombre);
+        let objTienda = new Sucursal(data.negocio.nombre);
 
         data.negocio.categorias.map(categ => {
             let newCategoria = new Categoria(categ.id, categ.nombre);
@@ -111,7 +152,7 @@ function getBodegaLocalStorage() {
     let bodega
 
     if (localS) {
-        bodega = new Tienda(localS._nombre);
+        bodega = new Sucursal(localS._nombre);
 
         localS._categorias.map(categ => {
             let newCategoria = new Categoria(categ._id, categ._nombre);

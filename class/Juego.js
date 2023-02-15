@@ -51,7 +51,7 @@ export class Juego {
     setModificarStock(cant) {
         this._stock = parseInt(this._stock) + parseInt(cant)
     }
-}
+};
 
 
 
