@@ -3,7 +3,7 @@ export class Categoria {
     constructor(id, nombre) {
         this._id = id;
         this._nombre = nombre;
-        this._juegos = [];
+        this._productos = [];
     }
     getId() {
         return this._id;
@@ -11,11 +11,11 @@ export class Categoria {
     getNombre() {
         return this._nombre;
     }
-    getJuegos() {
-        return this._juegos;
+    getProductos() {
+        return this._productos;
     }
-    setJuego(juego) {
-        this._juegos.push(juego);
+    setProducto(producto) {
+        this._productos.push(producto);
     }
 }
 

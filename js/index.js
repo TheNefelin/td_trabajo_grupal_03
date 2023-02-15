@@ -2,78 +2,117 @@
 /* ------------------------------------------------------------- */
 import { Categoria } from "../class/Categoria.js";
 import { Sucursal } from "../class/Sucursal.js"
-import { Juego } from "../class/Juego.js"
+import { Producto } from "../class/Producto.js"
 import { Carrito } from "../class/Carrito.js";
 import { correo } from "../js/correo.js"
 
-
 import { SucursalApi,  CategoriaApi, ProductoApi} from "../class/FetchApi.js";
-import { ModelSucursal } from "../class/ModelSucursal.js"
-import { ModelCategoria } from "../class/ModelCategoria.js"
-import { ModelProducto } from "../class/ModelProducto.js";
 
 window.onload = () => {
     inicializar()
 }
 
 function inicializar() {
-    inicializarTiendaLocal();
-    inicializarTiendaApi(9)
-    iniCarrito()
-    getTempLocalStorage()
+    inicializarTiendaApi();
+    iniCarrito();
+    getTempLocalStorage();
 }
 
 function inicializarTiendaApi() {
-    let arrSucursal = []
-    let arrCategoria = []
-    let arrProducto = []
-    const objProducto = new ProductoApi();
-    const objCategoria = new CategoriaApi();
     const objSucursal = new SucursalApi();
 
-    objSucursal.getSucursal().then(data => {
-        data.forEach(e => {
-            arrSucursal.push(new SucursalApi(e.id, e.nombre))
-        });
-    });
+    Promise.all([
+        objSucursal.getSucursal().then(data => data),
+    ])
+    .then(res => {
+        const listaSucursales = document.querySelector(".listaSucursales")
+        listaSucursales.innerHTML = ""
 
-    objProducto.getProducto().then(data => {
-        data.forEach(e => {
-            arrProducto.push(new ProductoApi(e.id, e.nombre, e.precio, e.dercripcion, e.stock, e.link, e.etiqueta))
+        let bodegas = [];
+        res[0].forEach(sucursal => {
+            bodegas.push(new Sucursal(sucursal.id, sucursal.nombre))
+            let obj = document.createElement("option")
+            obj.value = sucursal.id;
+            obj.innerText = sucursal.nombre;
+            listaSucursales.appendChild(obj)
         });
-    });
-    
-    objCategoria.getCategoria().then(data => {
-        data.forEach(e => {
-            arrCategoria.push(new CategoriaApi(e.id, e.nombre))
-        });
-    });
 
-    arrSucursal.forEach(sucursal => {
-        console.log(sucursal.getId())
+        listaSucursales.addEventListener("change", () => {
+            ini(listaSucursales.options[listaSucursales.selectedIndex].value, listaSucursales.options[listaSucursales.selectedIndex].innerText)
+        });
+
+        ini(listaSucursales.options[listaSucursales.selectedIndex].value, listaSucursales.options[listaSucursales.selectedIndex].innerText)
+    })
+    .catch(err => {
+        console.log(err)
+        inicializarTiendaLocal();
     });
-   console.log(arrSucursal)
-   console.log(arrCategoria)
-   console.log(arrProducto)
-}
+};
+
+function ini(idSucursal, nomSucursal) {
+    let objSucursal = new Sucursal(idSucursal, nomSucursal);
+    const objProducto = new ProductoApi();
+    const objCategoria = new CategoriaApi();
+
+    if (idSucursal) {
+        Promise.all([
+            objProducto.getProductoById(idSucursal).then(data => data),
+            objCategoria.getCategoria().then(data => data)
+        ])
+        .then((arr) => {
+
+            //Filtro para obtener la variedad de Categorias asociadas a la sucursal
+            let arrIdCateg = [];
+            arr[0].forEach(producto => {
+                if (arrIdCateg.indexOf(producto.idCategoria) == -1) {
+                    arrIdCateg.push(producto.idCategoria)
+                    let categoria = arr[1].find(e => e.id == producto.idCategoria)
+                    //Instancia las categorias encontradas en la sucursal
+                    objSucursal.setCategoria(new Categoria(categoria.id, categoria.nombre))
+                }
+            })
+
+            //faltaria agregar los Productos por categorias asociadas a la sucursal
+            objSucursal.getCategorias().forEach(categ => {
+                arr[0].forEach(producto => {
+                    if (producto.idCategoria == categ.getId()) {
+                        categ.setProducto(new Producto(producto.id, producto.nombre, producto.precio, producto.descripcion, producto.stock, producto.link, producto.etiqueta))
+                    }
+                });
+            })
+            
+            deleteBodegaLocalStorage();
+            iniBodegaLocalStorage(objSucursal);
+        })
+        .then(() => {
+            renderProductos();
+        })
+        .catch(err => {
+            console.log(err)
+            inicializarTiendaLocal();
+        });
+    } else {
+        console.log("Sin IdSucursal")
+    };
+};
 
 function inicializarTiendaLocal() {
     fetch("../data/data.json")
     .then(resp => resp.json())
     .then(data => {
-        let objTienda = new Sucursal(data.negocio.nombre);
+        let objSucursal = new Sucursal(0, data.negocio.nombre);
 
         data.negocio.categorias.map(categ => {
             let newCategoria = new Categoria(categ.id, categ.nombre);
 
-            categ.juegos.map(juego => {
-                newCategoria.setJuego( new Juego(juego.id, juego.nombre, juego.precio, juego.dercripcion, juego.stock, juego.link, juego.etiqueta));
+            categ.producto.map(producto => {
+                newCategoria.setProducto( new Producto(producto.id, producto.nombre, producto.precio, producto.dercripcion, producto.stock, producto.link, producto.etiqueta));
             });
 
-            objTienda.setCategoria(newCategoria);
+            objSucursal.setCategoria(newCategoria);
         });
 
-        iniBodegaLocalStorage(objTienda);
+        iniBodegaLocalStorage(objSucursal);
     })
     .then(() => {
         renderProductos();
@@ -152,13 +191,13 @@ function getBodegaLocalStorage() {
     let bodega
 
     if (localS) {
-        bodega = new Sucursal(localS._nombre);
+        bodega = new Sucursal(localS._id, localS._nombre);
 
         localS._categorias.map(categ => {
             let newCategoria = new Categoria(categ._id, categ._nombre);
 
-            categ._juegos.map(juego => {
-                newCategoria.setJuego(new Juego(juego._id, juego._nombre, juego._precio, juego._dercripcion, juego._stock, juego._link, juego._etiqueta));
+            categ._productos.map(prod => {
+                newCategoria.setProducto(new Producto(prod._id, prod._nombre, prod._precio, prod._dercripcion, prod._stock, prod._link, prod._etiqueta));
             });
 
             bodega.setCategoria(newCategoria);
@@ -308,23 +347,23 @@ function renderProductos() {
     filtroCategoria.appendChild(obj);
 
     bodega.getCategorias().map((categ) => {
-        categ.getJuegos().map((juego) => {
+        categ.getProductos().map((Producto) => {
             const divCart = document.createElement("div");
             divCart.classList.add("card");
 
-            if (juego.getStock() > 0) {
-                juego.getPrecio() < precioMin || precioMin == 0 ? precioMin = juego.getPrecio() : false;
-                juego.getPrecio() > precioMax ? precioMax = juego.getPrecio() : false;
+            if (Producto.getStock() > 0) {
+                Producto.getPrecio() < precioMin || precioMin == 0 ? precioMin = Producto.getPrecio() : false;
+                Producto.getPrecio() > precioMax ? precioMax = Producto.getPrecio() : false;
             };
 
             // -- Hijos --
             obj = document.createElement("img");
-            obj.src = juego.getLink();
+            obj.src = Producto.getLink();
             divCart.appendChild(obj);
 
             obj = document.createElement("h1");
-            obj.value = juego.getEtiqueta();
-            obj.innerText = juego.getNombre();
+            obj.value = Producto.getEtiqueta();
+            obj.innerText = Producto.getNombre();
             divCart.appendChild(obj);
 
             // ------------------------------------------
@@ -334,16 +373,16 @@ function renderProductos() {
 
             // -- Nieto --
             obj = document.createElement("span");
-            obj.id = `stock_${juego.getId()}`;
-            obj.innerText = juego.getStock();
+            obj.id = `stock_${Producto.getId()}`;
+            obj.innerText = Producto.getStock();
             divContenedorStock.appendChild(obj);
 
             divCart.appendChild(divContenedorStock);
 
             // ------------------------------------------
             obj = document.createElement("p");
-            obj.value = juego.getPrecio();
-            obj.innerText = formatoCL.format(juego.getPrecio());
+            obj.value = Producto.getPrecio();
+            obj.innerText = formatoCL.format(Producto.getPrecio());
             obj.classList.add("price");
             divCart.appendChild(obj);
 
@@ -355,11 +394,11 @@ function renderProductos() {
             obj = document.createElement("img");
             obj.classList.add("btnMenos");
             obj.src = "./img/menos.svg";
-            obj.id = juego.getId();
+            obj.id = Producto.getId();
             divContenedorBtn.appendChild(obj);
 
             obj = document.createElement("h3");
-            obj.id = `cant_${juego.getId()}`;
+            obj.id = `cant_${Producto.getId()}`;
             obj.value = categ.getId();
             obj.innerText = 1;
             divContenedorBtn.appendChild(obj);
@@ -367,7 +406,7 @@ function renderProductos() {
             obj = document.createElement("img");
             obj.classList.add("btnMas");
             obj.src = "./img/mas.svg";
-            obj.id = juego.getId();
+            obj.id = Producto.getId();
             divContenedorBtn.appendChild(obj);
 
             divCart.appendChild(divContenedorBtn)
@@ -377,8 +416,8 @@ function renderProductos() {
 
             // -- Nieto --
             obj = document.createElement("button");
-            obj.id = `btnAgregar_${juego.getId()}`
-            obj.value = juego.getId();
+            obj.id = `btnAgregar_${Producto.getId()}`
+            obj.value = Producto.getId();
             obj.innerText = "Agregar";
             obj.classList.add("cardBtn");
             divContenedorAgregar.appendChild(obj);
@@ -460,10 +499,10 @@ function renerDetaCarrito() {
     detaCarritoContenedor.innerHTML = "";
 
     carrito.getProductos().forEach(e => {
-        const juego = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getJuegos().find(juego => juego.getId() == e.idJuego);
+        const Producto = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getProductos().find(Producto => Producto.getId() == e.idJuego);
 
         cant += e.cant;
-        subtotal += (e.cant * juego.getPrecio())
+        subtotal += (e.cant * Producto.getPrecio())
         envio = 5500;
 
         let objContenedor = document.createElement("div");
@@ -490,16 +529,16 @@ function renerDetaCarrito() {
         padre.classList.add("detaCarrito");
 
         hijo = document.createElement("div");
-        hijo.innerText = `Item: ${juego.getNombre()}`;
+        hijo.innerText = `Item: ${Producto.getNombre()}`;
         padre.appendChild(hijo);
 
         hijo = document.createElement("hr");
         padre.appendChild(hijo);
         // -----
         hijo = document.createElement("div");
-        hijo.innerText = `Stock: ${juego.getStock()} - Cant: ${e.cant} - Precio: ${formatoCL.format(juego.getPrecio())} - Total: ${formatoCL.format(e.cant * juego.getPrecio())}`;
+        hijo.innerText = `Stock: ${Producto.getStock()} - Cant: ${e.cant} - Precio: ${formatoCL.format(Producto.getPrecio())} - Total: ${formatoCL.format(e.cant * Producto.getPrecio())}`;
         // nieto = document.createElement("span");
-        // nieto.innerText = `Stock: ${juego.getStock()} - `
+        // nieto.innerText = `Stock: ${Producto.getStock()} - `
         // hijo.appendChild(nieto);
 
         // nieto = document.createElement("span");
@@ -507,11 +546,11 @@ function renerDetaCarrito() {
         // hijo.appendChild(nieto);
 
         // nieto = document.createElement("span");
-        // nieto.innerText = `Precio: ${formatoCL.format(juego.getPrecio())} - `
+        // nieto.innerText = `Precio: ${formatoCL.format(Producto.getPrecio())} - `
         // hijo.appendChild(nieto);
 
         // nieto = document.createElement("span");
-        // nieto.innerText = `Total: ${formatoCL.format(e.cant * juego.getPrecio())}`;
+        // nieto.innerText = `Total: ${formatoCL.format(e.cant * Producto.getPrecio())}`;
         // hijo.appendChild(nieto);
 
         padre.appendChild(hijo);
@@ -632,36 +671,36 @@ function renderInventario() {
     cardInventContenedor.innerHTML = ""
 
     inventario.getCategorias().forEach(categ => {
-        categ.getJuegos().map(juego => {
-            if (juego.getStock() == 0) {
+        categ.getProductos().map(Producto => {
+            if (Producto.getStock() == 0) {
                 cantSinStock += 1;
-            } else if (juego.getStock() <= 5) {
+            } else if (Producto.getStock() <= 5) {
                 cantPocoStock += 1;
             } else {
                 cantConStock += 1
             }
 
             let getInventStock = document.createElement("div");
-            getInventStock.value = juego.getStock();
+            getInventStock.value = Producto.getStock();
             getInventStock.id = "getInventStock"
 
             // -- Card img ------------------------------
             padre = document.createElement("div");
-            padre.value = juego.getEtiqueta();
+            padre.value = Producto.getEtiqueta();
             padre.classList.add("cardInventario");
 
             hijo = document.createElement("img");
             hijo.id = categ.getId();
-            hijo.value = juego.getId();
+            hijo.value = Producto.getId();
             hijo.classList.add("cardInventImg");
-            hijo.src = juego.getLink();
+            hijo.src = Producto.getLink();
             padre.appendChild(hijo);
             // -- Card Txt ------------------------------
             hijo = document.createElement("div");
             hijo.classList.add("cardinventTxt");
 
             nieto = document.createElement("label");
-            nieto.innerText = `Nombre: ${juego.getNombre()}`;
+            nieto.innerText = `Nombre: ${Producto.getNombre()}`;
             hijo.appendChild(nieto);
 
             nieto = document.createElement("label");
@@ -670,7 +709,7 @@ function renderInventario() {
 
             let obj = document.createElement("span");
             obj.id = "cardInventStock";
-            obj.innerText = juego.getStock();
+            obj.innerText = Producto.getStock();
 
             nieto = document.createElement("label");
             nieto.innerText = `Stock: `;
@@ -678,7 +717,7 @@ function renderInventario() {
             hijo.appendChild(nieto);
 
             nieto = document.createElement("label");
-            nieto.innerText = `Precio: ${formatoCL.format(juego.getPrecio())}`;
+            nieto.innerText = `Precio: ${formatoCL.format(Producto.getPrecio())}`;
             hijo.appendChild(nieto);
 
             padre.appendChild(hijo);
@@ -694,7 +733,7 @@ function renderInventario() {
             padre.classList.add("panel");
 
             hijo = document.createElement("p");
-            hijo.innerText = juego.getDercripcion();
+            hijo.innerText = Producto.getDercripcion();
             padre.appendChild(hijo);
 
             getInventStock.appendChild(padre)
@@ -800,13 +839,13 @@ function validarStock(id) {
 /* ------------------------------------------------------------- */
 function setStockBodega(idCateg, idJuego, cant) {
     let bodega = getBodegaLocalStorage()
-    bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).setModificarStock(cant);
+    bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idJuego).setModificarStock(cant);
     setBodegaLocalStorage(bodega);
 }
 
 function getStockBodega(idCateg, idJuego) {
     const bodega = getBodegaLocalStorage()
-    const stock = bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego).getStock();
+    const stock = bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idJuego).getStock();
     return stock
 }
 
@@ -1008,7 +1047,7 @@ function prepararNuevoProducto(idCateg, idJuego, msge) {
         idProdNoM.innerText = "NUEVO PRODUCTO";
         idProdDeta.innerText = "(idCateg = na, idProd = na)";
     } else if(msge == "Modificar") {
-        let producto = bodega.getCategorias().find(categ => categ.getId() == idCateg).getJuegos().find(juego => juego.getId() == idJuego)
+        let producto = bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idJuego)
 
         if (producto) {
             idProdNoM.innerText = "MODIFICAR PRODUCTO";

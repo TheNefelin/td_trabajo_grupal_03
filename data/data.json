@@ -5,7 +5,7 @@
             {
                 "nombre": "PlayStation",
                 "id": 1,
-                "juegos": [
+                "producto": [
                     {
                         "id": 1,
                         "nombre": "The Witcher 3",
@@ -61,7 +61,7 @@
             {
                 "nombre": "X Box",
                 "id": 2,
-                "juegos": [
+                "producto": [
                     {
                         "id": 6,
                         "nombre": "Borderlands",
@@ -107,7 +107,7 @@
             {
                 "nombre": "PC",
                 "id": 3,
-                "juegos": [
+                "producto": [
                     {
                         "id": 10,
                         "nombre": "Age of Empires IV",
@@ -153,7 +153,7 @@
             {
                 "nombre": "3DS",
                 "id": 4,
-                "juegos": [
+                "producto": [
                     {
                         "id": 14,
                         "nombre": "Fire Emblem Warriors",

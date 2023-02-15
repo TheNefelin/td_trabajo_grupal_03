@@ -1,5 +1,5 @@
 
-export class Juego {
+export class Producto {
     constructor(id, nombre, precio, dercripcion, stock, link, etiqueta) {
         this._id = id;
         this._nombre = nombre;

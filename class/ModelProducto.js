@@ -2,16 +2,16 @@ export class ModelProducto {
     #id;
     #nombre;
     #precio;
-    #dercripcion;
+    #descripcion;
     #stock;
     #link;
     #etiqueta;
 
-    constructor(id, nombre, precio, dercripcion, stock, link, etiqueta) {
+    constructor(id, nombre, precio, descripcion, stock, link, etiqueta) {
         this.#id = id
         this.#nombre = nombre;
         this.#precio = precio;
-        this.#dercripcion = dercripcion;
+        this.#descripcion = descripcion;
         this.#stock = stock;
         this.#link = link;
         this.#etiqueta = etiqueta;
@@ -26,7 +26,7 @@ export class ModelProducto {
         return this.#precio;
     }
     getDercripcion() {
-        return this.#dercripcion;
+        return this.#descripcion;
     }
     getStock() {
         return this.#stock;
@@ -44,7 +44,7 @@ export class ModelProducto {
         this.#precio = precio;
     }
     setDercripcion(descripcion) {
-        this.#dercripcion = descripcion;
+        this.#descripcion = descripcion;
     }
     setStock(stock) {
         this.#stock = stock;
