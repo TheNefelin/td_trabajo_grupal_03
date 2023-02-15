@@ -6,37 +6,41 @@ import { Juego } from "../class/Juego.js"
 import { Carrito } from "../class/Carrito.js";
 import { correo } from "../js/correo.js"
 
-import { FetchSucursalApi } from "../class/FetchSucursalApi.js";
-import { FetchCategoriaApi } from "../class/FetchCategoriaApi.js";
-import { FetchProductoApi } from "../class/FetchProductoApi.js";
 
-const objSucursal = new FetchSucursalApi();
-objSucursal.getSucursal()
-.then(sucursales => {
-    let arrSucursales = []
-    sucursales.forEach(e => {
-        const categoria = new Categoria(e.id, e.nombre);
-        arrSucursales.push(categoria);
-        console.log(categoria)
-        console.log(arrSucursales)
+import { SucursalApi,  CategoriaApi, ProductoApi} from "../class/FetchApi.js";
+import { ModelSucursal } from "../class/ModelSucursal.js"
+import { ModelCategoria } from "../class/ModelCategoria.js"
+import { ModelProducto } from "../class/ModelProducto.js";
+
+// ---------------------------------------------------
+const objProducto = new ProductoApi();
+objProducto.getProducto()
+.then(data => {
+    data.forEach(e => {
+
     });
+    console.log(data);
 });
 
-// const objCategoria = new FetchCategoriaApi();
-// objCategoria.getCategoria()
-// .then(categorias => {
-//     categorias.forEach(e => {
-//         console.log(e)
-//     });
-// });
+const objCategoria = new CategoriaApi();
+objCategoria.getCategoria()
+.then(data => {
+    data.forEach(e => {
 
-// const objProductos = new FetchProductosApi();
-// objProductos.getProducto()
-// .then(productos => {
-//     productos.forEach(e => {
-//         console.log(e)
-//     });
-// });
+    });
+    console.log(data);
+});
+
+const objSucursal = new SucursalApi();
+objSucursal.getSucursal()
+.then(data => {
+    data.forEach(e => {
+
+    });
+    console.log(data);
+});
+
+// ---------------------------------------------------
 
 window.onload = () => {
     inicializar()
@@ -48,7 +52,7 @@ function inicializar() {
     getTempLocalStorage()
 }
 
-export function inicializarTienda() {
+function inicializarTienda() {
     fetch("../data/data.json")
     .then(resp => resp.json())
     .then(data => {
