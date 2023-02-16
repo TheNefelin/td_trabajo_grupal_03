@@ -9,16 +9,10 @@ import { correo } from "../js/correo.js"
 import { SucursalApi,  CategoriaApi, ProductoApi} from "../class/FetchApi.js";
 
 window.onload = () => {
-    inicializar()
+    inicializar();
 }
 
 function inicializar() {
-    inicializarApi();
-    iniCarrito();
-    getTempLocalStorage();
-}
-
-function inicializarApi() {
     const objSucursal = new SucursalApi();
 
     Promise.all([
@@ -38,18 +32,23 @@ function inicializarApi() {
         });
 
         listaSucursales.addEventListener("change", () => {
-            inicializarTiendaApiOLocal(listaSucursales.options[listaSucursales.selectedIndex].value, listaSucursales.options[listaSucursales.selectedIndex].innerText)
+            inicializarApi(listaSucursales.options[listaSucursales.selectedIndex].value, listaSucursales.options[listaSucursales.selectedIndex].innerText)
         });
 
-        inicializarTiendaApiOLocal(listaSucursales.options[listaSucursales.selectedIndex].value, listaSucursales.options[listaSucursales.selectedIndex].innerText)
+        inicializarApi(listaSucursales.options[listaSucursales.selectedIndex].value, listaSucursales.options[listaSucursales.selectedIndex].innerText)
+    })
+    .then(() => {
+        iniCarrito();
+        getTempLocalStorage();
     })
     .catch(err => {
-        console.log(err)
         inicializarTiendaLocal();
+        iniCarrito();
+        getTempLocalStorage();
     });
 };
 
-function inicializarTiendaApiOLocal(idSucursal, nomSucursal) {
+function inicializarApi(idSucursal, nomSucursal) {
     let objSucursal = new Sucursal(idSucursal, nomSucursal);
     const objProducto = new ProductoApi();
     const objCategoria = new CategoriaApi();
@@ -60,6 +59,7 @@ function inicializarTiendaApiOLocal(idSucursal, nomSucursal) {
             objCategoria.getCategoria().then(data => data)
         ])
         .then((arr) => {
+            deleteBodegaLocalStorage();
 
             //Filtro para obtener la variedad de Categorias asociadas a la sucursal
             let arrIdCateg = [];
@@ -82,18 +82,15 @@ function inicializarTiendaApiOLocal(idSucursal, nomSucursal) {
                 });
             })
             
-            deleteBodegaLocalStorage();
             iniBodegaLocalStorage(objSucursal);
+            renderInventario()
         })
         .then(() => {
             renderProductos();
         })
         .catch(err => {
-            console.log(err)
             inicializarTiendaLocal();
         });
-    } else {
-        console.log("Sin IdSucursal")
     };
 };
 
@@ -224,7 +221,6 @@ function setTempLocalStorage(obj) {
     if (obj.id) {
         if (arrInputs) {
             let index = arrInputs.findIndex(e => e.id == obj.id)
-            console.log(index + " -- " + obj.id)
             if (index > -1) {
                 arrInputs.find(e => e.id == obj.id ? e.value = obj.value : false);
             } else {
@@ -235,8 +231,6 @@ function setTempLocalStorage(obj) {
         };
 
         window.localStorage.setItem("temp", JSON.stringify(arrInputs));
-    } else {
-        console.log("NO")
     };
 };
 
@@ -941,12 +935,7 @@ function pagarCarrito() {
     });
 
     if (estado) {
-        enviarCorreo();
-
-        // inputDespachoCarrito.forEach(obj => {
-        //     obj.value = "";
-        //     obj.classList.remove("despachoCarritoInput_no");
-        // });
+        // enviarCorreo();
 
         console.log("Pago Exitoso");
     };
@@ -1126,9 +1115,10 @@ btnNuevoModificarPrdo.addEventListener("click", () => {
         if (validarNuevoProducto) {       
             const res = apiProducto.postProducto(producto)
             res
-                .then(res => console.log(res))
-                .catch(err => console.log(err));
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
 
+            inicializar()
             handleNuevoProdSalir();
         } else {
             alert("DEBE COMPLETAR TODOS LOS DATOS")
@@ -1138,16 +1128,15 @@ btnNuevoModificarPrdo.addEventListener("click", () => {
         if (validarNuevoProducto) {       
             const res = apiProducto.putProducto(producto);
             res
-                .then(res => console.log(res))
-                .catch(err => console.log(err));
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
 
+            inicializar();
             handleNuevoProdSalir();
         } else {
             alert("DEBE COMPLETAR TODOS LOS DATOS")
         };
     };
-
-    inicializarTiendaApiOLocal(idSucursalProd, nombreSucursalProd);
 });
 
 function validarNuevoProducto() {
@@ -1183,11 +1172,12 @@ function validarNuevoProducto() {
 
 const btnEliminarProdSalir = document.querySelector("#btnEliminarProdSalir");
 btnEliminarProdSalir.addEventListener("click", () => {
-    console.log(btnEliminarProdSalir.value)
-
     if (btnEliminarProdSalir.value) {
-        const apiProducto = new ProductoApi()
-        apiProducto.deleteProductoById(btnEliminarProdSalir.value);
+        const id = parseInt(btnEliminarProdSalir.value);
+        const apiProducto = new ProductoApi();
+        apiProducto.deleteProductoById(id);
+        inicializar();
+        handleNuevoProdSalir();
     };
 });
 

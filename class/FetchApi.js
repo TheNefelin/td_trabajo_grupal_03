@@ -3,6 +3,7 @@ class API {
     
     constructor() {
         this.#url = "https://bsite.net/metalflap";
+        // this.#url = "https://localhost:7230";
     };
 
     getUrl() { 
@@ -46,14 +47,12 @@ export class ProductoApi extends API {
     };
 
     async getProductoById(id) {
-        const url = `${this.getUrl()}/td-producto/idSucursal/${id}`
-        const resp = await fetch(url);
+        const resp = await fetch(`${this.getUrl()}/td-producto/idSucursal/${id}`);
         const data = await resp.json();
         return data;
     };
 
     async postProducto(producto) {
-        console.log(JSON.stringify(producto))
         const resp = await fetch(`${this.getUrl()}/td-producto`, {
             method: "POST",
             headers: {
@@ -78,14 +77,12 @@ export class ProductoApi extends API {
     };
 
     async deleteProductoById(id) {
-        console.log(`${this.getUrl()}/td-producto/${id}`)
-        const resp = await fetch(`${this.getUrl()}/td-producto/${id}`, {
+        await fetch(`${this.getUrl()}/td-producto/${id}`, {
             method: "DELETE",
             headers: {
                 "Accept": "application/json",
-            }
+            },
+            body: JSON.stringify(id)
         });
-        console.log(resp)
-        return resp;
     };
 };
