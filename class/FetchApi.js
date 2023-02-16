@@ -1,12 +1,12 @@
 class API {
-    #URL;
+    #url;
     
     constructor() {
-        this.#URL = "https://bsite.net/metalflap";
+        this.#url = "https://bsite.net/metalflap";
     };
 
     getUrl() { 
-        return this.#URL; 
+        return this.#url; 
     };
 };
 
@@ -50,5 +50,42 @@ export class ProductoApi extends API {
         const resp = await fetch(url);
         const data = await resp.json();
         return data;
+    };
+
+    async postProducto(producto) {
+        console.log(JSON.stringify(producto))
+        const resp = await fetch(`${this.getUrl()}/td-producto`, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(producto)
+        })
+        return resp;
+    };
+
+    async putProducto(producto) {
+        const resp = await fetch(`${this.getUrl()}/td-producto`, {
+            method: "PUT",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(producto)
+        });
+        return resp;
+    };
+
+    async deleteProductoById(id) {
+        console.log(`${this.getUrl()}/td-producto/${id}`)
+        const resp = await fetch(`${this.getUrl()}/td-producto/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+            }
+        });
+        console.log(resp)
+        return resp;
     };
 };

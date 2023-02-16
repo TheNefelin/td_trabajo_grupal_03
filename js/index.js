@@ -77,7 +77,7 @@ function inicializarTiendaApiOLocal(idSucursal, nomSucursal) {
                 arr[0].forEach(producto => {
                     if (producto.idCategoria == categ.getId()) {
                         let imagen = objSucursal.getId() == 1 ? producto.link : "";
-                        categ.setProducto(new Producto(producto.id, producto.nombre, producto.precio, producto.descripcion, parseInt(producto.stock), imagen, producto.etiqueta))
+                        categ.setProducto(new Producto(producto.id, producto.nombre, producto.precio, imagen, parseInt(producto.stock),  producto.etiqueta, producto.descripcion, producto.idCategoria, idSucursal))
                     }
                 });
             })
@@ -107,7 +107,7 @@ function inicializarTiendaLocal() {
             let newCategoria = new Categoria(categ.id, categ.nombre);
 
             categ.producto.map(producto => {
-                newCategoria.setProducto( new Producto(producto.id, producto.nombre, producto.precio, producto.dercripcion, producto.stock, producto.link, producto.etiqueta));
+                newCategoria.setProducto(new Producto(producto.id, producto.nombre, producto.precio, producto.link, producto.stock,  producto.etiqueta, producto.descripcion, categ.id, 0));
             });
 
             objSucursal.setCategoria(newCategoria);
@@ -198,7 +198,7 @@ function getBodegaLocalStorage() {
             let newCategoria = new Categoria(categ._id, categ._nombre);
 
             categ._productos.map(prod => {
-                newCategoria.setProducto(new Producto(prod._id, prod._nombre, prod._precio, prod._dercripcion, prod._stock, prod._link, prod._etiqueta));
+                newCategoria.setProducto(new Producto(prod._id, prod._nombre, prod._precio, prod._link, prod._stock,  prod._etiqueta, prod._dercripcion, categ._id, localS._id));
             });
 
             bodega.setCategoria(newCategoria);
@@ -330,6 +330,19 @@ function buscarTarjeta(txtFilter, precioFilter, categoriaFilter) {
 
 /* --- Render Sitio -------------------------------------------- */
 /* ------------------------------------------------------------- */
+function renderCategorias(id) {
+    const bodega = getBodegaLocalStorage();
+    const select = document.querySelector(id);
+
+    bodega.getCategorias().map(categ => {
+        let obj = document.createElement("option");
+        obj.value = categ.getId();
+        obj.innerText = categ.getNombre();
+        select.appendChild(obj);
+    });
+}
+
+
 const tienda = document.querySelector("#tienda");
 
 function renderProductos() {
@@ -346,6 +359,7 @@ function renderProductos() {
     obj.innerText = "Todos";
     filtroCategoria.innerHTML = "";
     filtroCategoria.appendChild(obj);
+    renderCategorias("#filtroCategoria");
 
     bodega.getCategorias().map((categ) => {
         categ.getProductos().map((Producto) => {
@@ -428,13 +442,6 @@ function renderProductos() {
 
             tienda.appendChild(divCart);
         })
-
-        // -- Inicializa el filtro de categoria -----------------------
-        obj = document.createElement("option");
-        obj.value = categ.getId();
-        obj.innerText = categ.getNombre();
-        filtroCategoria.appendChild(obj);
-        // ------------------------------------------------------------
     })
 
     const btnMenos = document.querySelectorAll(".btnMenos");
@@ -1027,12 +1034,19 @@ btnNuevoProd.addEventListener("click", () => {
 });
 
 function prepararNuevoProducto(idCateg, idJuego, msge) {
+    const btnEliminarProdSalir = document.querySelector("#btnEliminarProdSalir");
+    btnEliminarProdSalir.value = idJuego;
+    const categoriasNuevoProd = document.querySelector("#categoriasNuevoProd");
+    categoriasNuevoProd.innerHTML = "";
+    renderCategorias("#categoriasNuevoProd");
+
     const bodega = getBodegaLocalStorage();
     const idProdNoM = document.querySelector("#idProdNoM");
     const idProdDeta = document.querySelector(".idProdDeta");
     const nuevoProdNombre = document.querySelector("#nuevoProdNombre");
     const nuevoProdPrecio = document.querySelector("#nuevoProdPrecio");
     const nuevoProdStock = document.querySelector("#nuevoProdStock");
+    const nuevoProdEtiqueta = document.querySelector("#nuevoProdEtiqueta");
     const nuevoProdLink = document.querySelector("#nuevoProdLink");
     const nuevoProdDesc = document.querySelector("#nuevoProdDesc");
     const btn = document.querySelector(".btnNuevoModificarPrdo");
@@ -1050,8 +1064,6 @@ function prepararNuevoProducto(idCateg, idJuego, msge) {
     } else if(msge == "Modificar") {
         let producto = bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idJuego)
 
-        console.log(producto)
-
         if (producto) {
             idProdNoM.innerText = "MODIFICAR PRODUCTO";
             idProdDeta.innerText = `(idCateg = ${idCateg}, idProd = ${idJuego})`;
@@ -1059,10 +1071,12 @@ function prepararNuevoProducto(idCateg, idJuego, msge) {
             nuevoProdNombre.value = producto.getNombre();
             nuevoProdPrecio.value = producto.getPrecio();
             nuevoProdStock.value = producto.getStock();
+            nuevoProdEtiqueta.value = producto.getEtiqueta();
             nuevoProdLink.value = producto.getLink();
             nuevoProdDesc.value = producto.getDercripcion();
             btn.id = idCateg;
             btn.value = idJuego;
+            categoriasNuevoProd.value = idCateg;
         };
     };
 };
@@ -1082,26 +1096,58 @@ function handleNuevoProdSalir() {
 
 const btnNuevoModificarPrdo = document.querySelector(".btnNuevoModificarPrdo");
 btnNuevoModificarPrdo.addEventListener("click", () => {
-    console.log(btnNuevoModificarPrdo.id + " --- " + btnNuevoModificarPrdo.value);
+    const idProd = btnNuevoModificarPrdo.value;
+    const nombreProd = document.querySelector("#nuevoProdNombre").value;
+    const precioProd = document.querySelector("#nuevoProdPrecio").value;
+    const linkProd = document.querySelector("#nuevoProdLink").value;
+    const stockProd = document.querySelector("#nuevoProdStock").value;
+    const etiquetaProd = document.querySelector("#nuevoProdEtiqueta").value;
+    const descripcionProd = document.querySelector("#nuevoProdDesc").value; 
+    const idCategoriaProd = btnNuevoModificarPrdo.id;
+    const idSucursalProd = getBodegaLocalStorage().getId();
+    const nombreSucursalProd = getBodegaLocalStorage().getNombre();
 
-     if (btnNuevoModificarPrdo.innerText == "Crear Nuevo") {
-        console.log("No Algun Dia")
-        handleNuevoProdSalir();
-    } else if (btnNuevoModificarPrdo.innerText == "Modificar") {
-        console.log("Datos Modificados")
+    const producto = {
+        id: parseInt(idProd) ? parseInt(idProd) : 0,
+        nombre: nombreProd,
+        precio: parseInt(precioProd),
+        link: linkProd,
+        stock: parseInt(stockProd),
+        etiqueta: etiquetaProd,
+        descripcion: descripcionProd,
+        idCategoria: parseInt(idCategoriaProd),
+        idSucursal: parseInt(idSucursalProd)
+    };
+
+    const apiProducto = new ProductoApi()
+
+    if (btnNuevoModificarPrdo.innerText == "Crear Nuevo") {
         // -- FALTA LA ETIQUETA ----------------
-        if (validarNuevoProducto) {
-            console.log(btnNuevoModificarPrdo)
-            alert("EN CONSTRUCCIÓN")
-            
+        if (validarNuevoProducto) {       
+            const res = apiProducto.postProducto(producto)
+            res
+                .then(res => console.log(res))
+                .catch(err => console.log(err));
+
+            handleNuevoProdSalir();
+        } else {
+            alert("DEBE COMPLETAR TODOS LOS DATOS")
+        };
+    } else if (btnNuevoModificarPrdo.innerText == "Modificar") {
+        // -- FALTA LA ETIQUETA ----------------
+        if (validarNuevoProducto) {       
+            const res = apiProducto.putProducto(producto);
+            res
+                .then(res => console.log(res))
+                .catch(err => console.log(err));
+
             handleNuevoProdSalir();
         } else {
             alert("DEBE COMPLETAR TODOS LOS DATOS")
         };
     };
 
-    renderProductos();
-    renderInventario();
+    inicializarTiendaApiOLocal(idSucursalProd, nombreSucursalProd);
 });
 
 function validarNuevoProducto() {
@@ -1134,6 +1180,16 @@ function validarNuevoProducto() {
 
     return estado;
 }
+
+const btnEliminarProdSalir = document.querySelector("#btnEliminarProdSalir");
+btnEliminarProdSalir.addEventListener("click", () => {
+    console.log(btnEliminarProdSalir.value)
+
+    if (btnEliminarProdSalir.value) {
+        const apiProducto = new ProductoApi()
+        apiProducto.deleteProductoById(btnEliminarProdSalir.value);
+    };
+});
 
 /* ------------------------------------------------------------- */
 /* ------------------------------------------------------------- */

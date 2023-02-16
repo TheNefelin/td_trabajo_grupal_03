@@ -1,13 +1,15 @@
 
 export class Producto {
-    constructor(id, nombre, precio, dercripcion, stock, link, etiqueta) {
+    constructor(id, nombre, precio, link, stock, etiqueta, dercripcion, idCategoria, idSucursal) {
         this._id = id;
         this._nombre = nombre;
         this._precio = precio;
-        this._dercripcion = dercripcion;
+        this._link = link;
         this._stock = stock;
-        this._link = link
         this._etiqueta = etiqueta;
+        this._dercripcion = dercripcion;
+        this._idCategoria = idCategoria
+        this._idSucursal = idSucursal
     }
     getId() {
         return this._id;
@@ -18,17 +20,23 @@ export class Producto {
     getPrecio() {
         return this._precio;
     }
-    getDercripcion() {
-        return this._dercripcion;
+    getLink() {
+        return this._link;
     }
     getStock() {
         return this._stock;
     }
-    getLink() {
-        return this._link;
-    }
     getEtiqueta() {
         return this._etiqueta;
+    }
+    getDercripcion() {
+        return this._dercripcion;
+    }
+    getCategoria() {
+        return this._idCategoria;
+    }
+    getSucursal() {
+        return this._idSucursal;
     }
     setNombre(nombre) {
         this._nombre = nombre;
@@ -45,7 +53,7 @@ export class Producto {
     setLink(link) {
         this._link = link;
     }
-    setLink(etiqueta) {
+    setEtiqueta(etiqueta) {
         this._etiqueta = etiqueta;
     }
     setModificarStock(cant) {
