@@ -162,7 +162,7 @@ function getCarritoLocalStorage() {
 
     if (localS) {
         localS._productos.forEach(e => {
-            carrito.setProducto(e.idCateg, e.idJuego, e.cant);
+            carrito.setProducto(e.idCateg, e.idProducto, e.cant);
         });
     };
 
@@ -455,13 +455,13 @@ function renderProductos() {
     const btnAgregar = document.querySelectorAll(".cardBtn");
     btnAgregar.forEach(obj => {
         obj.addEventListener("click", () => {
-            const idJuego = obj.value;
-            const cantTarjeta = document.querySelector(`#cant_${idJuego}`);
+            const idProducto = obj.value;
+            const cantTarjeta = document.querySelector(`#cant_${idProducto}`);
             const idCateg = cantTarjeta.value;
             const cant = cantTarjeta.textContent;
             cantTarjeta.textContent = 1;
 
-            modificarCarrito(idCateg, parseInt(idJuego), parseInt(cant));
+            modificarCarrito(idCateg, parseInt(idProducto), parseInt(cant));
         });
 
         validarStock(obj.value);
@@ -481,9 +481,9 @@ function renderProductos() {
 }
 
 function renderCarrito() {
-    let canasta = getCarritoLocalStorage()
+    let carrito = getCarritoLocalStorage()
     const cantCarrito = document.querySelector("#cantCarrito");
-    cantCarrito.textContent = canasta.getCantProductos();
+    cantCarrito.textContent = carrito.getCantProductos();
 
     renerDetaCarrito();
 }
@@ -501,7 +501,7 @@ function renerDetaCarrito() {
     detaCarritoContenedor.innerHTML = "";
 
     carrito.getProductos().forEach(e => {
-        const producto = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getProductos().find(Producto => Producto.getId() == e.idJuego);
+        const producto = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getProductos().find(Producto => Producto.getId() == e.idProducto);
 
         cant += e.cant;
         subtotal += (e.cant * producto.getPrecio())
@@ -509,7 +509,7 @@ function renerDetaCarrito() {
 
         let objContenedor = document.createElement("div");
         objContenedor.classList.add("itemCarrito");
-        objContenedor.id = e.idJuego;
+        objContenedor.id = e.idProducto;
         objContenedor.value = e.cant;
 
         // ------------------------------------
@@ -517,14 +517,14 @@ function renerDetaCarrito() {
         hijo = document.createElement("img");
         hijo.classList.add("btnMasCarrito");
         hijo.id = e.idCateg;
-        hijo.value = e.idJuego;
+        hijo.value = e.idProducto;
         hijo.src="./img/mas.svg";
         padre.appendChild(hijo);
 
         hijo = document.createElement("img");
         hijo.classList.add("btnMenosCarrito");
         hijo.id = e.idCateg;
-        hijo.value = e.idJuego;
+        hijo.value = e.idProducto;
         hijo.src="./img/menos.svg";
         padre.appendChild(hijo);
         objContenedor.appendChild(padre);
@@ -549,7 +549,7 @@ function renerDetaCarrito() {
         padre = document.createElement("img");
         padre.classList.add("btnDeleteCarrito");
         padre.id = e.idCateg;
-        padre.value = e.idJuego;
+        padre.value = e.idProducto;
         padre.src="./img/basura.svg";
 
         objContenedor.appendChild(padre);
@@ -826,56 +826,56 @@ function validarStock(id) {
 
 /* --- Carrito ------------------------------------------------- */
 /* ------------------------------------------------------------- */
-function setStockBodega(idCateg, idJuego, cant) {
+function setStockBodega(idCateg, idProducto, cant) {
     let bodega = getBodegaLocalStorage()
-    bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idJuego).setModificarStock(cant);
+    bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idProducto).setModificarStock(cant);
     setBodegaLocalStorage(bodega);
 }
 
-function getStockBodega(idCateg, idJuego) {
+function getStockBodega(idCateg, idProducto) {
     const bodega = getBodegaLocalStorage()
-    const stock = bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idJuego).getStock();
+    const stock = bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idProducto).getStock();
     return stock
 }
 
-function deleteElementoCarrito(idCateg, idJuego) {
+function deleteElementoCarrito(idCateg, idProducto) {
     const carrito = getCarritoLocalStorage();
-    const cant = carrito.getProductosById(idJuego).cant;
-    modificarCarrito(idCateg, idJuego, cant * -1)
+    const cant = carrito.getProductosById(idProducto).cant;
+    modificarCarrito(idCateg, idProducto, cant * -1)
 }
 
-function modificarCarrito(idCateg, idJuego, cant) {
+function modificarCarrito(idCateg, idProducto, cant) {
     let estado = false;
     let carrito = getCarritoLocalStorage();
-    const index = carrito.getProductos().findIndex(d => d.idJuego == idJuego)
+    const index = carrito.getProductos().findIndex(d => d.idProducto == idProducto)
     // si el producto no existe en la canasta
     if (index == -1) {
-        carrito.setProducto(idCateg, idJuego, cant);
+        carrito.setProducto(idCateg, idProducto, cant);
         estado = true;
     };
     // si el producto existe en la canasta se hace esto
     if (index > -1) {
-        const stockBodega = getStockBodega(idCateg, idJuego);
-        const cantProdCarrito = carrito.getProductosById(idJuego).cant;
+        const stockBodega = getStockBodega(idCateg, idProducto);
+        const cantProdCarrito = carrito.getProductosById(idProducto).cant;
         // se suma o se restan productos de la canasta
         if (!(cant > 0 && stockBodega == 0) && !(cant < 0 && cantProdCarrito == 0)) {
-            carrito.getProductosById(idJuego).cant += cant;
+            carrito.getProductosById(idProducto).cant += cant;
             estado = true
         }
         // si el prodiucto de la canasta llega 0 se elimina
-        if (carrito.getProductosById(idJuego).cant == 0) {
-            carrito.deleteProductosById(idJuego)
+        if (carrito.getProductosById(idProducto).cant == 0) {
+            carrito.deleteProductosById(idProducto)
         }
     };
 
     if (estado) {
-        setStockBodega(idCateg, idJuego, cant * (-1));
+        setStockBodega(idCateg, idProducto, cant * (-1));
         setCarritoLocalStorage(carrito);
     }
 
     renderCarrito();
     renderProductos()
-    validarStock(idJuego)
+    validarStock(idProducto)
 };
 
 const carritoContenedor = document.querySelector(".carrito-contenedor");
@@ -902,15 +902,15 @@ function ocultarCarrito() {
     elCarrito.classList.remove("verCarrito_si");
 };
 
-const btnPagar = document.querySelector(".btnPagar");
-btnPagar.addEventListener("click", pagarCarrito)
-
 const inputDespachoCarrito = document.querySelectorAll(".despachoCarrito > input")
 inputDespachoCarrito.forEach(obj => {
     obj.addEventListener("keyup", () => {
         obj.classList.remove("despachoCarritoInput_no");
     });
 });
+
+const btnPagar = document.querySelector(".btnPagar");
+btnPagar.addEventListener("click", pagarCarrito)
 
 function pagarCarrito() {
     let estado = true;
@@ -924,6 +924,7 @@ function pagarCarrito() {
     if (true) {
         estado = true;
         const arrProducto = [];
+        const arrCorreo = [];
         const itemCarrito = document.querySelectorAll(".itemCarrito");
         const apiProducto = new ProductoApi();
         const bodegaApi = apiProducto.getProductoByIdSucursal(1)
@@ -945,6 +946,13 @@ function pagarCarrito() {
                     idCategoria: parseInt(itemEnApi.idCategoria),
                     idSucursal: parseInt(itemEnApi.idSucursal)
                 });
+
+                arrCorreo.push({
+                    id: parseInt(itemEnApi.id),
+                    nombre: itemEnApi.nombre,
+                    precio: parseInt(itemEnApi.precio),
+                    cant: parseInt(item.value)
+                });
                 
                 if (newStock < 0) {
                     estado = false;
@@ -959,10 +967,11 @@ function pagarCarrito() {
                     apiProducto.putProducto(e)
                 });
 
+                correoCliente(arrCorreo);
                 inicializar();
                 handleNuevoProdSalir();
-                correoCliente(getCarritoLocalStorage());
-                // deleteCarritoLocalStorage()
+                deleteCarritoLocalStorage();
+                ocultarCarrito();
             } else {
                 alert("Hay Productos que exceden el Stock")
             }
@@ -1046,9 +1055,9 @@ btnNuevoProd.addEventListener("click", () => {
     prepararNuevoProducto(null, null, "Crear Nuevo")
 });
 
-function prepararNuevoProducto(idCateg, idJuego, msge) {
+function prepararNuevoProducto(idCateg, idProducto, msge) {
     const btnEliminarProdSalir = document.querySelector("#btnEliminarProdSalir");
-    btnEliminarProdSalir.value = idJuego;
+    btnEliminarProdSalir.value = idProducto;
     const categoriasNuevoProd = document.querySelector("#categoriasNuevoProd");
     categoriasNuevoProd.innerHTML = "";
     renderCategorias("#categoriasNuevoProd");
@@ -1075,11 +1084,11 @@ function prepararNuevoProducto(idCateg, idJuego, msge) {
         idProdNoM.innerText = "NUEVO PRODUCTO";
         idProdDeta.innerText = "(idCateg = na, idProd = na)";
     } else if(msge == "Modificar") {
-        let producto = bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idJuego)
+        let producto = bodega.getCategorias().find(categ => categ.getId() == idCateg).getProductos().find(Producto => Producto.getId() == idProducto)
 
         if (producto) {
             idProdNoM.innerText = "MODIFICAR PRODUCTO";
-            idProdDeta.innerText = `(idCateg = ${idCateg}, idProd = ${idJuego})`;
+            idProdDeta.innerText = `(idCateg = ${idCateg}, idProd = ${idProducto})`;
             btnNuevoModificarPrdo.innerText = msge;
             nuevoProdNombre.value = producto.getNombre();
             nuevoProdPrecio.value = producto.getPrecio();
@@ -1088,7 +1097,7 @@ function prepararNuevoProducto(idCateg, idJuego, msge) {
             nuevoProdLink.value = producto.getLink();
             nuevoProdDesc.value = producto.getDercripcion();
             btn.id = idCateg;
-            btn.value = idJuego;
+            btn.value = idProducto;
             categoriasNuevoProd.value = idCateg;
         };
     };
@@ -1118,7 +1127,6 @@ btnNuevoModificarPrdo.addEventListener("click", () => {
     const descripcionProd = document.querySelector("#nuevoProdDesc").value; 
     const idCategoriaProd = btnNuevoModificarPrdo.id;
     const idSucursalProd = getBodegaLocalStorage().getId();
-    const nombreSucursalProd = getBodegaLocalStorage().getNombre();
 
     const producto = {
         id: parseInt(idProd) ? parseInt(idProd) : 0,

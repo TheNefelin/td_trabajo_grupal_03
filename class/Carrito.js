@@ -4,17 +4,17 @@ export class Carrito {
         this._productos = [];
         this._cant = 0;
     }
-    setProducto(idCateg, idJuego, cant) {
-        this._productos.push({idCateg, idJuego, cant});
+    setProducto(idCateg, idProducto, cant) {
+        this._productos.push({idCateg, idProducto, cant});
     }
     getProductos() {
         return this._productos;
     }
-    getProductosById(idJuego) {
-        return this._productos.find(e => e.idJuego == idJuego);
+    getProductosById(idProducto) {
+        return this._productos.find(e => e.idProducto == idProducto);
     }
-    deleteProductosById(idJuego) {
-        let index = this._productos.findIndex(e => e.idJuego == idJuego);
+    deleteProductosById(idProducto) {
+        let index = this._productos.findIndex(e => e.idProducto == idProducto);
         this._productos.splice(index, 1);
     }
     getCantProductos() {
