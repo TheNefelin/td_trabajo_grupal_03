@@ -1,8 +1,14 @@
-export function correo(frm) {
-    console.log(frm)
+import { ProductoApi } from "../class/FetchApi.js";
 
-    let msge = "";
+export function correoCliente(carrito, aarItem) {
     emailjs.init('GlmSGpqHCTxbwmfS3');
+
+    // console.log(carrito)
+
+    const apiProducto =  new ProductoApi
+    carrito.map(e => {
+
+    });
 
     // emailjs.sendForm('service_jnf9tgi', 'template_c4ohe36', frm)
     // .then(function() {
@@ -10,6 +16,4 @@ export function correo(frm) {
     // }, function(error) {
     //     msge = 'ERROR:', error;
     // });
-
-    return msge;
 }

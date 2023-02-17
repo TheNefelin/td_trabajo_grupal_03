@@ -4,7 +4,7 @@ import { Categoria } from "../class/Categoria.js";
 import { Sucursal } from "../class/Sucursal.js"
 import { Producto } from "../class/Producto.js"
 import { Carrito } from "../class/Carrito.js";
-import { correo } from "../js/correo.js"
+import { correoCliente } from "../js/correo.js"
 
 import { SucursalApi,  CategoriaApi, ProductoApi} from "../class/FetchApi.js";
 
@@ -55,7 +55,7 @@ function inicializarApi(idSucursal, nomSucursal) {
 
     if (idSucursal) {
         Promise.all([
-            objProducto.getProductoById(idSucursal).then(data => data),
+            objProducto.getProductoByIdSucursal(idSucursal).then(data => data),
             objCategoria.getCategoria().then(data => data)
         ])
         .then((arr) => {
@@ -489,7 +489,7 @@ function renderCarrito() {
 }
 
 function renerDetaCarrito() {
-    let padre, hijo, nieto, texto, cant, subtotal, envio;
+    let padre, hijo, cant, subtotal, envio;
     cant = 0;
     subtotal = 0;
     envio = 0;
@@ -501,14 +501,16 @@ function renerDetaCarrito() {
     detaCarritoContenedor.innerHTML = "";
 
     carrito.getProductos().forEach(e => {
-        const Producto = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getProductos().find(Producto => Producto.getId() == e.idJuego);
+        const producto = bodega.getCategorias().find(categ => categ.getId() == e.idCateg).getProductos().find(Producto => Producto.getId() == e.idJuego);
 
         cant += e.cant;
-        subtotal += (e.cant * Producto.getPrecio())
+        subtotal += (e.cant * producto.getPrecio())
         envio = 5500;
 
         let objContenedor = document.createElement("div");
         objContenedor.classList.add("itemCarrito");
+        objContenedor.id = e.idJuego;
+        objContenedor.value = e.cant;
 
         // ------------------------------------
         padre = document.createElement("div");
@@ -531,29 +533,14 @@ function renerDetaCarrito() {
         padre.classList.add("detaCarrito");
 
         hijo = document.createElement("div");
-        hijo.innerText = `Item: ${Producto.getNombre()}`;
+        hijo.innerText = `Item: ${producto.getNombre()}`;
         padre.appendChild(hijo);
 
         hijo = document.createElement("hr");
         padre.appendChild(hijo);
         // -----
         hijo = document.createElement("div");
-        hijo.innerText = `Stock: ${Producto.getStock()} - Cant: ${e.cant} - Precio: ${formatoCL.format(Producto.getPrecio())} - Total: ${formatoCL.format(e.cant * Producto.getPrecio())}`;
-        // nieto = document.createElement("span");
-        // nieto.innerText = `Stock: ${Producto.getStock()} - `
-        // hijo.appendChild(nieto);
-
-        // nieto = document.createElement("span");
-        // nieto.innerText = `Cant: ${e.cant} - `
-        // hijo.appendChild(nieto);
-
-        // nieto = document.createElement("span");
-        // nieto.innerText = `Precio: ${formatoCL.format(Producto.getPrecio())} - `
-        // hijo.appendChild(nieto);
-
-        // nieto = document.createElement("span");
-        // nieto.innerText = `Total: ${formatoCL.format(e.cant * Producto.getPrecio())}`;
-        // hijo.appendChild(nieto);
+        hijo.innerText = `Stock: ${producto.getStock()} - Cant: ${e.cant} - Precio: ${formatoCL.format(producto.getPrecio())} - Total: ${formatoCL.format(e.cant * producto.getPrecio())}`;
 
         padre.appendChild(hijo);
         // -----
@@ -934,16 +921,53 @@ function pagarCarrito() {
         };
     });
 
-    if (estado) {
-        // enviarCorreo();
+    if (true) {
+        estado = true;
+        const arrProducto = [];
+        const itemCarrito = document.querySelectorAll(".itemCarrito");
+        const apiProducto = new ProductoApi();
+        const bodegaApi = apiProducto.getProductoByIdSucursal(1)
 
-        console.log("Pago Exitoso");
+        bodegaApi.then(data => {
+            itemCarrito.forEach(item => {
+                item.classList.remove("itemCarrito_no")
+                let itemEnApi = data.find(e => e.id == item.id)
+                let newStock = parseInt(itemEnApi.stock) - parseInt(item.value);
+
+                arrProducto.push({
+                    id: parseInt(itemEnApi.id),
+                    nombre: itemEnApi.nombre,
+                    precio: parseInt(itemEnApi.precio),
+                    link: itemEnApi.link,
+                    stock: newStock,
+                    etiqueta: itemEnApi.etiqueta,
+                    descripcion: itemEnApi.descripcion,
+                    idCategoria: parseInt(itemEnApi.idCategoria),
+                    idSucursal: parseInt(itemEnApi.idSucursal)
+                });
+                
+                if (newStock < 0) {
+                    estado = false;
+                    item.classList.add("itemCarrito_no")
+                }
+            });
+
+            if (estado) {
+                const apiProducto = new ProductoApi(); 
+                
+                arrProducto.forEach(e => {
+                    apiProducto.putProducto(e)
+                });
+
+                inicializar();
+                handleNuevoProdSalir();
+                // correoCliente(getCarritoLocalStorage(), arrProducto);
+                // deleteCarritoLocalStorage()
+            } else {
+                alert("Hay Productos que exceden el Stock")
+            }
+        });
     };
-};
-
-function enviarCorreo() {
-    const despachoCarrito = document.querySelector(".despachoCarrito");
-    const newCorreo = correo(despachoCarrito);
 };
 
 /* --- Inventario ---------------------------------------------- */
@@ -1115,8 +1139,8 @@ btnNuevoModificarPrdo.addEventListener("click", () => {
         if (validarNuevoProducto) {       
             const res = apiProducto.postProducto(producto)
             res
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
+            // .then(res => console.log(res))
+            .catch(err => console.log(`ERROR: ${err}`));
 
             inicializar()
             handleNuevoProdSalir();
@@ -1128,8 +1152,8 @@ btnNuevoModificarPrdo.addEventListener("click", () => {
         if (validarNuevoProducto) {       
             const res = apiProducto.putProducto(producto);
             res
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
+            // .then(res => console.log(res))
+            .catch(err => console.log(`ERROR: ${err}`));
 
             inicializar();
             handleNuevoProdSalir();

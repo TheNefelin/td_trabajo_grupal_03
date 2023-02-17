@@ -356,6 +356,10 @@ h1, h4, p {
     border-radius: 8px;
 }
 
+.itemCarrito_no {
+    background-color: var(--colorText2)
+}
+
 .detaCarrito {
     width: 100%;
     margin: 0 1vw 0 1vw;
@@ -385,6 +389,8 @@ h1, h4, p {
 .despachoCarrito {
     display: grid;
     padding: 0.3rem 1rem 1rem 1rem;
+    opacity: blur(8px);
+    background-color: var(--colorTransparencia1);
 }
 
 .despachoCarrito > input {
