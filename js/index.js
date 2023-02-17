@@ -921,7 +921,7 @@ function pagarCarrito() {
         };
     });
 
-    if (true) {
+    if (estado) {
         estado = true;
         const arrProducto = [];
         const arrCorreo = [];
