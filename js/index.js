@@ -961,7 +961,7 @@ function pagarCarrito() {
 
                 inicializar();
                 handleNuevoProdSalir();
-                // correoCliente(getCarritoLocalStorage(), arrProducto);
+                correoCliente(getCarritoLocalStorage());
                 // deleteCarritoLocalStorage()
             } else {
                 alert("Hay Productos que exceden el Stock")
@@ -1139,11 +1139,11 @@ btnNuevoModificarPrdo.addEventListener("click", () => {
         if (validarNuevoProducto) {       
             const res = apiProducto.postProducto(producto)
             res
-            // .then(res => console.log(res))
+            .then(() => {
+                inicializar()
+                handleNuevoProdSalir();
+            })
             .catch(err => console.log(`ERROR: ${err}`));
-
-            inicializar()
-            handleNuevoProdSalir();
         } else {
             alert("DEBE COMPLETAR TODOS LOS DATOS")
         };
@@ -1152,11 +1152,11 @@ btnNuevoModificarPrdo.addEventListener("click", () => {
         if (validarNuevoProducto) {       
             const res = apiProducto.putProducto(producto);
             res
-            // .then(res => console.log(res))
+            .then(() => {
+                inicializar();
+                handleNuevoProdSalir();
+            })
             .catch(err => console.log(`ERROR: ${err}`));
-
-            inicializar();
-            handleNuevoProdSalir();
         } else {
             alert("DEBE COMPLETAR TODOS LOS DATOS")
         };
