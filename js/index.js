@@ -921,13 +921,22 @@ function pagarCarrito() {
         };
     });
 
-    if (estado) {
+    if (true) {
         estado = true;
         const arrProducto = [];
         const arrCorreo = [];
         const itemCarrito = document.querySelectorAll(".itemCarrito");
         const apiProducto = new ProductoApi();
         const bodegaApi = apiProducto.getProductoByIdSucursal(1)
+
+        const datoDespacho = {
+            nombre: document.querySelector("#frm_nombre").value,
+            apellido: document.querySelector("#frm_apellido").value,
+            direccion1: document.querySelector("#frm_direccion1").value,
+            direccion2: document.querySelector("#frm_direccion2").value,
+            fono: document.querySelector("#frm_fono").value,
+            email: document.querySelector("#frm_email").value,
+        }
 
         bodegaApi.then(data => {
             itemCarrito.forEach(item => {
@@ -967,11 +976,11 @@ function pagarCarrito() {
                     apiProducto.putProducto(e)
                 });
 
-                correoCliente(arrCorreo);
-                inicializar();
-                handleNuevoProdSalir();
-                deleteCarritoLocalStorage();
-                ocultarCarrito();
+                correoCliente(arrCorreo, datoDespacho);
+                // inicializar();
+                // handleNuevoProdSalir();
+                // deleteCarritoLocalStorage();
+                // ocultarCarrito();
             } else {
                 alert("Hay Productos que exceden el Stock")
             }

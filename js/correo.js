@@ -1,4 +1,9 @@
-export function correoCliente(carrito) {
+export function correoCliente(carrito, despacho) {
+    const formatoCL = new Intl.NumberFormat('es-CL', {
+        style: "currency",
+        currency: "CLP",
+    });
+    
     emailjs.init('GlmSGpqHCTxbwmfS3');
 
     const frm = document.createElement("form");
@@ -6,29 +11,56 @@ export function correoCliente(carrito) {
     const email = document.createElement("input");
     email.id = "frm-mail";
     email.name = "frm-mail";
-    email.value = "sliferhunter8@gmail.com";
+    email.value = despacho.email;
     frm.appendChild(email)
 
-    const ul =  document.createElement("ul");
-    ul.id = "frm-ul";
-    ul.name = "frm-ul";
-    ul.value = "frm-ul";
+    const nombre = document.createElement("input");
+    nombre.id = "frm-nombre";
+    nombre.name = "frm-nombre";
+    nombre.value = despacho.nombre;
+    frm.appendChild(nombre)
 
+    const apellido = document.createElement("input");
+    apellido.id = "frm-apellido";
+    apellido.name = "frm-apellido";
+    apellido.value = despacho.apellido;
+    frm.appendChild(apellido)
+
+    const direccion1 = document.createElement("input");
+    direccion1.id = "frm-direccion1";
+    direccion1.name = "frm-direccion1";
+    direccion1.value = despacho.direccion1;
+    frm.appendChild(direccion1)
+
+    const direccion2 = document.createElement("input");
+    direccion2.id = "frm-direccion2";
+    direccion2.name = "frm-direccion2";
+    direccion2.value = despacho.direccion2;
+    frm.appendChild(direccion2)
+
+    const lista = document.createElement("input");
+    lista.id = "frm-lista";
+    lista.name = "frm-lista";
+
+    let prodLista = "";
+    let total = 0;
     carrito.forEach(e => {
-        const li = document.createElement("li");
-        li.innerText = `Producto: ${e.nombre} Precio: ${e.precio} Cant: ${e.cant} TOTAL: ${parseInt(e.precio) *  parseInt(e.cant)}`;
-        ul.appendChild(li);
+        total += (parseInt(e.precio) *  parseInt(e.cant))
+        prodLista = prodLista + `Producto: ${e.nombre} Precio: ${formatoCL.format(e.precio)} Cant: ${e.cant} TOTAL: ${formatoCL.format(parseInt(e.precio) *  parseInt(e.cant))} <BR> `;
     });
 
-    frm.appendChild(ul)
+    prodLista += ` <BR> TOTAL: ${formatoCL.format(total)} <BR> `
+    prodLista += `ENVÍO: ${formatoCL.format(5500)} <BR> `
+    prodLista += `TOTAL COMPRA: ${formatoCL.format(total + 5500)}`
 
-    console.log(frm)
-    console.log(carrito)
+    lista.value = prodLista;
+    frm.appendChild(lista);
 
     emailjs.sendForm('service_jnf9tgi', 'template_c4ohe36', frm)
-    .then(function() {
+    .then(() => {
         console.log('Coreo Enviado!');
-    }, function(error) {
-        console.log('ERROR:', error);
+    })
+    .catch((err) => {
+        console.log('ERROR:', err);
     });
 }
