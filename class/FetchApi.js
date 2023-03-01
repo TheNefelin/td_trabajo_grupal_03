@@ -2,8 +2,7 @@ class API {
     #url;
     
     constructor() {
-        this.#url = "https://bsite.net/metalflap";
-        // this.#url = "https://localhost:7230";
+        this.#url = "https://slifer.bsite.net"
     };
 
     getUrl() { 
