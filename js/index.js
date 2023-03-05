@@ -61,16 +61,14 @@ function inicializarApi(idSucursal, nomSucursal) {
         .then((arr) => {
             deleteBodegaLocalStorage();
 
-            //Filtro para obtener la variedad de Categorias asociadas a la sucursal
-            let arrIdCateg = [];
-            arr[0].forEach(producto => {
-                if (arrIdCateg.indexOf(producto.idCategoria) == -1) {
-                    arrIdCateg.push(producto.idCategoria)
-                    let categoria = arr[1].find(e => e.id == producto.idCategoria)
-                    //Instancia las categorias encontradas en la sucursal
-                    objSucursal.setCategoria(new Categoria(categoria.id, categoria.nombre))
-                }
-            })
+            //filtro la variedad de idCategoria de los productos
+            const arrIdCategoria = [... new Set(arr[0].map(e => e.idCategoria))];
+ 
+            
+            arrIdCategoria.forEach(IdCategoria => {
+                const categ = arr[1].find(e => e.id == IdCategoria);
+                objSucursal.setCategoria(new Categoria(categ.id, categ.nombre))
+            });
 
             //faltaria agregar los Productos por categorias asociadas a la sucursal
             objSucursal.getCategorias().forEach(categ => {
